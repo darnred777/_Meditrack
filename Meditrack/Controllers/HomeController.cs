@@ -77,6 +77,31 @@ namespace Meditrack.Controllers
             return View();
         }
 
+        public IActionResult Inventory()
+        {
+            return View();
+        }
+
+        public IActionResult Notification()
+        {
+            return View();
+        }
+
+        public IActionResult Report()
+        {
+            return View();
+        }
+
+        public IActionResult Feedback()
+        {
+            return View();
+        }
+
+        public IActionResult CreatePurchaseRequisition()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

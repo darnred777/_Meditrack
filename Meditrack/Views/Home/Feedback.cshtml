@@ -8,7 +8,7 @@
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a class="sidebar-link">
+                    <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserAccount">
                         <i class="bi bi-grid"></i>
                         Dashboard
                     </a>
@@ -27,7 +27,7 @@
                     </a>
                     <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserAccount">Manage User Account</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserAccount">User Account</a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageVendor">Manage Supplier</a>
@@ -72,7 +72,7 @@
                     <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
                         <i class="bi bi-box-arrow-right"></i>
                         Logout
-                    </a>                  
+                    </a>
                 </li>
             </ul>
         </div>
@@ -88,7 +88,7 @@
         <main class="content px-3 py-2">
             <div class="container-fluid">
                 <div class="mb-3">
-                    <h3>Dashboard</h3>
+                    <h3>Display Feedback</h3>
                 </div>
             </div>
         </main>
