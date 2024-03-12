@@ -1,0 +1,45 @@
+﻿<div class="container mt-5">
+    <h2>Add New Product</h2>
+    <form>
+        <div class="mb-3">
+            <label for="productName" class="form-label">Product Name:</label>
+            <input type="text" class="form-control" id="productName" name="productName" required>
+        </div>
+        <div class="mb-3">
+            <label for="sku" class="form-label">SKU:</label>
+            <input type="text" class="form-control" id="sku" name="sku" required>
+        </div>
+        <div class="mb-3">
+            <label for="brand" class="form-label">Brand:</label>
+            <input type="text" class="form-control" id="brand" name="brand" required>
+        </div>
+        <div class="mb-3">
+            <label for="productDescription" class="form-label">Product Description:</label>
+            <textarea class="form-control" id="productDescription" name="productDescription" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="unitPrice" class="form-label">Unit Price:</label>
+            <input type="number" class="form-control" id="unitPrice" name="unitPrice" required>
+        </div>
+        <div class="mb-3">
+            <label for="unitOfMeasurement" class="form-label">Unit of Measurement:</label>
+            <input type="text" class="form-control" id="unitOfMeasurement" name="unitOfMeasurement" required>
+        </div>
+        <div class="mb-3">
+            <label for="quantityInStock" class="form-label">Quantity in Stock:</label>
+            <input type="number" class="form-control" id="quantityInStock" name="quantityInStock" required>
+        </div>
+        <div class="mb-3">
+            <label for="expirationDate" class="form-label">Expiration Date:</label>
+            <input type="date" class="form-control" id="expirationDate" name="expirationDate" required>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+            </div>
+            <div class="col-6">
+                <a asp-area="" asp-controller="Home" asp-action="ManageProduct" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+            </div>
+        </div>
+    </form>
+</div>

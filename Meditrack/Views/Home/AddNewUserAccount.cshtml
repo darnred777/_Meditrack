@@ -78,6 +78,7 @@
         </div>
     </aside>
     <!-- Main Component -->
+
     <div class="main">
         <nav class="navbar navbar-expand px-3 border-bottom">
             <!-- Button for sidebar toggle -->
@@ -90,6 +91,32 @@
                 <div class="mb-3">
 
                     <!--Main Content-->
+                    <header>
+                        <nav class="navbar navbar-expand-sm">
+                            <div class="container-fluid">
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarNav">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-item">
+                                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserAccount">Users</a>
+                                        </li>
+                                        <div class="vr"></div>
+                                        <li class="nav-item">
+                                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserGroup">User Group</a>
+                                        </li>
+                                        <div class="vr"></div>
+                                        <li class="nav-item">
+                                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="AddNewUserAccount">Add New User</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </header>
+
 
                     <div class="container mt-5">
                         <div class="row">
@@ -109,6 +136,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-9">
                                 <!-- Update Information Description -->
                                 <h3 class="mb-4">Add New User Account</h3>

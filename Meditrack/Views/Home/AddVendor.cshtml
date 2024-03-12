@@ -8,7 +8,7 @@
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Dashboard">
+                    <a href="#" class="sidebar-link">
                         <i class="bi bi-grid"></i>
                         Dashboard
                     </a>
@@ -78,6 +78,7 @@
         </div>
     </aside>
     <!-- Main Component -->
+
     <div class="main">
         <nav class="navbar navbar-expand px-3 border-bottom">
             <!-- Button for sidebar toggle -->
@@ -88,38 +89,44 @@
         <main class="content px-3 py-2">
             <div class="container-fluid">
                 <div class="mb-3">
-                    
+
                     <!--Main Content-->
-                    
-                    <header>
-                        <nav class="navbar navbar-expand-sm">
-                            <div class="container-fluid">
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
-                                <div class="collapse navbar-collapse" id="navbarNav">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Users</a>
-                                        </li>
-                                        <div class="vr"></div>
-                                        <li class="nav-item">
-                                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserGroup">User Group</a>
-                                        </li>
-                                        <div class="vr"></div>
-                                        <li class="nav-item">
-                                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="AddNewUserAccount">Add New User</a>
-                                        </li>
-                                    </ul>
+
+
+                    <div class="container mt-5">
+                        <h3 class="mb-3">Add New Vendor</h3>
+                        <form>
+                            <div class="mb-3">
+                                <label for="supplierName" class="form-label">Supplier Name:</label>
+                                <input type="text" class="form-control" id="supplierName" name="supplierName" placeholder="Enter Supplier Name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactPerson" class="form-label">Contact Person:</label>
+                                <input type="text" class="form-control" id="contactPerson" name="contactPerson" placeholder="Enter Contact Person" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactNumber" class="form-label">Contact Number:</label>
+                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" placeholder="Enter Contact Number" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email"  required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="officeAddress" class="form-label">Office Address:</label>
+                                <textarea class="form-control" id="officeAddress" name="officeAddress" rows="3" placeholder="Enter Office Address"  required></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+                                </div>
+                                <div class="col-6">
+                                    <a asp-area="" asp-controller="Home" asp-action="ManageVendor" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
                                 </div>
                             </div>
-                        </nav>
-                    </header>
-
-                    <div class="mt-5">
-                        <h2>Display the Users Accounts Table here</h2>
+                        </form>
                     </div>
+
                     <!--End of Content-->
 
                 </div>

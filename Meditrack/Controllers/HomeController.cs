@@ -48,6 +48,35 @@ namespace Meditrack.Controllers
             return View();
         }
 
+        public IActionResult ManageVendor()
+        {
+            return View();
+        }
+
+        public IActionResult AddVendor()
+        {
+            return View();
+        }
+
+        public IActionResult ManageProduct()
+        {
+            return View();
+        }
+
+        public IActionResult AddNewProduct()
+        {
+            return View();
+        }
+        public IActionResult AddNewProductCategory()
+        {
+            return View();
+        }
+
+        public IActionResult Transaction()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
