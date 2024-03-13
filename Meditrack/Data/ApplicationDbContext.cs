@@ -5,6 +5,7 @@ namespace Meditrack.Data
 {
     public class ApplicationDbContext : DbContext
     {
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             
@@ -32,6 +33,10 @@ namespace Meditrack.Data
 
         public DbSet<PurchaseOrderHeader> PurchaseOrderHeader { get; set; }
 
+        public DbSet<PurchaseOrderDetail> PurchaseOrderDetail { get; set; }
+
+        public DbSet<TransactionLogs> TransactionLogs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure UnitPrice for the Product entity
@@ -47,11 +52,16 @@ namespace Meditrack.Data
             modelBuilder.Entity<PurchaseRequisitionDetail>()
                 .Property(p => p.Subtotal)
                 .HasColumnType("MONEY");
+ 
+            modelBuilder.Entity<PurchaseOrderDetail>()
+                .Property(p => p.UnitPrice)
+                .HasColumnType("DECIMAL(10,2)");
 
-            // Configure TotalAmount for PurchaseOrderHeader entity
             modelBuilder.Entity<PurchaseOrderHeader>()
                 .Property(p => p.TotalAmount)
-                .HasColumnType("MONEY");
+                .HasColumnType("DECIMAL(18, 2)")  // Adjust precision and scale as needed
+                .IsRequired();
+
 
             base.OnModelCreating(modelBuilder);
         }

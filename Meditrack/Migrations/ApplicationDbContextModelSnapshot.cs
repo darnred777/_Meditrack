@@ -136,6 +136,43 @@ namespace Meditrack.Migrations
                     b.ToTable("ProductCategory");
                 });
 
+            modelBuilder.Entity("Meditrack.Models.PurchaseOrderDetail", b =>
+                {
+                    b.Property<int>("PODtlID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PODtlID"));
+
+                    b.Property<bool>("IsVATExclusive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("POHdrID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuantityInOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UnitOfMeasurement")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("DECIMAL(10,2)");
+
+                    b.HasKey("PODtlID");
+
+                    b.HasIndex("POHdrID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("PurchaseOrderDetail");
+                });
+
             modelBuilder.Entity("Meditrack.Models.PurchaseOrderHeader", b =>
                 {
                     b.Property<int>("POHdrID")
@@ -155,7 +192,8 @@ namespace Meditrack.Migrations
 
                     b.Property<string>("Remarks")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("StatusID")
                         .HasColumnType("int");
@@ -164,7 +202,7 @@ namespace Meditrack.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("MONEY");
+                        .HasColumnType("DECIMAL(18, 2)");
 
                     b.HasKey("POHdrID");
 
@@ -317,6 +355,55 @@ namespace Meditrack.Migrations
                     b.ToTable("Supplier");
                 });
 
+            modelBuilder.Entity("Meditrack.Models.TransactionLogs", b =>
+                {
+                    b.Property<int>("TransactionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionID"));
+
+                    b.Property<int?>("POHdrID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PRHdrID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TransDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransType")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransactionID");
+
+                    b.HasIndex("POHdrID");
+
+                    b.HasIndex("PRHdrID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("StatusID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("TransactionLogs");
+                });
+
             modelBuilder.Entity("Meditrack.Models.User", b =>
                 {
                     b.Property<int>("UserID")
@@ -428,6 +515,25 @@ namespace Meditrack.Migrations
                     b.Navigation("ProductCategory");
                 });
 
+            modelBuilder.Entity("Meditrack.Models.PurchaseOrderDetail", b =>
+                {
+                    b.HasOne("Meditrack.Models.PurchaseOrderHeader", "PurchaseOrderHeader")
+                        .WithMany()
+                        .HasForeignKey("POHdrID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Meditrack.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("PurchaseOrderHeader");
+                });
+
             modelBuilder.Entity("Meditrack.Models.PurchaseOrderHeader", b =>
                 {
                     b.HasOne("Meditrack.Models.Location", "Location")
@@ -514,6 +620,43 @@ namespace Meditrack.Migrations
                         .HasForeignKey("LocationID");
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("Meditrack.Models.TransactionLogs", b =>
+                {
+                    b.HasOne("Meditrack.Models.PurchaseOrderHeader", "PurchaseOrderHeader")
+                        .WithMany()
+                        .HasForeignKey("POHdrID");
+
+                    b.HasOne("Meditrack.Models.PurchaseRequisitionHeader", "PurchaseRequisitionHeader")
+                        .WithMany()
+                        .HasForeignKey("PRHdrID");
+
+                    b.HasOne("Meditrack.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID");
+
+                    b.HasOne("Meditrack.Models.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Meditrack.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("PurchaseOrderHeader");
+
+                    b.Navigation("PurchaseRequisitionHeader");
+
+                    b.Navigation("Status");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Meditrack.Models.User", b =>

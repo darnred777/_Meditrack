@@ -242,8 +242,8 @@ namespace Meditrack.Models
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime PRDate { get; set; } = DateTime.Now;
-        public object PurchaseOrderHeaders { get; internal set; }
     }
+
 
     public class PurchaseRequisitionDetail
     {
@@ -310,7 +310,84 @@ namespace Meditrack.Models
         [DataType(DataType.DateTime)]
         public DateTime PODate { get; set; } = DateTime.Now;
 
+        [MaxLength(255)]
         public string Remarks { get; set; }
+    }
+
+    public class PurchaseOrderDetail
+    {
+        [Key]
+        public int PODtlID { get; set; }
+
+        [Required]
+        public int POHdrID { get; set; }
+
+        [ForeignKey("POHdrID")]
+        public PurchaseOrderHeader PurchaseOrderHeader { get; set; }
+
+        [Required]
+        public int ProductID { get; set; }
+
+        [ForeignKey("ProductID")]
+        public Product Product { get; set; }
+
+        [Required]
+        public decimal UnitPrice { get; set; }
+
+        [Required]
+        [StringLength(10)]
+        public string UnitOfMeasurement { get; set; }
+
+        [Required]
+        public int QuantityInOrder { get; set; }
+
+        [NotMapped]
+        public decimal Subtotal => UnitPrice * QuantityInOrder;
+
+        [Required]
+        public bool IsVATExclusive { get; set; } = true;
+    }
+
+    public class TransactionLogs
+    {
+        [Key]
+        public int TransactionID { get; set; }
+
+        [Required]
+        [StringLength(5)]
+        public string TransType { get; set; }
+
+        [Required]
+        public int UserID { get; set; }
+
+        [ForeignKey("UserID")]
+        public User User { get; set; }
+
+        [Required]
+        public int StatusID { get; set; }
+
+        [ForeignKey("StatusID")]
+        public Status Status { get; set; }
+
+        public int? POHdrID { get; set; }
+
+        [ForeignKey("POHdrID")]
+        public PurchaseOrderHeader PurchaseOrderHeader { get; set; }
+
+        public int? PRHdrID { get; set; }
+
+        [ForeignKey("PRHdrID")]
+        public PurchaseRequisitionHeader PurchaseRequisitionHeader { get; set; }
+
+        public int? ProductID { get; set; }
+
+        [ForeignKey("ProductID")]
+        public Product Product { get; set; }
+
+        public int? Quantity { get; set; }
+
+        [Required]
+        public DateTime TransDate { get; set; } = DateTime.Now;
     }
 }
 
