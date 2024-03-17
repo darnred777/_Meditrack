@@ -1,4 +1,6 @@
-﻿<div class="wrapper">
+﻿@model ProductCategory
+
+<div class="wrapper">
     <!-- Sidebar -->
     <aside id="sidebar">
         <div class="h-100">
@@ -91,18 +93,18 @@
                     
                     <div class="container mt-5">
                         <h3>Add New Product Category</h3>
-                        <form>
+                        <form method="post">
                             <div class="mb-3">
                                 <label for="categoryName" class="form-label">Category Name:</label>
-                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                                <input type="text" class="form-control" id="categoryName" name="CategoryName" required>
                             </div>
                             <div class="mb-3">
                                 <label for="categoryDescription" class="form-label">Category Description:</label>
-                                <textarea class="form-control" id="categoryDescription" name="categoryDescription" rows="3" required></textarea>
+                                <textarea class="form-control" id="categoryDescription" name="CategoryDescription" rows="3" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="totalQuantity" class="form-label">Total Quantity in Stock:</label>
-                                <input type="number" class="form-control" id="totalQuantity" name="totalQuantity" required>
+                                <input type="number" class="form-control" id="totalQuantity" name="TotalQuantityInStock" required>
                             </div>
                             <div class="row">
                                 <div class="col-6">

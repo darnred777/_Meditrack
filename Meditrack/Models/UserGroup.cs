@@ -101,6 +101,7 @@ namespace Meditrack.Models
         [Required]
         public bool IsActive { get; set; } = true;
 
+        [Required]
         [ForeignKey("LocationID")]
         public virtual Location Location { get; set; }
     }
@@ -154,11 +155,9 @@ namespace Meditrack.Models
         [StringLength(30)]
         public string OfficeAddress { get; set; }
 
-        [Required]
         [DataType(DataType.DateTime)]
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
-        [Required]
         public bool isActive { get; set; } = true;
     }
 

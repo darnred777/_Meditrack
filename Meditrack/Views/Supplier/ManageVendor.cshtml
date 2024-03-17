@@ -1,4 +1,6 @@
-﻿<div class="wrapper">
+﻿@model List<Supplier>
+
+<div class="wrapper">
     <!-- Sidebar -->
     <aside id="sidebar">
         <div class="h-100">
@@ -8,7 +10,7 @@
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Dashboard">
                         <i class="bi bi-grid"></i>
                         Dashboard
                     </a>
@@ -20,20 +22,20 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
+                    <a class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
                        aria-expanded="false" aria-controls="pages">
                         <i class="fa-regular fa-file-lines pe-2"></i>
                         Management
                     </a>
                     <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserAccount">User Account</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="User" asp-action="ManageUserAccount">Manage User Account</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageVendor">Supplier</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageProduct">Product</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageProduct">Manage Product</a>
                         </li>
                     </ul>
                 </li>
@@ -78,6 +80,7 @@
         </div>
     </aside>
     <!-- Main Component -->
+
     <div class="main">
         <nav class="navbar navbar-expand px-3 border-bottom">
             <!-- Button for sidebar toggle -->
@@ -91,34 +94,51 @@
 
                     <!--Main Content-->
 
-                    <header>
-                        <nav class="navbar navbar-expand-sm">
-                            <div class="container-fluid">
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
-                                <div class="collapse navbar-collapse" id="navbarNav">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item">
-                                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserAccount">Users</a>
-                                        </li>
-                                        <div class="vr"></div>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">User Groups</a>
-                                        </li>
-                                        <div class="vr"></div>
-                                        <li class="nav-item">
-                                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="AddNewUserAccount">Add New User</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </nav>
-                    </header>
-
+                    <a asp-area="" asp-controller="Supplier" asp-action="AddVendor" class="btn btn-primary mt-2 form-control">Add New Supplier</a>
                     <div class="mt-5">
-                        <h2>Display the Users Groups Table here</h2>
+                        <div class="table-responsive table-bordered table-striped">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>SupplierID</th>
+                                        <th>LocationID</th>
+                                        <th>Supplier Name</th>
+                                        <th>Contact Person</th>
+                                        <th>Contact Number</th>
+                                        <th>Email</th>
+                                        <th>Office Address</th>
+                                        <th>Date Created</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var obj in Model.OrderBy(u => u.SupplierID))
+                                    {
+                                        <tr>
+                                            <td>@obj.SupplierID</td>
+                                            <td>@obj.LocationID</td>
+                                            <td>@obj.SupplierName</td>
+                                            <td>@obj.ContactPerson</td>
+                                            <td>@obj.ContactNumber</td>
+                                            <td>@obj.Email</td>
+                                            <td>@obj.OfficeAddress</td>
+                                            <td>@obj.DateCreated</td>
+                                            <td>@obj.isActive</td>
+                                            <td>
+                                                <div class="w-75 btn-group" role="group">
+                                                    <a asp-controller="Supplier" asp-action="EditVendor" asp-route-SupplierID="@obj.SupplierID" class="btn btn-primary mx-2">
+                                                        <i class="bi bi-pencil-square"></i> Edit
+                                                    </a>
+                                                    <a asp-controller="Supplier" asp-action="DeleteSupplier" class="btn btn-danger mx-2">
+                                                        <i class="bi bi-trash"></i> Delete
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <!--End of Content-->
 
@@ -126,4 +146,5 @@
             </div>
         </main>
     </div>
+
 </div>

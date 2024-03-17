@@ -1,4 +1,7 @@
-﻿<div class="wrapper">
+﻿@model List<Product>
+
+
+<div class="wrapper">
     <!-- Sidebar -->
     <aside id="sidebar">
         <div class="h-100">
@@ -90,7 +93,47 @@
             <div class="container-fluid">
                 <div class="mb-3">
                     
-                    <h3>Display Inventory Table here</h3>
+                    <div class="table-responsive table-bordered table-striped">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ProductID</th>
+                                    <th>CategoryID</th>
+                                    <th>Product Name</th>
+                                    <th>SKU</th>
+                                    <th>Brand</th>
+                                    <th>Product Description</th>
+                                    <th>Unit Price</th>
+                                    <th>Unit Of Measurement</th>
+                                    <th>Quantity In Stock</th>
+                                    <th>Expiration Date/th>
+                                    <th>LastUnit Price Updated</th>
+                                    <th>Last Quantity In Stock Updated</th>
+                                    <th>Is Active</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var obj in Model.OrderBy(u => u.ProductID))
+                                {
+                                    <tr>
+                                        <td>@obj.ProductID</td>
+                                        <td>@obj.CategoryID</td>
+                                        <td>@obj.ProductName</td>
+                                        <td>@obj.SKU</td>
+                                        <td>@obj.Brand</td>
+                                        <td>@obj.ProductDescription</td>
+                                        <td>@obj.UnitPrice</td>
+                                        <td>@obj.UnitOfMeasurement</td>
+                                        <td>@obj.QuantityInStock</td>
+                                        <td>@obj.ExpirationDate</td>
+                                        <td>@obj.LastUnitPriceUpdated</td>
+                                        <td>@obj.LastQuantityInStockUpdated</td>
+                                        <td>@obj.isActive</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
             </div>

@@ -1,4 +1,6 @@
-﻿<div class="wrapper">
+﻿@model Supplier
+
+<div class="wrapper">
     <!-- Sidebar -->
     <aside id="sidebar">
         <div class="h-100">
@@ -27,13 +29,13 @@
                     </a>
                     <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserAccount">User Account</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="User" asp-action="ManageUserAccount">User Account</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Vendor</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Product</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageProduct">Manage Product</a>
                         </li>
                     </ul>
                 </li>
@@ -95,33 +97,37 @@
 
                     <div class="container mt-5">
                         <h3 class="mb-3">Add New Supplier</h3>
-                        <form>
+                        <form method="post">
+                            <div class="mb-3">
+                                <label for="locationID" class="form-label">Location ID:</label>
+                                <input type="text" class="form-control" id="locationID" name="LocationID" placeholder="Enter LocationID" required>
+                            </div>
                             <div class="mb-3">
                                 <label for="supplierName" class="form-label">Supplier Name:</label>
-                                <input type="text" class="form-control" id="supplierName" name="supplierName" placeholder="Enter Supplier Name" required>
+                                <input type="text" class="form-control" id="supplierName" name="SupplierName" placeholder="Enter Supplier Name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="contactPerson" class="form-label">Contact Person:</label>
-                                <input type="text" class="form-control" id="contactPerson" name="contactPerson" placeholder="Enter Contact Person" required>
+                                <input type="text" class="form-control" id="contactPerson" name="ContactPerson" placeholder="Enter Contact Person" required>
                             </div>
                             <div class="mb-3">
                                 <label for="contactNumber" class="form-label">Contact Number:</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" placeholder="Enter Contact Number" required>
+                                <input type="tel" class="form-control" id="contactNumber" name="ContactNumber" placeholder="Enter Contact Number" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email:</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email"  required>
+                                <input type="email" class="form-control" id="email" name="Email" placeholder="Enter Email"  required>
                             </div>
                             <div class="mb-3">
                                 <label for="officeAddress" class="form-label">Office Address:</label>
-                                <textarea class="form-control" id="officeAddress" name="officeAddress" rows="3" placeholder="Enter Office Address"  required></textarea>
+                                <textarea class="form-control" id="officeAddress" name="OfficeAddress" rows="3" placeholder="Enter Office Address"  required></textarea>
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
                                 </div>
                                 <div class="col-6">
-                                    <a asp-area="" asp-controller="Home" asp-action="ManageVendor" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+                                    <a asp-area="" asp-controller="Supplier" asp-action="ManageVendor" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
                                 </div>
                             </div>
                         </form>

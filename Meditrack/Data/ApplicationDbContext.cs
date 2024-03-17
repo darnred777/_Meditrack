@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Meditrack.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace Meditrack.Data
 {
@@ -39,6 +40,7 @@ namespace Meditrack.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+           
             // Configure UnitPrice for the Product entity
             modelBuilder.Entity<Product>()
                 .Property(p => p.UnitPrice)
@@ -51,7 +53,7 @@ namespace Meditrack.Data
 
             modelBuilder.Entity<PurchaseRequisitionDetail>()
                 .Property(p => p.Subtotal)
-                .HasColumnType("MONEY");
+                .HasColumnType("MONEY");    
  
             modelBuilder.Entity<PurchaseOrderDetail>()
                 .Property(p => p.UnitPrice)
