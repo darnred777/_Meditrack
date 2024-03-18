@@ -1,6 +1,7 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Meditrack.Controllers
 {
@@ -24,30 +25,30 @@ namespace Meditrack.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddNewUserAccount(User obj, IFormFile profilePicture)
+        public IActionResult AddNewUserAccount(User obj) //, IFormFile profilePicture
         {
-            if (ModelState.IsValid)
-            {
-                // Check if a profile picture is uploaded
-                if (profilePicture != null && profilePicture.Length > 0)
-                {
-                    // Convert the uploaded file to a byte array
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        profilePicture.CopyTo(memoryStream);
-                        obj.ProfilePicture = memoryStream.ToArray();
-                    }
-                }
+            //if (ModelState.IsValid)
+            //{
+            //    // Check if a profile picture is uploaded
+            //    if (profilePicture != null && profilePicture.Length > 0)
+            //    {
+            //        // Convert the uploaded file to a byte array
+            //        using (var memoryStream = new MemoryStream())
+            //        {
+            //            profilePicture.CopyTo(memoryStream);
+            //            obj.ProfilePicture = memoryStream.ToArray();
+            //        }
+            //    }
 
 
                 _db.User.Add(obj);
                 _db.SaveChanges();
 
                 return RedirectToAction("ManageUserAccount");
-            }
+            //}
 
 
-            return View(obj);
+            //return View(obj);
         }
 
         public IActionResult EditUserAccount(int? UserID)
@@ -57,7 +58,7 @@ namespace Meditrack.Controllers
                 return NotFound();
             }
             User? userFromDb = _db.User.Find(UserID);
-
+                               
             if (userFromDb == null)
             {
                 return NotFound();
@@ -76,6 +77,35 @@ namespace Meditrack.Controllers
                 return RedirectToAction("ManageUserAccount");
             }
             return View();
+        }
+
+        public IActionResult DeleteUserAccount(int? UserID)
+        {
+            if (UserID == null || UserID == 0)
+            {
+                return NotFound();
+            }
+            User? userFromDb = _db.User.Find(UserID);
+
+            if (userFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(userFromDb);
+        }
+
+        [HttpPost, ActionName("DeleteUserAccount")]
+        public IActionResult DeletePOSTUserAccount(int? UserID)
+        {
+            User? obj = _db.User.Find(UserID);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.User.Remove(obj);
+            _db.SaveChanges();
+
+            return RedirectToAction("ManageUserAccount");
         }
     }
 }

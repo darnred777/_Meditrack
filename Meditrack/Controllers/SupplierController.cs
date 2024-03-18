@@ -1,6 +1,7 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Meditrack.Controllers
 {
@@ -46,6 +47,35 @@ namespace Meditrack.Controllers
             return View();
         }
 
+        public IActionResult DeleteVendor(int? SupplierID)
+        {
+            if (SupplierID == null || SupplierID == 0)
+            {
+                return NotFound();
+            }
+            Supplier? supplierFromDb = _db.Supplier.Find(SupplierID);
+
+            if (supplierFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(supplierFromDb);
+        }
+
+        [HttpPost, ActionName("DeleteVendor")]
+        public IActionResult DeletePOSTVendor(int? SupplierID)
+        {
+            Supplier? obj = _db.Supplier.Find(SupplierID);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.Supplier.Remove(obj);
+            _db.SaveChanges();
+
+            return RedirectToAction("ManageVendor");
+        }
+
         public IActionResult AddVendor()
         {
             return View();
@@ -58,6 +88,12 @@ namespace Meditrack.Controllers
             _db.SaveChanges();
 
             return RedirectToAction("ManageVendor");
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

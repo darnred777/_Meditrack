@@ -61,7 +61,7 @@ namespace Meditrack.Data
 
             modelBuilder.Entity<PurchaseOrderHeader>()
                 .Property(p => p.TotalAmount)
-                .HasColumnType("DECIMAL(18, 2)")  // Adjust precision and scale as needed
+                .HasColumnType("DECIMAL(10, 2)")  // Adjust precision and scale as needed
                 .IsRequired();
 
 

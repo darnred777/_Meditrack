@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Meditrack.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDatabase : Migration
+    public partial class CreatingDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,9 +17,9 @@ namespace Meditrack.Migrations
                 {
                     LocationID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationType = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    LocationAddress = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime", nullable: false)
+                    LocationType = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LocationAddress = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,9 +32,9 @@ namespace Meditrack.Migrations
                 {
                     CategoryID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    CategoryDescription = table.Column<string>(type: "text", nullable: true),
-                    DateLastModified = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CategoryName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    CategoryDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateLastModified = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalQuantityInStock = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -48,7 +48,7 @@ namespace Meditrack.Migrations
                 {
                     StatusID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusDescription = table.Column<string>(type: "text", nullable: false)
+                    StatusDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,7 +61,7 @@ namespace Meditrack.Migrations
                 {
                     UserGroupID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserGroupName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false)
+                    UserGroupName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,13 +74,13 @@ namespace Meditrack.Migrations
                 {
                     SupplierID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationID = table.Column<int>(type: "int", nullable: false),
-                    SupplierName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    ContactPerson = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    ContactNumber = table.Column<string>(type: "char(11)", maxLength: 11, nullable: false),
-                    Email = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    OfficeAddress = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime", nullable: false),
+                    LocationID = table.Column<int>(type: "int", nullable: true),
+                    SupplierName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ContactPerson = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ContactNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    OfficeAddress = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -106,7 +106,7 @@ namespace Meditrack.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastLoginTime_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
@@ -129,16 +129,16 @@ namespace Meditrack.Migrations
                     ProductID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryID = table.Column<int>(type: "int", nullable: false),
-                    ProductName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    SKU = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    Brand = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    ProductDescription = table.Column<string>(type: "varchar(max)", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    SKU = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
-                    UnitOfMeasurement = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    UnitOfMeasurement = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     QuantityInStock = table.Column<int>(type: "int", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    LastUnitPriceUpdated = table.Column<DateTime>(type: "datetime", nullable: false),
-                    LastQuantityInStockUpdated = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastUnitPriceUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastQuantityInStockUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -162,7 +162,7 @@ namespace Meditrack.Migrations
                     LocationID = table.Column<int>(type: "int", nullable: false),
                     StatusID = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "MONEY", nullable: false),
-                    PRDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    PRDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -223,9 +223,9 @@ namespace Meditrack.Migrations
                     SupplierID = table.Column<int>(type: "int", nullable: false),
                     LocationID = table.Column<int>(type: "int", nullable: false),
                     PRHdrID = table.Column<int>(type: "int", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "DECIMAL(18,2)", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
                     PODate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Remarks = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    Remarks = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -265,7 +265,7 @@ namespace Meditrack.Migrations
                     PRHdrID = table.Column<int>(type: "int", nullable: false),
                     ProductID = table.Column<int>(type: "int", nullable: true),
                     UnitPrice = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
-                    UnitOfMeasurement = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false),
+                    UnitOfMeasurement = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     QuantityInOrder = table.Column<int>(type: "int", nullable: false),
                     Subtotal = table.Column<decimal>(type: "MONEY", nullable: false)
                 },
@@ -294,7 +294,7 @@ namespace Meditrack.Migrations
                     POHdrID = table.Column<int>(type: "int", nullable: false),
                     ProductID = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
-                    UnitOfMeasurement = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false),
+                    UnitOfMeasurement = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     QuantityInOrder = table.Column<int>(type: "int", nullable: false),
                     IsVATExclusive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -328,7 +328,7 @@ namespace Meditrack.Migrations
                     PRHdrID = table.Column<int>(type: "int", nullable: true),
                     ProductID = table.Column<int>(type: "int", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: true),
-                    TransDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    TransDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

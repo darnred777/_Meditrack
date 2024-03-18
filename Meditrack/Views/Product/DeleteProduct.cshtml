@@ -1,0 +1,65 @@
+﻿@model Product
+
+<div class="container mt-5">
+    <h3 class="mb-3">Delete Product</h3>
+    <form method="post">
+        <div class="mb-3">
+            <label asp-for="ProductID" class="form-label">Product ID</label>
+            <input asp-for="ProductID" disabled class="form-control" readonly>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CategoryID" class="form-label">Category ID</label>
+            <input asp-for="CategoryID" disabled class="form-control" readonly>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ProductName" class="form-label">Product Name</label>
+            <input asp-for="ProductName" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="SKU" class="form-label">SKU</label>
+            <input asp-for="SKU" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Brand" class="form-label">Brand</label>
+            <input asp-for="Brand" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="ProductDescription" class="form-label">Product Description</label>
+            <input asp-for="ProductDescription" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="UnitPrice" class="form-label">Unit Price</label>
+            <input asp-for="UnitPrice" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="UnitOfMeasurement" class="form-label">Unit Of Measurement</label>
+            <input asp-for="UnitOfMeasurement" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="QuantityInStock" class="form-label">Quantity In Stock</label>
+            <input asp-for="QuantityInStock" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="ExpirationDate" class="form-label">Expiration Date</label>
+            <input asp-for="ExpirationDate" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="LastQuantityInStockUpdated" class="form-label">Last Quantity In Stock Updated</label>
+            <input asp-for="LastQuantityInStockUpdated" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="isActive" class="form-label">IsActive</label>
+            <input asp-for="isActive" disabled class="form-control">
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-danger mt-4 form-control">Delete</button>
+            </div>
+            <div class="col-6">
+                <a asp-area="" asp-controller="Supplier" asp-action="ManageVendor" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--End of Content-->

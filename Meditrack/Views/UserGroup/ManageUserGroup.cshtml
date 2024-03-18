@@ -35,7 +35,7 @@
                             <a class="sidebar-link" asp-area=" " asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageProduct">Manage Product</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="Product" asp-action="ManageProduct">Manage Product</a>
                         </li>
                     </ul>
                 </li>
@@ -107,7 +107,7 @@
                                         </li>
                                         <div class="vr"></div>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">User Groups</a>
+                                            <a class="nav-link">User Groups</a>
                                         </li>
                                         <div class="vr"></div>
                                         <li class="nav-item">
@@ -140,7 +140,7 @@
                                                     <a asp-controller="UserGroup" asp-action="EditUserGroup" asp-route-UserGroupID="@obj.UserGroupID" class="btn btn-primary mx-2">
                                                         <i class="bi bi-pencil-square"></i> Edit
                                                     </a>
-                                                    <a asp-controller="Home" asp-action="DeleteUserGroup" class="btn btn-danger mx-2">
+                                                    <a asp-controller="UserGroup" asp-action="DeleteUserGroup" asp-route-UserGroupID="@obj.UserGroupID" class="btn btn-danger mx-2">
                                                         <i class="bi bi-trash"></i> Delete
                                                     </a>
                                                 </div>

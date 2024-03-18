@@ -29,13 +29,13 @@
                     </a>
                     <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageUserAccount">Manage User Account</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="User" asp-action="ManageUserAccount">Manage User Account</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageVendor">Manage Supplier</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageProduct">Manage Product</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="Product" asp-action="ManageProduct">Manage Product</a>
                         </li>
                     </ul>
                 </li>
@@ -107,7 +107,7 @@
                                         </li>
                                         <div class="vr"></div>
                                         <li class="nav-item">
-                                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageProduct">Manage Product</a>                                        
+                                            <a class="sidebar-link" asp-area=" " asp-controller="Product" asp-action="ManageProduct">Manage Product</a>                                        
                                         </li>
                                     </ul>
                                 </div>
@@ -116,11 +116,11 @@
                     </header>
                     <div class="row">
                         <div class="col-6">
-                            <a asp-area="" asp-controller="Home" asp-action="AddNewProduct" class="btn btn-primary mt-2 form-control">Add New Product</a>
+                            <a asp-area="" asp-controller="Product" asp-action="AddNewProduct" class="btn btn-primary border mt-2 form-control">Add New Product</a>
                         </div>
                         <div class="col-6">
-                            <a asp-area="" asp-controller="Home" asp-action="AddNewProductCategory" class="btn btn-primary border mt-2 form-control">Add New Product Category</a>
-                        </div>
+                            <a asp-area="" asp-controller="ProductCategory" asp-action="AddNewProductCategory" class="btn btn-primary mt-2 form-control">Add New Product Category</a>
+                        </div>                      
                     </div>
 
                     <div class="mt-5">
@@ -146,10 +146,10 @@
                                             <td>@obj.TotalQuantityInStock</td>
                                             <td>
                                                 <div class="w-75 btn-group" role="group">
-                                                    <a asp-controller="Home" asp-action="EditProductCategory" asp-route-CategoryID="@obj.CategoryID" class="btn btn-primary mx-2">
+                                                    <a asp-controller="ProductCategory" asp-action="EditProductCategory" asp-route-CategoryID="@obj.CategoryID" class="btn btn-primary mx-2">
                                                         <i class="bi bi-pencil-square"></i> Edit
                                                     </a>
-                                                    <a asp-controller="Home" asp-action="DeleteProductCategory" class="btn btn-danger mx-2">
+                                                    <a asp-controller="ProductCategory" asp-action="DeleteProductCategory" asp-route-CategoryID="@obj.CategoryID" class="btn btn-danger mx-2">
                                                         <i class="bi bi-trash"></i> Delete
                                                     </a>
                                                 </div>

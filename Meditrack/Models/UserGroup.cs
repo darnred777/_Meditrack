@@ -88,7 +88,7 @@ namespace Meditrack.Models
 
         public DateTime? BirthDate { get; set; }
 
-        public byte[] ProfilePicture { get; set; }
+        public byte[]? ProfilePicture { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]

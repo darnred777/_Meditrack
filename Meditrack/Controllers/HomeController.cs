@@ -187,70 +187,70 @@ namespace Meditrack.Controllers
         //    return RedirectToAction("ManageVendor");
         //}
 
-        public IActionResult ManageProductCategory()
-        {
-            List<ProductCategory> objProductCategoryList = _db.ProductCategory.ToList();
-            return View(objProductCategoryList);
-        }
-        public IActionResult ManageProduct()
-        {
-            List<Product> objProductList = _db.Product.ToList();
-            return View(objProductList);
-        }
+        //public IActionResult ManageProductCategory()
+        //{
+        //    List<ProductCategory> objProductCategoryList = _db.ProductCategory.ToList();
+        //    return View(objProductCategoryList);
+        //}
+        //public IActionResult ManageProduct()
+        //{
+        //    List<Product> objProductList = _db.Product.ToList();
+        //    return View(objProductList);
+        //}
 
-        public IActionResult AddNewProduct()
-        {
-            return View();
-        }
+        //public IActionResult AddNewProduct()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public IActionResult AddNewProduct(Product obj)
-        {
-            _db.Product.Add(obj);
-            _db.SaveChanges();
-            return RedirectToAction("ManageProduct");
-        }
+        //[HttpPost]
+        //public IActionResult AddNewProduct(Product obj)
+        //{
+        //    _db.Product.Add(obj);
+        //    _db.SaveChanges();
+        //    return RedirectToAction("ManageProduct");
+        //}
 
-        [HttpPost]
-        public IActionResult AddNewProductCategory(ProductCategory obj)
-        {
-            _db.ProductCategory.Add(obj);
-            _db.SaveChanges();
-            return RedirectToAction("ManageProductCategory");
-        }
+        //[HttpPost]
+        //public IActionResult AddNewProductCategory(ProductCategory obj)
+        //{
+        //    _db.ProductCategory.Add(obj);
+        //    _db.SaveChanges();
+        //    return RedirectToAction("ManageProductCategory");
+        //}
 
-        public IActionResult EditProductCategory(int? CategoryID)
-        {
-            if (CategoryID == null || CategoryID == 0)
-            {
-                return NotFound();
-            }
-            ProductCategory? productCategoryFromDb = _db.ProductCategory.Find(CategoryID);
+        //public IActionResult EditProductCategory(int? CategoryID)
+        //{
+        //    if (CategoryID == null || CategoryID == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ProductCategory? productCategoryFromDb = _db.ProductCategory.Find(CategoryID);
 
-            if (productCategoryFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(productCategoryFromDb);
-        }
+        //    if (productCategoryFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(productCategoryFromDb);
+        //}
 
-        [HttpPost]
-        public IActionResult EditProductCategory(ProductCategory obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _db.ProductCategory.Update(obj);
-                _db.SaveChanges();
+        //[HttpPost]
+        //public IActionResult EditProductCategory(ProductCategory obj)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _db.ProductCategory.Update(obj);
+        //        _db.SaveChanges();
 
-                return RedirectToAction("ManageProductCategory");
-            }
-            return View();
-        }
+        //        return RedirectToAction("ManageProductCategory");
+        //    }
+        //    return View();
+        //}
 
-        public IActionResult AddNewProductCategory()
-        {
-            return View();
-        }
+        //public IActionResult AddNewProductCategory()
+        //{
+        //    return View();
+        //}
 
         public IActionResult Transaction()
         {

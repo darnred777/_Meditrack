@@ -35,7 +35,7 @@
                             <a class="sidebar-link" asp-area=" " asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area=" " asp-controller="Home" asp-action="ManageProduct">Manage Product</a>
+                            <a class="sidebar-link" asp-area=" " asp-controller="ProductCategory" asp-action="ManageProductCategory">Manage Product</a>
                         </li>
                     </ul>
                 </li>
@@ -129,7 +129,7 @@
                                                     <a asp-controller="Supplier" asp-action="EditVendor" asp-route-SupplierID="@obj.SupplierID" class="btn btn-primary mx-2">
                                                         <i class="bi bi-pencil-square"></i> Edit
                                                     </a>
-                                                    <a asp-controller="Supplier" asp-action="DeleteSupplier" class="btn btn-danger mx-2">
+                                                    <a asp-controller="Supplier" asp-action="DeleteVendor" asp-route-SupplierID="@obj.SupplierID" class="btn btn-danger mx-2">
                                                         <i class="bi bi-trash"></i> Delete
                                                     </a>
                                                 </div>
