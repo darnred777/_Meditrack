@@ -16,4 +16,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Approver\Controllers\" />
+    <Folder Include="Areas\InventoryOfficer\Controllers\" />
+    <Folder Include="Areas\Viewer\Controllers\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

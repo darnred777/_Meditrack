@@ -9,7 +9,7 @@ namespace Meditrack.Data
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<UserGroup> UserGroup { get; set; }
@@ -40,28 +40,26 @@ namespace Meditrack.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
-            // Configure UnitPrice for the Product entity
+
             modelBuilder.Entity<Product>()
                 .Property(p => p.UnitPrice)
                 .HasColumnType("DECIMAL(10,2)");
 
-            // Configure UnitPrice and Subtotal for PurchaseRequisitionDetail entity
             modelBuilder.Entity<PurchaseRequisitionDetail>()
                 .Property(p => p.UnitPrice)
                 .HasColumnType("DECIMAL(10,2)");
 
             modelBuilder.Entity<PurchaseRequisitionDetail>()
                 .Property(p => p.Subtotal)
-                .HasColumnType("MONEY");    
- 
+                .HasColumnType("MONEY");
+
             modelBuilder.Entity<PurchaseOrderDetail>()
                 .Property(p => p.UnitPrice)
                 .HasColumnType("DECIMAL(10,2)");
 
             modelBuilder.Entity<PurchaseOrderHeader>()
                 .Property(p => p.TotalAmount)
-                .HasColumnType("DECIMAL(10, 2)")  // Adjust precision and scale as needed
+                .HasColumnType("DECIMAL(10, 2)")
                 .IsRequired();
 
 
