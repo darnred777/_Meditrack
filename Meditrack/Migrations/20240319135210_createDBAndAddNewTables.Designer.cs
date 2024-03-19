@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meditrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240318035157_CreatingDatabase")]
-    partial class CreatingDatabase
+    [Migration("20240319135210_createDBAndAddNewTables")]
+    partial class createDBAndAddNewTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -447,8 +447,8 @@ namespace Meditrack.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<byte[]>("ProfilePicture")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");

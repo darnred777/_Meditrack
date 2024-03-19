@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Meditrack.Migrations
 {
     /// <inheritdoc />
-    public partial class CreatingDatabase : Migration
+    public partial class createDBAndAddNewTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -106,7 +106,7 @@ namespace Meditrack.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastLoginTime_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
@@ -225,7 +225,7 @@ namespace Meditrack.Migrations
                     PRHdrID = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
                     PODate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Remarks = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    Remarks = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {

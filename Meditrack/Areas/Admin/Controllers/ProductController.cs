@@ -1,5 +1,7 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Repository;
+using Meditrack.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,15 +10,15 @@ namespace Meditrack.Areas.Admin.Controllers
     [Area("Admin")]
     public class ProductController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public ProductController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public ProductController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult ManageProduct()
         {
-            List<Product> objProductList = _db.Product.ToList();
+            List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
             return View(objProductList);
         }
 
@@ -28,9 +30,37 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult AddNewProduct(Product obj)
         {
-            _db.Product.Add(obj);
-            _db.SaveChanges();
+            _unitOfWork.Product.Add(obj);
+            _unitOfWork.Save();
             return RedirectToAction("ManageProduct");
+        }
+
+        public IActionResult EditProduct(int? ProductID)
+        {
+            if (ProductID == null || ProductID == 0)
+            {
+                return NotFound();
+            }
+            Product? productFromDb = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
+
+            if (productFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(productFromDb);
+        }
+
+        [HttpPost]
+        public IActionResult EditProduct(Product obj)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Product.Update(obj);
+                _unitOfWork.Save();
+
+                return RedirectToAction("ManageVendor");
+            }
+            return View();
         }
 
         public IActionResult DeleteProduct(int? ProductID)
@@ -39,7 +69,7 @@ namespace Meditrack.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Product? productFromDb = _db.Product.Find(ProductID);
+            Product? productFromDb = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
 
             if (productFromDb == null)
             {
@@ -51,13 +81,13 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpPost, ActionName("DeleteProduct")]
         public IActionResult DeletePOSTProduct(int? ProductID)
         {
-            Product? obj = _db.Product.Find(ProductID);
+            Product? obj = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.Product.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.Product.Remove(obj);
+            _unitOfWork.Save();
 
             return RedirectToAction("ManageProduct");
         }

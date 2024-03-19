@@ -9,7 +9,7 @@ namespace Meditrack.Repository
     {
         private readonly ApplicationDbContext _db;
         internal DbSet<T> dbSet;
-        public Repository(ApplicationDbContext db) 
+        public Repository(ApplicationDbContext db)
         {
             _db = db;
             this.dbSet = _db.Set<T>();
@@ -24,7 +24,7 @@ namespace Meditrack.Repository
         public T Get(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet;
-            query = query.Where(filter); 
+            query = query.Where(filter);
             return query.FirstOrDefault();
         }
 

@@ -1,5 +1,6 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,15 +9,15 @@ namespace Meditrack.Areas.Admin.Controllers
     [Area("Admin")]
     public class SupplierController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public SupplierController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public SupplierController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult ManageVendor()
         {
-            List<Supplier> objSupplierList = _db.Supplier.ToList();
+            List<Supplier> objSupplierList = _unitOfWork.Supplier.GetAll().ToList();
             return View(objSupplierList);
         }
 
@@ -26,7 +27,7 @@ namespace Meditrack.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Supplier? supplierFromDb = _db.Supplier.Find(SupplierID);
+            Supplier? supplierFromDb = _unitOfWork.Supplier.Get(u => u.SupplierID == SupplierID);
 
             if (supplierFromDb == null)
             {
@@ -40,8 +41,8 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Supplier.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Supplier.Update(obj);
+                _unitOfWork.Save();
 
                 return RedirectToAction("ManageVendor");
             }
@@ -54,7 +55,7 @@ namespace Meditrack.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Supplier? supplierFromDb = _db.Supplier.Find(SupplierID);
+            Supplier? supplierFromDb = _unitOfWork.Supplier.Get(u => u.SupplierID == SupplierID);
 
             if (supplierFromDb == null)
             {
@@ -66,13 +67,13 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpPost, ActionName("DeleteVendor")]
         public IActionResult DeletePOSTVendor(int? SupplierID)
         {
-            Supplier? obj = _db.Supplier.Find(SupplierID);
+            Supplier? obj = _unitOfWork.Supplier.Get(u => u.SupplierID == SupplierID);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.Supplier.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.Supplier.Remove(obj);
+            _unitOfWork.Save();
 
             return RedirectToAction("ManageVendor");
         }
@@ -85,8 +86,8 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult AddVendor(Supplier obj)
         {
-            _db.Supplier.Add(obj);
-            _db.SaveChanges();
+            _unitOfWork.Supplier.Add(obj);
+            _unitOfWork.Save();
 
             return RedirectToAction("ManageVendor");
         }

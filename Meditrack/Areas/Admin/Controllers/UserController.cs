@@ -10,14 +10,14 @@ namespace Meditrack.Areas.Admin.Controllers
     public class UserController : Controller
     {
 
-        private readonly IUnitOfWork _unitOfWOrk;
-        public UserController(IUnitOfWork unitOfWOrk)
+        private readonly IUnitOfWork _unitOfWork;
+        public UserController(IUnitOfWork unitOfWork)
         {
-            _unitOfWOrk = unitOfWOrk;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult ManageUserAccount()
         {
-            List<User> objUserList = _unitOfWOrk.User.GetAll().ToList();
+            List<User> objUserList = _unitOfWork.User.GetAll().ToList();
             return View(objUserList);
         }
 
@@ -43,8 +43,8 @@ namespace Meditrack.Areas.Admin.Controllers
             //    }
 
 
-            _unitOfWOrk.User.Add(obj);
-            _unitOfWOrk.Save();
+            _unitOfWork.User.Add(obj);
+            _unitOfWork.Save();
 
             return RedirectToAction("ManageUserAccount");
             //}
@@ -59,7 +59,7 @@ namespace Meditrack.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            User? userFromDb = _unitOfWOrk.User.Get(u => u.UserID == UserID);
+            User? userFromDb = _unitOfWork.User.Get(u => u.UserID == UserID);
             //User? userFromDb2 = _db.User.Where(u => u.UserID == UserID).FirstOrDefault();
 
             if (userFromDb == null)
@@ -74,8 +74,8 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unitOfWOrk.User.Update(obj);
-                _unitOfWOrk.Save();
+                _unitOfWork.User.Update(obj);
+                _unitOfWork.Save();
 
                 return RedirectToAction("ManageUserAccount");
             }
@@ -88,7 +88,7 @@ namespace Meditrack.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            User? userFromDb = _unitOfWOrk.User.Get(u => u.UserID == UserID);
+            User? userFromDb = _unitOfWork.User.Get(u => u.UserID == UserID);
 
             if (userFromDb == null)
             {
@@ -100,13 +100,13 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpPost, ActionName("DeleteUserAccount")]
         public IActionResult DeletePOSTUserAccount(int? UserID)
         {
-            User? obj = _unitOfWOrk.User.Get(u => u.UserID == UserID);
+            User? obj = _unitOfWork.User.Get(u => u.UserID == UserID);
             if (obj == null)
             {
                 return NotFound();
             }
-            _unitOfWOrk.User.Remove(obj);
-            _unitOfWOrk.Save();
+            _unitOfWork.User.Remove(obj);
+            _unitOfWork.Save();
 
             return RedirectToAction("ManageUserAccount");
         }

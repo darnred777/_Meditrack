@@ -1,5 +1,7 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Repository;
+using Meditrack.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,15 +10,15 @@ namespace Meditrack.Areas.Admin.Controllers
     [Area("Admin")]
     public class ProductCategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public ProductCategoryController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public ProductCategoryController(IUnitOfWork unitOfWOrk)
         {
-            _db = db;
+            _unitOfWork = unitOfWOrk;
         }
 
         public IActionResult ManageProductCategory()
         {
-            List<ProductCategory> objProductCategoryList = _db.ProductCategory.ToList();
+            List<ProductCategory> objProductCategoryList = _unitOfWork.ProductCategory.GetAll().ToList();
             return View(objProductCategoryList);
         }
 
@@ -28,8 +30,8 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult AddNewProductCategory(ProductCategory obj)
         {
-            _db.ProductCategory.Add(obj);
-            _db.SaveChanges();
+            _unitOfWork.ProductCategory.Add(obj);
+            _unitOfWork.Save();
             return RedirectToAction("ManageProductCategory");
         }
 
@@ -39,7 +41,7 @@ namespace Meditrack.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ProductCategory? productCategoryFromDb = _db.ProductCategory.Find(CategoryID);
+            ProductCategory? productCategoryFromDb = _unitOfWork.ProductCategory.Get(u => u.CategoryID == CategoryID);
 
             if (productCategoryFromDb == null)
             {
@@ -53,8 +55,8 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.ProductCategory.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.ProductCategory.Update(obj);
+                _unitOfWork.Save();
 
                 return RedirectToAction("ManageProductCategory");
             }
@@ -67,7 +69,7 @@ namespace Meditrack.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ProductCategory? productCategoryFromDb = _db.ProductCategory.Find(CategoryID);
+            ProductCategory? productCategoryFromDb = _unitOfWork.ProductCategory.Get(u => u.CategoryID == CategoryID);
 
             if (productCategoryFromDb == null)
             {
@@ -79,13 +81,13 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpPost, ActionName("DeleteProductCategory")]
         public IActionResult DeletePOSTProductCategory(int? CategoryID)
         {
-            ProductCategory? obj = _db.ProductCategory.Find(CategoryID);
+            ProductCategory? obj = _unitOfWork.ProductCategory.Get(u => u.CategoryID == CategoryID);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.ProductCategory.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.ProductCategory.Remove(obj);
+            _unitOfWork.Save();
 
             return RedirectToAction("ManageProductCategory");
         }

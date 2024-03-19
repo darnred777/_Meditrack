@@ -5,17 +5,17 @@ using System.Linq.Expressions;
 
 namespace Meditrack.Repository
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
         private ApplicationDbContext _db;
-        public UserRepository(ApplicationDbContext db) : base(db)
+        public ProductRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
-        public void Update(User obj)
+        public void Update(Product obj)
         {
-            _db.User.Update(obj);
+            _db.Product.Update(obj);
         }
     }
 }

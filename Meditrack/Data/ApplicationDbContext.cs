@@ -40,6 +40,12 @@ namespace Meditrack.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<UserGroup>().HasData(
+            //    new UserGroup { UserGroupID = 1, UserGroupName = "Admin" },
+            //    new UserGroup { UserGroupID = 1, UserGroupName = "Inventory Officer" },
+            //    new UserGroup { UserGroupID = 1, UserGroupName = "Approver" },
+            //    new UserGroup { UserGroupID = 1, UserGroupName = "Viewer" }
+            //    );
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.UnitPrice)
