@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Meditrack.Models
 {
@@ -12,6 +13,7 @@ namespace Meditrack.Models
         public int CategoryID { get; set; }
 
         [ForeignKey("CategoryID")]
+        [ValidateNever]
         public virtual ProductCategory ProductCategory { get; set; }
 
         [Required]

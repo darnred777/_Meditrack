@@ -1,4 +1,4 @@
-﻿@model ProductVM
+﻿@model Location
 
 <div class="wrapper">
     <!-- Sidebar -->
@@ -36,6 +36,9 @@
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" asp-area="Admin" asp-controller="Product" asp-action="ManageProduct">Manage Product</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="Admin" asp-controller="Location" asp-action="ManageLocation">Manage Location</a>
                         </li>
                     </ul>
                 </li>
@@ -92,60 +95,34 @@
                 <div class="mb-3">
                     
                     <div class="container mt-5">
-                        <h2>Add New Product</h2>
+                        <h3>Add New Product Category</h3>
                         <form method="post">
                             <div class="mb-3">
-                                <label asp-for="Product.CategoryID">Product Category</label>
-                                <select asp-for="@Model.Product.CategoryID" asp-items="@Model.ProductCategoryList" class="form-select">
-                                    <option disabled selected>--Select Product Category--</option>
-                                </select>
+                                <label asp-for="LocationID" class="form-label">Location:</label>
+                                <input asp-for="LocationID" class="form-control" readonly>
                             </div>
                             <div class="mb-3">
-                                <label asp-for="Product.ProductName" class="form-label">Product Name:</label>
-                                <input asp-for="Product.ProductName" class="form-control" required>
+                                <label asp-for="LocationType" class="form-label">Location Type:</label>
+                                <input asp-for="LocationType" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label asp-for="Product.SKU" class="form-label">SKU:</label>
-                                <input asp-for="Product.SKU" class="form-control" required>
+                                <label asp-for="LocationAddress" class="form-label">Location Address:</label>
+                                <input asp-for="LocationAddress" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label asp-for="Product.Brand" class="form-label">Brand:</label>
-                                <input asp-for="Product.Brand" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.ProductDescription" class="form-label">Product Description:</label>
-                                <textarea asp-for="Product.ProductDescription" class="form-control" rows="3" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.UnitPrice" class="form-label">Unit Price:</label>
-                                <input asp-for="Product.UnitPrice" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.UnitOfMeasurement" class="form-label">Unit of Measurement:</label>
-                                <input asp-for="Product.UnitOfMeasurement" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.QuantityInStock" class="form-label">Quantity in Stock:</label>
-                                <input asp-for="Product.QuantityInStock" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.ExpirationDate" class="form-label">Expiration Date:</label>
-                                <input asp-for="Product.ExpirationDate" class="form-control" required>
-                            </div>
-                            <div class="form-group col-md-6 mt-3 mb-3">
-                                <label asp-for="Product.isActive" class="form-label">Is Active:</label>
-                                <input asp-for="Product.isActive" class=" form-control-file">
+                                <label asp-for="DateCreated" class="form-label">Date Created:</label>
+                                <input asp-for="DateCreated" disabled class="form-control">
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
                                 </div>
                                 <div class="col-6">
-                                    <a asp-area="Admin" asp-controller="Product" asp-action="ManageProduct" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+                                    <a asp-area="Admin" asp-controller="ProductCategory" asp-action="ManageProductCategory" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    </div>  
 
                 </div>
             </div>

@@ -1,8 +1,10 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Models.ViewModels;
 using Meditrack.Repository;
 using Meditrack.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
 namespace Meditrack.Areas.Admin.Controllers
@@ -24,15 +26,42 @@ namespace Meditrack.Areas.Admin.Controllers
 
         public IActionResult AddNewProduct()
         {
-            return View();
+            ProductVM productVM = new()
+            {
+                ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.CategoryName,
+                    Value = u.CategoryID.ToString()
+                }),
+
+                Product = new Product()
+            };
+
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult AddNewProduct(Product obj)
+        public IActionResult AddNewProduct(ProductVM productVM)
         {
-            _unitOfWork.Product.Add(obj);
-            _unitOfWork.Save();
-            return RedirectToAction("ManageProduct");
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Product.Add(productVM.Product);
+                _unitOfWork.Save();
+
+                return RedirectToAction("ManageProduct");
+
+            }
+            else
+            {
+                //UserVM userVM = new()
+                //{
+                productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.CategoryName,
+                    Value = u.CategoryID.ToString()
+                });
+                return View(productVM);
+            }
         }
 
         public IActionResult EditProduct(int? ProductID)
@@ -58,7 +87,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 _unitOfWork.Product.Update(obj);
                 _unitOfWork.Save();
 
-                return RedirectToAction("ManageVendor");
+                return RedirectToAction("ManageProduct");
             }
             return View();
         }

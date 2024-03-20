@@ -1,0 +1,31 @@
+﻿@model Location
+
+<div class="container mt-5">
+    <h3>Delete Location</h3>
+    <form method="post">
+        <div class="mb-3">
+            <label asp-for="LocationID" class="form-label">Location:</label>
+            <input asp-for="LocationID" disabled class="form-control" readonly>
+        </div>
+        <div class="mb-3">
+            <label asp-for="LocationType" class="form-label">Location Type:</label>
+            <input asp-for="LocationType" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="LocationAddress" class="form-label">Location Address:</label>
+            <input asp-for="LocationAddress" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="DateCreated" class="form-label">Date Created:</label>
+            <input asp-for="DateCreated" disabled class="form-control" required>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-danger mt-4 form-control">Delete</button>
+            </div>
+            <div class="col-6">
+                <a asp-area="Admin" asp-controller="Location" asp-action="ManageLocation" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+            </div>
+        </div>
+    </form>
+</div>  

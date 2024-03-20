@@ -1,4 +1,4 @@
-﻿@model Supplier
+﻿@model SupplierVM
 
 <div class="wrapper">
     <!-- Sidebar -->
@@ -99,28 +99,30 @@
                         <h3 class="mb-3">Add New Supplier</h3>
                         <form method="post">
                             <div class="mb-3">
-                                <label for="locationID" class="form-label">Location ID:</label>
-                                <input type="text" class="form-control" id="locationID" name="LocationID" placeholder="Enter LocationID" required>
+                                <label asp-for="Supplier.LocationID"></label>
+                                <select asp-for="@Model.Supplier.LocationID" asp-items="@Model.LocationList" class="form-select">
+                                    <option disabled selected>--Select Location--</option>
+                                </select>
                             </div>
                             <div class="mb-3">
-                                <label for="supplierName" class="form-label">Supplier Name:</label>
-                                <input type="text" class="form-control" id="supplierName" name="SupplierName" placeholder="Enter Supplier Name" required>
+                                <label asp-for="Supplier.SupplierName" class="form-label">Supplier Name:</label>
+                                <input asp-for="Supplier.SupplierName" class="form-control" placeholder="Enter Supplier Name" required>
                             </div>
                             <div class="mb-3">
-                                <label for="contactPerson" class="form-label">Contact Person:</label>
-                                <input type="text" class="form-control" id="contactPerson" name="ContactPerson" placeholder="Enter Contact Person" required>
+                                <label asp-for="Supplier.ContactPerson" class="form-label">Contact Person:</label>
+                                <input asp-for="Supplier.ContactPerson" class="form-control" placeholder="Enter Contact Person" required>
                             </div>
                             <div class="mb-3">
-                                <label for="contactNumber" class="form-label">Contact Number:</label>
-                                <input type="tel" class="form-control" id="contactNumber" name="ContactNumber" placeholder="Enter Contact Number" required>
+                                <label asp-for="Supplier.ContactNumber" class="form-label">Contact Number:</label>
+                                <input asp-for="Supplier.ContactNumber" class="form-control" placeholder="Enter Contact Number" required>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email:</label>
-                                <input type="email" class="form-control" id="email" name="Email" placeholder="Enter Email"  required>
+                                <label asp-for="Supplier.Email" class="form-label">Email:</label>
+                                <input asp-for="Supplier.Email" class="form-control" placeholder="Enter Email" required>
                             </div>
                             <div class="mb-3">
-                                <label for="officeAddress" class="form-label">Office Address:</label>
-                                <textarea class="form-control" id="officeAddress" name="OfficeAddress" rows="3" placeholder="Enter Office Address"  required></textarea>
+                                <label asp-for="Supplier.OfficeAddress" class="form-label">Office Address:</label>
+                                <textarea asp-for="Supplier.OfficeAddress" class="form-control" rows="3" placeholder="Enter Office Address" required></textarea>
                             </div>
                             <div class="row">
                                 <div class="col-6">

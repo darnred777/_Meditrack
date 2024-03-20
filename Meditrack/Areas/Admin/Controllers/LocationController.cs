@@ -14,7 +14,7 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        public IActionResult ManageUserAccount()
+        public IActionResult ManageLocation()
         {
             //List<User> objUserList = _unitOfWork.User.GetAll().ToList();
             List<Location> objLocationList = _unitOfWork.Location.GetAll().ToList();

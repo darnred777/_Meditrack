@@ -1,7 +1,9 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Models.ViewModels;
 using Meditrack.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
 namespace Meditrack.Areas.Admin.Controllers
@@ -18,6 +20,7 @@ namespace Meditrack.Areas.Admin.Controllers
         public IActionResult ManageVendor()
         {
             List<Supplier> objSupplierList = _unitOfWork.Supplier.GetAll().ToList();
+
             return View(objSupplierList);
         }
 
@@ -80,16 +83,41 @@ namespace Meditrack.Areas.Admin.Controllers
 
         public IActionResult AddVendor()
         {
-            return View();
+            SupplierVM supplierVM = new()
+            {
+                LocationList = _unitOfWork.Location.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.LocationAddress,
+                    Value = u.LocationID.ToString()
+                }),
+
+                Supplier = new Supplier()
+            };
+
+            return View(supplierVM);
         }
 
         [HttpPost]
-        public IActionResult AddVendor(Supplier obj)
+        public IActionResult AddVendor(SupplierVM supplierVM)
         {
-            _unitOfWork.Supplier.Add(obj);
-            _unitOfWork.Save();
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Supplier.Add(supplierVM.Supplier);
+                _unitOfWork.Save();
 
-            return RedirectToAction("ManageVendor");
+                return RedirectToAction("ManageVendor");
+
+            }
+            else
+            {
+
+                supplierVM.LocationList = _unitOfWork.Location.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.LocationAddress,
+                    Value = u.LocationID.ToString()
+                });
+                return View(supplierVM);
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

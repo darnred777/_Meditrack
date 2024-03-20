@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Meditrack.Models
 {
@@ -11,6 +12,7 @@ namespace Meditrack.Models
         public int? LocationID { get; set; }
 
         [ForeignKey("LocationID")]
+        [ValidateNever]
         public virtual Location Location { get; set; }
 
         [Required]
