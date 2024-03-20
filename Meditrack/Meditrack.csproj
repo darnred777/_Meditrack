@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Approver\Controllers\" />
-    <Folder Include="Areas\InventoryOfficer\Controllers\" />
     <Folder Include="Areas\Viewer\Controllers\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
