@@ -7,6 +7,7 @@
         ISupplierRepository Supplier { get; }
         IProductRepository Product { get; }
         IProductCategoryRepository ProductCategory { get; }
+        ILocationRepository Location { get; }
 
         void Save();
     }

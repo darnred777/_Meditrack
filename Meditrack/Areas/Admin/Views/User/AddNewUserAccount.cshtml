@@ -1,4 +1,4 @@
-﻿@model User
+﻿@model UserVM
 
 <div class="wrapper">
     <!-- Sidebar -->
@@ -146,46 +146,50 @@
                                     <!-- User Info to be Updated -->
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <label for="LocationID">LocationID:</label>
-                                            <input type="text" class="form-control" id="LocationID" name="LocationID"  placeholder="Enter LocationID">
+                                            <label asp-for="User.LocationID"></label>
+                                            <select asp-for="@Model.User.LocationID" asp-items="@Model.LocationList" class="form-select">
+                                                <option disabled selected>--Select Location--</option>
+                                            </select>
+                                            
+                                            <!--<input asp-for="LocationID" class="form-control" id="LocationID" name="LocationID"  placeholder="Enter LocationID">-->
                                         </div>          
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <label for="username">Username:</label>
-                                            <input type="text" class="form-control" id="username" name="Username" placeholder="Enter Username">
+                                            <label asp-for="User.Username">Username:</label>
+                                            <input asp-for="User.Username" class="form-control" placeholder="Enter Username" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="Password">Password:</label>
-                                            <input type="password" class="form-control" id="Password" name="Password" placeholder="Enter Password">
+                                            <label asp-for="User.Password">Password:</label>
+                                            <input asp-for="User.Password" class="form-control" placeholder="Enter Password" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">Email:</label>
-                                            <input type="email" class="form-control" id="email" name="Email" placeholder="Enter Email">
+                                            <label asp-for="User.Email">Email:</label>
+                                            <input asp-for="User.Email" class="form-control" placeholder="Enter Email" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <label for="firstname">Firstname:</label>
-                                            <input type="text" class="form-control" id="firstname" name="FirstName"  placeholder="Enter Firstname">
+                                            <label asp-for="User.FirstName">Firstname:</label>
+                                            <input asp-for="User.FirstName" class="form-control" placeholder="Enter Firstname" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="lastname">Lastname:</label>
-                                            <input type="text" class="form-control" id="lastname" name="LastName" placeholder="Enter Lastname">
+                                            <label asp-for="User.LastName">Lastname:</label>
+                                            <input asp-for="User.LastName" class="form-control" placeholder="Enter Lastname" required>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <label for="birthDate">Birth Date:</label>
-                                            <input type="date" class="form-control" name="BirthDate" id="birthDate">
+                                            <label asp-for="User.BirthDate">Birth Date:</label>
+                                            <input asp-for="User.BirthDate" class="form-control">
                                         </div>
                                         <div class="form-group col-md-6 mt-3 mb-3">
-                                            <label for="profilePicture">Upload Profile Picture:</label>
-                                            <input type="file" class="form-control-file" id="profilePicture" name="ProfilePicture">
+                                            <label asp-for="User.ProfilePicture">Upload Profile Picture:</label>
+                                            <input asp-for="User.ProfilePicture" class="form-control-file">
                                         </div>
                                         <div class="form-group col-md-6 mt-3 mb-3">
-                                            <label for="isActive">Is Active:</label>
-                                            <input type="checkbox" class="form-control-file" id="isActive" name="IsActive">
+                                            <label asp-for="User.IsActive">Is Active:</label>
+                                            <input asp-for="User.IsActive" class=" form-control-file" required>
                                         </div>
                                     </div>
                                     <div class="row">

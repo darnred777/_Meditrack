@@ -11,6 +11,7 @@ namespace Meditrack.Repository
         public ISupplierRepository Supplier { get; private set; }
         public IProductRepository Product { get; private set; }
         public IProductCategoryRepository ProductCategory { get; private set; }
+        public ILocationRepository Location { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -20,6 +21,7 @@ namespace Meditrack.Repository
             Supplier = new SupplierRepository(_db);
             Product = new ProductRepository(_db);
             ProductCategory = new ProductCategoryRepository(_db);
+            Location = new LocationRepository(_db);
         }
 
 

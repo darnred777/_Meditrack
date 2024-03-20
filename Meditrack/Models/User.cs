@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Meditrack.Models
 {
@@ -33,6 +34,7 @@ namespace Meditrack.Models
 
         public DateTime? BirthDate { get; set; }
 
+        [ValidateNever]
         public string? ProfilePicture { get; set; }
 
         [Required]
@@ -48,6 +50,7 @@ namespace Meditrack.Models
 
         [Required]
         [ForeignKey("LocationID")]
+        [ValidateNever]
         public virtual Location Location { get; set; }
     }
 }

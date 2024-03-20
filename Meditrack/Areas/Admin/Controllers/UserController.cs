@@ -1,7 +1,9 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Models.ViewModels;
 using Meditrack.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Meditrack.Areas.Admin.Controllers
@@ -18,39 +20,52 @@ namespace Meditrack.Areas.Admin.Controllers
         public IActionResult ManageUserAccount()
         {
             List<User> objUserList = _unitOfWork.User.GetAll().ToList();
+            
             return View(objUserList);
         }
 
+        //ViewBag
         public IActionResult AddNewUserAccount()
         {
-            return View();
+            //IEnumerable<SelectListItem> LocationList =
+
+            //ViewBag.LocationList = LocationList;
+            //ViewData["LocationList"] = LocationList;
+            UserVM userVM = new()
+            {
+                LocationList = _unitOfWork.Location.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.LocationAddress,
+                    Value = u.LocationID.ToString()
+                }),
+
+                User = new User()
+            };
+
+            return View(userVM);
         }
 
         [HttpPost]
-        public IActionResult AddNewUserAccount(User obj) //, IFormFile profilePicture
+        public IActionResult AddNewUserAccount(UserVM userVM) 
         {
-            //if (ModelState.IsValid)
-            //{
-            //    // Check if a profile picture is uploaded
-            //    if (profilePicture != null && profilePicture.Length > 0)
-            //    {
-            //        // Convert the uploaded file to a byte array
-            //        using (var memoryStream = new MemoryStream())
-            //        {
-            //            profilePicture.CopyTo(memoryStream);
-            //            obj.ProfilePicture = memoryStream.ToArray();
-            //        }
-            //    }
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.User.Add(userVM.User);
+                _unitOfWork.Save();
 
-
-            _unitOfWork.User.Add(obj);
-            _unitOfWork.Save();
-
-            return RedirectToAction("ManageUserAccount");
-            //}
-
-
-            //return View(obj);
+                return RedirectToAction("ManageUserAccount");
+                
+            } else
+            {
+                //UserVM userVM = new()
+                //{
+                userVM.LocationList = _unitOfWork.Location.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.LocationAddress,
+                    Value = u.LocationID.ToString()
+                });
+                return View(userVM);
+            }           
         }
 
         public IActionResult EditUserAccount(int? UserID)
