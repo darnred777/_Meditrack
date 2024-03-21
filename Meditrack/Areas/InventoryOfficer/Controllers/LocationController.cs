@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
-    [Area("Inventory Officer")]
+    [Area("InventoryOfficer")]
     public class LocationController : Controller
     {
 

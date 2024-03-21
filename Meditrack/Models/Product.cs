@@ -52,6 +52,6 @@ namespace Meditrack.Models
         public DateTime LastQuantityInStockUpdated { get; set; } = DateTime.Now;
 
         [Required]
-        public bool isActive { get; set; } = true;
+        public bool isActive { get; set; }
     }
 }

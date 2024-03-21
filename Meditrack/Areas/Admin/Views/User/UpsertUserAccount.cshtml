@@ -141,12 +141,16 @@
 
                             <div class="col-md-9">
                                 <!-- Update Information Description -->
-                                <h3 class="mb-4">Add New User Account</h3>
+                                <h3 class="mb-4">@(Model.User.UserID!=0?"Update":"Create") User Account</h3>
                                 <form method="post">
+                                    
                                     <!-- User Info to be Updated -->
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <label asp-for="User.LocationID"></label>
+                                            <input asp-for="User.UserID" hidden />
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="User.LocationID">Location</label>
                                             <select asp-for="@Model.User.LocationID" asp-items="@Model.LocationList" class="form-select">
                                                 <option disabled selected>--Select Location--</option>
                                             </select>
@@ -185,11 +189,19 @@
                                         </div>
                                         <div class="form-group col-md-6 mt-3 mb-3">
                                             <label asp-for="User.ProfilePicture">Upload Profile Picture:</label>
-                                            <input asp-for="User.ProfilePicture" class="form-control-file">
+                                            <input type="file" class="form-control-file">
+                                        </div>
+                                        <div class="form-group col-md-6 mt-3 mb-3">
+                                            <label asp-for="User.RegistrationDate" hidden>Registration Date:</label>
+                                            <input asp-for="User.RegistrationDate" class="form-control-file" hidden disabled>
+                                        </div>
+                                        <div class="form-group col-md-6 mt-3 mb-3">
+                                            <label asp-for="User.LastLoginTime_Date" hidden>Last Login Time/Date:</label>
+                                            <input asp-for="User.LastLoginTime_Date" class="form-control-file" hidden disabled>
                                         </div>
                                         <div class="form-group col-md-6 mt-3 mb-3">
                                             <label asp-for="User.IsActive">Is Active:</label>
-                                            <input asp-for="User.IsActive" class=" form-control-file" required>
+                                            <input asp-for="User.IsActive" class=" form-control-file">
                                         </div>
                                     </div>
                                     <div class="row">

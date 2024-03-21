@@ -34,6 +34,6 @@ namespace Meditrack.Models
         public decimal Subtotal => UnitPrice * QuantityInOrder;
 
         [Required]
-        public bool IsVATExclusive { get; set; } = true;
+        public bool IsVATExclusive { get; set; }
     }
 }

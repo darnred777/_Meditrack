@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
-    [Area("Inventory Officer")]
+    [Area("InventoryOfficer")]
     public class PRController : Controller
     {
 

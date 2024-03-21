@@ -25,7 +25,7 @@ namespace Meditrack.Areas.Admin.Controllers
         }
 
         //ViewBag
-        public IActionResult AddNewUserAccount()
+        public IActionResult UpsertUserAccount(int? userID)
         {
             //IEnumerable<SelectListItem> LocationList =
 
@@ -42,60 +42,105 @@ namespace Meditrack.Areas.Admin.Controllers
                 User = new User()
             };
 
-            return View(userVM);
+            if(userID == null || userID == 0)
+            {
+                //create
+                return View(userVM);
+            }
+            else
+            {
+                userVM.User = _unitOfWork.User.Get(u=>u.UserID == userID);
+
+                //update
+                return View(userVM);
+            }
+            
         }
 
         [HttpPost]
-        public IActionResult AddNewUserAccount(UserVM userVM) 
+        public IActionResult UpsertUserAccount(UserVM userVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.User.Add(userVM.User);
+                if (userVM.User.UserID == 0)
+                {
+                    // Adding a new user
+                    _unitOfWork.User.Add(userVM.User);
+                }
+                else
+                {
+                    // Updating an existing user
+                    _unitOfWork.User.Update(userVM.User);
+                }
+
                 _unitOfWork.Save();
 
                 return RedirectToAction("ManageUserAccount");
-                
-            } else
+            }
+            else
             {
-                //UserVM userVM = new()
-                //{
                 userVM.LocationList = _unitOfWork.Location.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.LocationAddress,
                     Value = u.LocationID.ToString()
                 });
                 return View(userVM);
-            }           
+            }
         }
 
-        public IActionResult EditUserAccount(int? UserID)
-        {
-            if (UserID == null || UserID == 0)
-            {
-                return NotFound();
-            }
-            User? userFromDb = _unitOfWork.User.Get(u => u.UserID == UserID);
-            //User? userFromDb2 = _db.User.Where(u => u.UserID == UserID).FirstOrDefault();
 
-            if (userFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(userFromDb);
-        }
+        //[HttpPost]
+        //public IActionResult UpsertUserAccount(UserVM userVM) 
+        //{   
 
-        [HttpPost]
-        public IActionResult EditUserAccount(User obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.User.Update(obj);
-                _unitOfWork.Save();
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.User.Add(userVM.User);
+        //        _unitOfWork.Save();
 
-                return RedirectToAction("ManageUserAccount");
-            }
-            return View();
-        }
+        //        return RedirectToAction("ManageUserAccount");
+
+        //    } else
+        //    {
+        //        //UserVM userVM = new()
+        //        //{
+        //        userVM.LocationList = _unitOfWork.Location.GetAll().Select(u => new SelectListItem
+        //        {
+        //            Text = u.LocationAddress,
+        //            Value = u.LocationID.ToString()
+        //        });
+        //        return View(userVM);
+        //    }           
+        //}
+
+        //public IActionResult EditUserAccount(int? UserID)
+        //{
+        //    if (UserID == null || UserID == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    User? userFromDb = _unitOfWork.User.Get(u => u.UserID == UserID);
+        //    //User? userFromDb2 = _db.User.Where(u => u.UserID == UserID).FirstOrDefault();
+
+        //    if (userFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(userFromDb);
+        //}
+
+        //[HttpPost]
+        //public IActionResult EditUserAccount(User obj)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.User.Update(obj);
+        //        _unitOfWork.Save();
+
+        //        return RedirectToAction("ManageUserAccount");
+        //    }
+        //    return View();
+        //}
 
         public IActionResult DeleteUserAccount(int? UserID)
         {

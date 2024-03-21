@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
-    [Area("Inventory Officer")]
+    [Area("InventoryOfficer")]
     public class ProductCategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

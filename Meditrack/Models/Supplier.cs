@@ -39,6 +39,6 @@ namespace Meditrack.Models
         [DataType(DataType.DateTime)]
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
-        public bool isActive { get; set; } = true;
+        public bool isActive { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Meditrack.Areas.Admin.Controllers
             return View(objProductList);
         }
 
-        public IActionResult AddNewProduct()
+        public IActionResult UpsertProduct(int? productID)
         {
             ProductVM productVM = new()
             {
@@ -37,19 +37,39 @@ namespace Meditrack.Areas.Admin.Controllers
                 Product = new Product()
             };
 
-            return View(productVM);
+            if (productID == null || productID == 0)
+            {
+                //create
+                return View(productVM);
+            }
+            else
+            {
+                productVM.Product = _unitOfWork.Product.Get(u => u.ProductID == productID);
+
+                //update
+                return View(productVM);
+            }
         }
 
         [HttpPost]
-        public IActionResult AddNewProduct(ProductVM productVM)
+        public IActionResult UpsertProduct(ProductVM productVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(productVM.Product);
+                if (productVM.Product.ProductID == 0)
+                {
+                    // Adding a new user
+                    _unitOfWork.Product.Add(productVM.Product);
+                }
+                else
+                {
+                    // Updating an existing user
+                    _unitOfWork.Product.Update(productVM.Product);
+                }
+
                 _unitOfWork.Save();
 
                 return RedirectToAction("ManageProduct");
-
             }
             else
             {
@@ -64,33 +84,33 @@ namespace Meditrack.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult EditProduct(int? ProductID)
-        {
-            if (ProductID == null || ProductID == 0)
-            {
-                return NotFound();
-            }
-            Product? productFromDb = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
+        //public IActionResult EditProduct(int? ProductID)
+        //{
+        //    if (ProductID == null || ProductID == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    Product? productFromDb = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
 
-            if (productFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(productFromDb);
-        }
+        //    if (productFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(productFromDb);
+        //}
 
-        [HttpPost]
-        public IActionResult EditProduct(Product obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Update(obj);
-                _unitOfWork.Save();
+        //[HttpPost]
+        //public IActionResult EditProduct(Product obj)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.Product.Update(obj);
+        //        _unitOfWork.Save();
 
-                return RedirectToAction("ManageProduct");
-            }
-            return View();
-        }
+        //        return RedirectToAction("ManageProduct");
+        //    }
+        //    return View();
+        //}
 
         public IActionResult DeleteProduct(int? ProductID)
         {

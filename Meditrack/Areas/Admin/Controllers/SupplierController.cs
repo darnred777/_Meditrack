@@ -24,33 +24,33 @@ namespace Meditrack.Areas.Admin.Controllers
             return View(objSupplierList);
         }
 
-        public IActionResult EditVendor(int? SupplierID)
-        {
-            if (SupplierID == null || SupplierID == 0)
-            {
-                return NotFound();
-            }
-            Supplier? supplierFromDb = _unitOfWork.Supplier.Get(u => u.SupplierID == SupplierID);
+        //public IActionResult EditVendor(int? SupplierID)
+        //{
+        //    if (SupplierID == null || SupplierID == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    Supplier? supplierFromDb = _unitOfWork.Supplier.Get(u => u.SupplierID == SupplierID);
 
-            if (supplierFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(supplierFromDb);
-        }
+        //    if (supplierFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(supplierFromDb);
+        //}
 
-        [HttpPost]
-        public IActionResult EditVendor(Supplier obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Supplier.Update(obj);
-                _unitOfWork.Save();
+        //[HttpPost]
+        //public IActionResult EditVendor(Supplier obj)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.Supplier.Update(obj);
+        //        _unitOfWork.Save();
 
-                return RedirectToAction("ManageVendor");
-            }
-            return View();
-        }
+        //        return RedirectToAction("ManageVendor");
+        //    }
+        //    return View();
+        //}
 
         public IActionResult DeleteVendor(int? SupplierID)
         {
@@ -81,7 +81,7 @@ namespace Meditrack.Areas.Admin.Controllers
             return RedirectToAction("ManageVendor");
         }
 
-        public IActionResult AddVendor()
+        public IActionResult UpsertVendor(int? supplierID)
         {
             SupplierVM supplierVM = new()
             {
@@ -94,19 +94,39 @@ namespace Meditrack.Areas.Admin.Controllers
                 Supplier = new Supplier()
             };
 
-            return View(supplierVM);
+            if (supplierID == null || supplierID == 0)
+            {
+                //create
+                return View(supplierVM);
+            }
+            else
+            {
+                supplierVM.Supplier = _unitOfWork.Supplier.Get(u => u.SupplierID == supplierID);
+
+                //update
+                return View(supplierVM);
+            }
         }
 
         [HttpPost]
-        public IActionResult AddVendor(SupplierVM supplierVM)
+        public IActionResult UpsertVendor(SupplierVM supplierVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Supplier.Add(supplierVM.Supplier);
+                if (supplierVM.Supplier.SupplierID == 0)
+                {
+                    // Adding a new user
+                    _unitOfWork.Supplier.Add(supplierVM.Supplier);
+                }
+                else
+                {
+                    // Updating an existing user
+                    _unitOfWork.Supplier.Update(supplierVM.Supplier);
+                }
+
                 _unitOfWork.Save();
 
                 return RedirectToAction("ManageVendor");
-
             }
             else
             {

@@ -94,7 +94,7 @@
 
                     <!--Main Content-->
 
-                    <a asp-area="Admin" asp-controller="Supplier" asp-action="AddVendor" class="btn btn-primary mt-2 form-control">Add New Supplier</a>
+                    <a asp-area="Admin" asp-controller="Supplier" asp-action="UpsertVendor" class="btn btn-primary mt-2 form-control">Add New Supplier</a>
                     <div class="mt-5">
                         <div class="table-responsive table-bordered table-striped">
                             <table class="table">
@@ -126,7 +126,7 @@
                                             <td>@obj.isActive</td>
                                             <td>
                                                 <div class="w-75 btn-group" role="group">
-                                                    <a asp-area="Admin" asp-controller="Supplier" asp-action="EditVendor" asp-route-SupplierID="@obj.SupplierID" class="btn btn-primary mx-2">
+                                                    <a asp-area="Admin" asp-controller="Supplier" asp-action="UpsertVendor" asp-route-SupplierID="@obj.SupplierID" class="btn btn-primary mx-2">
                                                         <i class="bi bi-pencil-square"></i> Edit
                                                     </a>
                                                     <a asp-area="Admin" asp-controller="Supplier" asp-action="DeleteVendor" asp-route-SupplierID="@obj.SupplierID" class="btn btn-danger mx-2">

@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
-    [Area("Inventory Officer")]
+    [Area("InventoryOfficer")]
     public class UserGroupController : Controller
     {
 
