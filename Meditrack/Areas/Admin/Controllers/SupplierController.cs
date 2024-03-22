@@ -19,7 +19,7 @@ namespace Meditrack.Areas.Admin.Controllers
 
         public IActionResult ManageVendor()
         {
-            List<Supplier> objSupplierList = _unitOfWork.Supplier.GetAll().ToList();
+            List<Supplier> objSupplierList = _unitOfWork.Supplier.GetAll(includeProperties: "Location").ToList();
 
             return View(objSupplierList);
         }

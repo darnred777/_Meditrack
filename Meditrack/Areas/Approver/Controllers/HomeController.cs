@@ -4,9 +4,9 @@ using Meditrack.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Meditrack.Areas.InventoryOfficer.Controllers
+namespace Meditrack.Areas.Approver.Controllers
 {
-    [Area("InventoryOfficer")]
+    [Area("Approver")]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -20,19 +20,15 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             return View();
         }
 
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
         public IActionResult Profile()
         {
             return View();
         }
 
-        public IActionResult Transaction()
+        public IActionResult Inventory()
         {
-            return View();
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "ProductCategory").ToList();
+            return View(objProductList);
         }
 
         public IActionResult Notification()

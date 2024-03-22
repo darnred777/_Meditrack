@@ -4,7 +4,7 @@ using Meditrack.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Meditrack.Controllers
+namespace Meditrack.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class HomeController : Controller

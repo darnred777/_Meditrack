@@ -1,4 +1,4 @@
-﻿<div class="wrapper">
+﻿    <div class="wrapper">
     <!-- Sidebar -->
     <aside id="sidebar">
         <div class="h-100">
@@ -27,13 +27,10 @@
                     </a>
                     <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="User" asp-action="ManageUserAccount">Manage User Account</a>
-                        </li>
-                        <li class="sidebar-item">
                             <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Product" asp-action="ManageProduct">Manage Product</a>
+                            <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Product" asp-action="ManageProduct">Manage Inventory</a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Location" asp-action="ManageLocation">Manage Location</a>
@@ -46,13 +43,6 @@
                         Transactions
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Inventory">
-                        <i class="bi bi-database"></i>
-                        Inventory
-                    </a>
-                </li>
-
                 <li class="sidebar-item">
                     <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Notification">
                         <i class="bi bi-bell"></i>

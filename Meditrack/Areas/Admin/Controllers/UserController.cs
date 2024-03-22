@@ -19,7 +19,7 @@ namespace Meditrack.Areas.Admin.Controllers
         }
         public IActionResult ManageUserAccount()
         {
-            List<User> objUserList = _unitOfWork.User.GetAll().ToList();
+            List<User> objUserList = _unitOfWork.User.GetAll(includeProperties: "Location").ToList();
             
             return View(objUserList);
         }

@@ -123,12 +123,13 @@
                     </div>
 
                     <div class="mt-5">
+                        <h3>Inventory List</h3>
                         <div class="table-responsive table-bordered table-striped">
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th>ProductID</th>
-                                        <th>CategoryID</th>
+                                        <th>Category</th>
                                         <th>Product Name</th>
                                         <th>SKU</th>
                                         <th>Brand</th>
@@ -147,7 +148,7 @@
                                     {
                                         <tr>
                                             <td>@obj.ProductID</td>
-                                            <td>@obj.CategoryID</td>
+                                            <td>@obj.ProductCategory.CategoryName</td>
                                             <td>@obj.ProductName</td>
                                             <td>@obj.SKU</td>
                                             <td>@obj.Brand</td>

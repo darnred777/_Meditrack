@@ -20,7 +20,7 @@ namespace Meditrack.Areas.Admin.Controllers
 
         public IActionResult ManageProduct()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "ProductCategory").ToList();
             return View(objProductList);
         }
 

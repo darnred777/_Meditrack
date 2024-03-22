@@ -10,13 +10,13 @@
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Dashboard">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Dashboard">
                         <i class="bi bi-grid"></i>
                         Dashboard
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Profile">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Profile">
                         <i class="bi bi-person"></i>
                         Profile
                     </a>
@@ -29,49 +29,39 @@
                     </a>
                     <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="User" asp-action="ManageUserAccount">Manage User Account</a>
+                            <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Product" asp-action="ManageProduct">Manage Product</a>
+                            <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Product" asp-action="ManageProduct">Manage Product</a>
                         </li>
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Transaction">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Transaction">
                         <i class="bi bi-check2-square"></i>
                         Transactions
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Inventory">
-                        <i class="bi bi-database"></i>
-                        Inventory
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Notification">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Notification">
                         <i class="bi bi-bell"></i>
                         Notifications
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Report">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Report">
                         <i class="bi bi-list-task"></i>
                         Reports
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Feedback">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Feedback">
                         <i class="bi bi-hand-thumbs-up"></i>
                         Feedback
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Index">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Index">
                         <i class="bi bi-box-arrow-right"></i>
                         Logout
                     </a>
@@ -92,8 +82,11 @@
                 <div class="mb-3">
                     
                     <div class="container mt-5">
-                        <h2>Add New Product</h2>
+                        <h3>@(Model.Product.ProductID != 0 ? "Update" : "Create") Product</h3>
                         <form method="post">
+                            <div class="form-group">
+                                <input asp-for="Product.ProductID" hidden />
+                            </div>
                             <div class="mb-3">
                                 <label asp-for="Product.CategoryID">Product Category</label>
                                 <select asp-for="@Model.Product.CategoryID" asp-items="@Model.ProductCategoryList" class="form-select">
@@ -141,7 +134,7 @@
                                     <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
                                 </div>
                                 <div class="col-6">
-                                    <a asp-area="Inventory Officer" asp-controller="Product" asp-action="ManageProduct" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+                                    <a asp-area="InventoryOfficer" asp-controller="Product" asp-action="ManageProduct" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
                                 </div>
                             </div>
                         </form>
