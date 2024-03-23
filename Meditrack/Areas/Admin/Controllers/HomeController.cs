@@ -61,11 +61,6 @@ namespace Meditrack.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult CreatePurchaseRequisition()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

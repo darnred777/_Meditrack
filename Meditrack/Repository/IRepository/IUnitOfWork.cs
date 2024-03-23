@@ -8,7 +8,11 @@
         IProductRepository Product { get; }
         IProductCategoryRepository ProductCategory { get; }
         ILocationRepository Location { get; }
-
+        IPurchaseRequisitionHeaderRepository PurchaseRequisitionHeader { get; }
+        IPurchaseRequisitionDetailRepository PurchaseRequisitionDetail { get; }
+        IPurchaseOrderHeaderRepository PurchaseOrderHeader { get; }
+        IPurchaseOrderDetailRepository PurchaseOrderDetail { get; }
+        IStatusRepository Status { get; }
         void Save();
     }
 }

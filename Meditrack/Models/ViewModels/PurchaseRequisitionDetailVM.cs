@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Meditrack.Models.ViewModels
 {
-    public class PurReqVM
+    public class PurchaseRequisitionDetailVM
     {
         public PurchaseRequisitionDetail PurchaseRequisitionDetail { get; set; }
 
         [ValidateNever]
-        public IEnumerable<SelectListItem> LocationList { get; set; }
+        public IEnumerable<SelectListItem> ProductList { get; set; }
     }
 }

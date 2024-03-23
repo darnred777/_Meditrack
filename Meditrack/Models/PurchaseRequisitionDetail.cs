@@ -25,10 +25,9 @@ namespace Meditrack.Models
         [StringLength(10)]
         public string UnitOfMeasurement { get; set; }
 
-        [Required]
         public int QuantityInOrder { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Required]
         public decimal Subtotal { get; set; }
     }
 }

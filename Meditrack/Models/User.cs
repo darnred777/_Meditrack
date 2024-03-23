@@ -46,7 +46,7 @@ namespace Meditrack.Models
         public DateTime LastLoginTime_Date { get; set; } = DateTime.Now;
 
         [Required]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         [Required]
         [ForeignKey("LocationID")]

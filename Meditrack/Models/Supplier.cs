@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.Linq.Expressions;
 
 namespace Meditrack.Models
 {
@@ -39,6 +40,6 @@ namespace Meditrack.Models
         [DataType(DataType.DateTime)]
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
-        public bool isActive { get; set; }
+        public bool isActive { get; set; } = true;
     }
 }

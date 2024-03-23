@@ -30,8 +30,8 @@ namespace Meditrack.Models
         [Required]
         public int QuantityInOrder { get; set; }
 
-        [NotMapped]
-        public decimal Subtotal => UnitPrice * QuantityInOrder;
+        [Required]
+        public decimal Subtotal { get; set; }
 
         [Required]
         public bool IsVATExclusive { get; set; }
