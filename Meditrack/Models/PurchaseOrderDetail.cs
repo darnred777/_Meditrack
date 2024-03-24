@@ -30,7 +30,6 @@ namespace Meditrack.Models
         [Required]
         public int QuantityInOrder { get; set; }
 
-        [Required]
         public decimal Subtotal { get; set; }
 
         [Required]

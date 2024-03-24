@@ -9,7 +9,11 @@ namespace Meditrack.Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> SupplierList { get; set; }
+
+        [ValidateNever]
         public IEnumerable<SelectListItem> LocationList { get; set; }
+
+        [ValidateNever]
         public IEnumerable<SelectListItem> StatusList { get; set; }
     }
 }

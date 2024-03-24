@@ -31,8 +31,6 @@ namespace Meditrack.Models
 
         [ForeignKey("PRHdrID")]
         public virtual required PurchaseRequisitionHeader PurchaseRequisitionHeader { get; set; }
-
-        [Required]
         public decimal TotalAmount { get; set; }
 
         [Required]

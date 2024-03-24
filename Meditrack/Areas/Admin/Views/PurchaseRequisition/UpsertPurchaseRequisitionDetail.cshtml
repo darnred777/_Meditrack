@@ -1,0 +1,143 @@
+﻿@model PurchaseRequisitionDetailVM
+
+<div class="wrapper">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+        <div class="h-100">
+            <div class="sidebar-logo">
+                <a href="#">Meditrack</a>
+            </div>
+            <!-- Sidebar Navigation -->
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Dashboard">
+                        <i class="bi bi-grid"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Profile">
+                        <i class="bi bi-person"></i>
+                        Profile
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
+                       aria-expanded="false" aria-controls="pages">
+                        <i class="fa-regular fa-file-lines pe-2"></i>
+                        Management
+                    </a>
+                    <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="Admin" asp-controller="User" asp-action="ManageUserAccount">User Account</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="Admin" asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="Admin" asp-controller="Product" asp-action="ManageProduct">Manage Inventory</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader">
+                        <i class="bi bi-check2-square"></i>
+                        Transactions
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Inventory">
+                        <i class="bi bi-database"></i>
+                        Inventory
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Notification">
+                        <i class="bi bi-bell"></i>
+                        Notifications
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Report">
+                        <i class="bi bi-list-task"></i>
+                        Reports
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Feedback">
+                        <i class="bi bi-hand-thumbs-up"></i>
+                        Feedback
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <!-- Main Component -->
+    <div class="main">
+        <nav class="navbar navbar-expand px-3 border-bottom">
+            <!-- Button for sidebar toggle -->
+            <button class="btn" type="button" data-bs-theme="light">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+        <main class="content px-3 py-2">
+            <div class="container-fluid">
+                <div class="mb-3">
+
+                    <div class="container">
+                        <h1 class="my-4">@(Model.PurchaseRequisitionDetail.PRDtlID != 0 ? "Update" : "Create") Purchase Requisition Detail</h1>
+                        <form method="post">
+                            <div class="form-group">
+                                <input asp-for="PurchaseRequisitionDetail.PRDtlID" hidden />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PurchaseRequisitionDetail.PRHdrID">PRHdrID:</label>
+                                <input asp-for="PurchaseRequisitionDetail.PRHdrID" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PurchaseRequisitionDetail.ProductID">Product</label>
+                                <select asp-for="@Model.PurchaseRequisitionDetail.ProductID" asp-items="@Model.ProductList" class="form-select">
+                                    <option disabled selected>--Select Product--</option>
+                                </select>
+
+                                <!--<input asp-for="LocationID" class="form-control" id="LocationID" name="LocationID"  placeholder="Enter LocationID">-->
+                            </div>                    
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label asp-for="PurchaseRequisitionDetail.UnitPrice">Unit Price:</label>
+                                    <input asp-for="PurchaseRequisitionDetail.UnitPrice" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PurchaseRequisitionDetail.UnitOfMeasurement">Unit Of Measurement:</label>
+                                    <input asp-for="PurchaseRequisitionDetail.UnitOfMeasurement" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label asp-for="PurchaseRequisitionDetail.QuantityInOrder">Quantity In Order:</label>
+                                    <input asp-for="PurchaseRequisitionDetail.QuantityInOrder" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+                                </div>
+                                <div class="col-6">
+                                    <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionDetail" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

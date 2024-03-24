@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Meditrack.Models
 {
@@ -20,6 +21,7 @@ namespace Meditrack.Models
         public DateTime DateLastModified { get; set; } = DateTime.Now;
 
         [Display(Name = "Total Quantity In Stock")]
+        [NotMapped]
         public int TotalQuantityInStock { get; set; }
     }
 }

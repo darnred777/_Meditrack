@@ -17,6 +17,9 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+
+        /* Purchase Requisition Header*/
+
         public IActionResult ManagePurchaseRequisitionHeader()
         {
             List<PurchaseRequisitionHeader> objPurchaseRequisitionHeaderList = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status").ToList();
@@ -77,7 +80,7 @@ namespace Meditrack.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpsertPurchaseRequisition(PurchaseRequisitionHeaderVM purchaseRequisitionHeaderVM)
+        public IActionResult UpsertPurchaseRequisitionHeader(PurchaseRequisitionHeaderVM purchaseRequisitionHeaderVM)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +97,7 @@ namespace Meditrack.Areas.Admin.Controllers
 
                 _unitOfWork.Save();
 
-                return RedirectToAction("ManagePurchaseRequisition");
+                return RedirectToAction("ManagePurchaseRequisitionHeader");
             }
             else
             {
@@ -103,65 +106,24 @@ namespace Meditrack.Areas.Admin.Controllers
                     Text = u.SupplierName,
                     Value = u.SupplierID.ToString()
                 });
+
+                purchaseRequisitionHeaderVM.LocationList = _unitOfWork.Location.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.LocationAddress,
+                    Value = u.LocationID.ToString()
+                });
+
+                purchaseRequisitionHeaderVM.StatusList = _unitOfWork.Status.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.StatusDescription,
+                    Value = u.StatusID.ToString()
+                });
+
                 return View(purchaseRequisitionHeaderVM);
             }
         }
 
-
-        //[HttpPost]
-        //public IActionResult UpsertUserAccount(UserVM userVM) 
-        //{   
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.User.Add(userVM.User);
-        //        _unitOfWork.Save();
-
-        //        return RedirectToAction("ManageUserAccount");
-
-        //    } else
-        //    {
-        //        //UserVM userVM = new()
-        //        //{
-        //        userVM.LocationList = _unitOfWork.Location.GetAll().Select(u => new SelectListItem
-        //        {
-        //            Text = u.LocationAddress,
-        //            Value = u.LocationID.ToString()
-        //        });
-        //        return View(userVM);
-        //    }           
-        //}
-
-        //public IActionResult EditUserAccount(int? UserID)
-        //{
-        //    if (UserID == null || UserID == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    User? userFromDb = _unitOfWork.User.Get(u => u.UserID == UserID);
-        //    //User? userFromDb2 = _db.User.Where(u => u.UserID == UserID).FirstOrDefault();
-
-        //    if (userFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(userFromDb);
-        //}
-
-        //[HttpPost]
-        //public IActionResult EditUserAccount(User obj)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.User.Update(obj);
-        //        _unitOfWork.Save();
-
-        //        return RedirectToAction("ManageUserAccount");
-        //    }
-        //    return View();
-        //}
-
-        public IActionResult DeletePurchaseRequisition(int? PRHdrID)
+        public IActionResult DeletePurchaseRequisitionHeader(int? PRHdrID)
         {
             if (PRHdrID == null || PRHdrID == 0)
             {
@@ -177,7 +139,7 @@ namespace Meditrack.Areas.Admin.Controllers
         }
 
         [HttpPost, ActionName("DeletePurchaseRequisition")]
-        public IActionResult DeletePOSTPurchaseRequisition(int? PRHdrID)
+        public IActionResult DeletePOSTPurchaseRequisitionHeader(int? PRHdrID)
         {
             PurchaseRequisitionHeader? obj = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == PRHdrID);
             if (obj == null)
@@ -189,5 +151,76 @@ namespace Meditrack.Areas.Admin.Controllers
 
             return RedirectToAction("ManagePurchaseRequisition");
         }
+
+
+
+        /* Purchase Requisition Detail */
+
+        public IActionResult UpsertPurchaseRequisitionDetail(int? PRDtlID)
+        {
+
+            PurchaseRequisitionDetailVM purchaseRequisitionDetailVM = new()
+            {
+                ProductList = _unitOfWork.Product.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.ProductName,
+                    Value = u.ProductID.ToString()
+                }),
+
+                PurchaseRequisitionDetail = new PurchaseRequisitionDetail()
+            };
+
+            if (PRDtlID == null || PRDtlID == 0)
+            {
+                //create
+                return View(purchaseRequisitionDetailVM);
+            }
+            else
+            {
+                purchaseRequisitionDetailVM.PurchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRDtlID == PRDtlID);
+
+                //update
+                return View(purchaseRequisitionDetailVM);
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult UpsertPurchaseRequisitionDetail(PurchaseRequisitionDetailVM purchaseRequisitionDetailVM)
+        {
+            if (ModelState.IsValid)
+            {
+                // Compute subtotal before saving
+                purchaseRequisitionDetailVM.PurchaseRequisitionDetail.Subtotal =
+                    purchaseRequisitionDetailVM.PurchaseRequisitionDetail.UnitPrice *
+                    purchaseRequisitionDetailVM.PurchaseRequisitionDetail.QuantityInOrder;
+
+                if (purchaseRequisitionDetailVM.PurchaseRequisitionDetail.PRDtlID == 0)
+                {
+                    // Adding a new detail
+                    _unitOfWork.PurchaseRequisitionDetail.Add(purchaseRequisitionDetailVM.PurchaseRequisitionDetail);
+                }
+                else
+                {
+                    // Updating an existing detail
+                    _unitOfWork.PurchaseRequisitionDetail.Update(purchaseRequisitionDetailVM.PurchaseRequisitionDetail);
+                }
+
+                _unitOfWork.Save();
+
+                return RedirectToAction("ManagePurchaseRequisitionDetail");
+            }
+            else
+            {
+                purchaseRequisitionDetailVM.ProductList = _unitOfWork.Product.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.ProductName,
+                    Value = u.ProductID.ToString()
+                });
+
+                return View(purchaseRequisitionDetailVM);
+            }
+        }
+
     }
 }

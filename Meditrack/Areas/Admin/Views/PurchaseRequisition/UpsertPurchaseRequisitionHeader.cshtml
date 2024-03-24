@@ -1,4 +1,6 @@
-﻿<div class="wrapper">
+﻿@model PurchaseRequisitionHeaderVM
+
+<div class="wrapper">
     <!-- Sidebar -->
     <aside id="sidebar">
         <div class="h-100">
@@ -33,12 +35,12 @@
                             <a class="sidebar-link" asp-area="Admin" asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Admin" asp-controller="Product" asp-action="ManageProduct">Manage Product</a>
+                            <a class="sidebar-link" asp-area="Admin" asp-controller="Product" asp-action="ManageProduct">Manage Inventory</a>
                         </li>
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Transaction">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader">
                         <i class="bi bi-check2-square"></i>
                         Transactions
                     </a>
@@ -90,47 +92,49 @@
                 <div class="mb-3">
 
                     <div class="container">
-                        <h1 class="my-4">Create Purchase Requisition</h1>
+                        <h1 class="my-4">@(Model.PurchaseRequisitionHeader.PRHdrID != 0 ? "Update" : "Create") Purchase Requisition Header</h1>
                         <form method="post">
                             <div class="form-group">
-                                <label for="supplier">Supplier:</label>
-                                <select class="form-control" id="supplier" name="supplier">
-                                    <option value="">Select Supplier</option>
-                                    <!-- Add options dynamically if needed -->
+                                <input asp-for="PurchaseRequisitionHeader.PRHdrID" hidden />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PurchaseRequisitionHeader.SupplierID">Supplier</label>
+                                <select asp-for="@Model.PurchaseRequisitionHeader.SupplierID" asp-items="@Model.SupplierList" class="form-select">
+                                    <option disabled selected>--Select Supplier--</option>
+                                </select>
+
+                                <!--<input asp-for="LocationID" class="form-control" id="LocationID" name="LocationID"  placeholder="Enter LocationID">-->
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PurchaseRequisitionHeader.LocationID">Location</label>
+                                <select asp-for="@Model.PurchaseRequisitionHeader.LocationID" asp-items="@Model.LocationList" class="form-select">
+                                    <option disabled selected>--Select Location--</option>
+                                </select>                               
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PurchaseRequisitionHeader.StatusID">Status</label>
+                                <select asp-for="@Model.PurchaseRequisitionHeader.StatusID" asp-items="@Model.StatusList" class="form-select">
+                                    <option disabled selected>--Select Status--</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="location">Location:</label>
-                                <select class="form-control" id="location" name="location">
-                                    <option value="">Select Location</option>
-                                    <!-- Add options dynamically if needed -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="status">Status:</label>
-                                <input type="text" class="form-control" id="status" name="status" value="Pending Approval" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="items">Items/Products:</label>
-                                <!-- Add input fields dynamically for items if needed -->
-                                <div class="row">
-                                    <div class="col">
-                                        <input type="text" class="form-control" placeholder="Product Name" name="productName">
-                                    </div>
-                                    <div class="col">
-                                        <input type="number" class="form-control" placeholder="Quantity" name="quantity">
-                                    </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label asp-for="PurchaseRequisitionHeader.TotalAmount">Total Amount:</label>
+                                    <input asp-for="PurchaseRequisitionHeader.TotalAmount" class="form-control" >
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PurchaseRequisitionHeader.PRDate">PR Date:</label>
+                                    <input asp-for="PurchaseRequisitionHeader.PRDate" class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="prDate">PR Date:</label>
-                                <input type="date" class="form-control" id="prDate" name="prDate" value="<?php echo date('Y-m-d'); ?>" required>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+                                </div>
+                                <div class="col-6">
+                                    <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="remarks">Remarks:</label>
-                                <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
 

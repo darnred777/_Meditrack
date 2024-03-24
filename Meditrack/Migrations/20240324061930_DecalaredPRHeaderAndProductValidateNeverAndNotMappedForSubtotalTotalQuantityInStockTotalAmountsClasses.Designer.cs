@@ -4,6 +4,7 @@ using Meditrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meditrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240324061930_DecalaredPRHeaderAndProductValidateNeverAndNotMappedForSubtotalTotalQuantityInStockTotalAmountsClasses")]
+    partial class DecalaredPRHeaderAndProductValidateNeverAndNotMappedForSubtotalTotalQuantityInStockTotalAmountsClasses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,9 +156,6 @@ namespace Meditrack.Migrations
                     b.Property<int>("QuantityInOrder")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("DECIMAL(10,2)");
-
                     b.Property<string>("UnitOfMeasurement")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -234,7 +234,7 @@ namespace Meditrack.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Subtotal")
-                        .HasColumnType("DECIMAL(10,2)");
+                        .HasColumnType("MONEY");
 
                     b.Property<string>("UnitOfMeasurement")
                         .IsRequired()
@@ -272,9 +272,6 @@ namespace Meditrack.Migrations
 
                     b.Property<int>("SupplierID")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("DECIMAL(10,2)");
 
                     b.HasKey("PRHdrID");
 

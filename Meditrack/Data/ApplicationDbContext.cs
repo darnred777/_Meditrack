@@ -49,7 +49,7 @@ namespace Meditrack.Data
             //    new UserGroup { UserGroupID = 1, UserGroupName = "Viewer" }
             //    );
 
-            base.OnModelCreating(modelBuilder);
+            //base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.UnitPrice)
@@ -59,9 +59,13 @@ namespace Meditrack.Data
                 .Property(p => p.UnitPrice)
                 .HasColumnType("DECIMAL(10,2)");
 
+            modelBuilder.Entity<PurchaseRequisitionHeader>()
+                .Property(p => p.TotalAmount)
+                .HasColumnType("DECIMAL(10,2)");
+
             modelBuilder.Entity<PurchaseRequisitionDetail>()
                 .Property(p => p.Subtotal)
-                .HasColumnType("MONEY");
+                .HasColumnType("DECIMAL(10,2)");
 
             modelBuilder.Entity<PurchaseOrderDetail>()
                 .Property(p => p.UnitPrice)
@@ -71,6 +75,10 @@ namespace Meditrack.Data
                 .Property(p => p.TotalAmount)
                 .HasColumnType("DECIMAL(10, 2)")
                 .IsRequired();
+
+            modelBuilder.Entity<PurchaseOrderDetail>()
+                .Property(p => p.Subtotal)
+                .HasColumnType("DECIMAL(10,2)");
 
 
             base.OnModelCreating(modelBuilder);

@@ -115,10 +115,10 @@
                     </header>
                     <div class="row">
                         <div class="col-6">
-                            <a asp-area="Admin" asp-controller="Product" asp-action="UpsertPurchaseRequisitionHeader" class="btn btn-primary border mt-2 form-control">Add New Purchase Requisition Header</a>
+                            <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="UpsertPurchaseRequisitionHeader" class="btn btn-primary border mt-2 form-control">Add New Purchase Requisition Header</a>
                         </div>
                         <div class="col-6">
-                            <a asp-area="Admin" asp-controller="Product" asp-action="UpsertPurchaseRequisitionDetail" class="btn btn-primary mt-2 form-control">Add New Purchase Requisition Detail</a>
+                            <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="UpsertPurchaseRequisitionDetail" class="btn btn-primary mt-2 form-control">Add New Purchase Requisition Detail</a>
                         </div>                      
                     </div>
 
@@ -149,10 +149,10 @@
                                             <td>@obj.Subtotal</td>
                                             <td>
                                                 <div class="w-75 btn-group" role="group">
-                                                    <a asp-area="Admin"  asp-controller="ProductCategory" asp-action="EditProductCategory" asp-route-CategoryID="" class="btn btn-primary mx-2">
+                                                    <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="UpsertPurchaseRequisitionDetail" asp-route-PRDtlID="@obj.PRDtlID" class="btn btn-primary mx-2">
                                                         <i class="bi bi-pencil-square"></i> Edit
                                                     </a>
-                                                    <a asp-area="Admin" asp-controller="ProductCategory" asp-action="DeleteProductCategory" asp-route-CategoryID="" class="btn btn-danger mx-2">
+                                                    <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="DeleteProductCategory" asp-route-PRDtlID="@obj.PRDtlID" class="btn btn-danger mx-2">
                                                         <i class="bi bi-trash"></i> Delete
                                                     </a>
                                                 </div>

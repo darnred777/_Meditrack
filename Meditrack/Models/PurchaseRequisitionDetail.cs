@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Meditrack.Models
 {
@@ -12,11 +13,13 @@ namespace Meditrack.Models
         public int PRHdrID { get; set; }
 
         [ForeignKey("PRHdrID")]
+        [ValidateNever]
         public virtual PurchaseRequisitionHeader PurchaseRequisitionHeader { get; set; }
 
         public int? ProductID { get; set; }
 
         [ForeignKey("ProductID")]
+        [ValidateNever]
         public virtual Product Product { get; set; }
 
         [Required]
@@ -27,7 +30,6 @@ namespace Meditrack.Models
 
         public int QuantityInOrder { get; set; }
 
-        [Required]
         public decimal Subtotal { get; set; }
     }
 }
