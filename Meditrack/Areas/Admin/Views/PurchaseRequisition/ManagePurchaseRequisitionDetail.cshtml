@@ -40,18 +40,11 @@
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisition">
+                    <a class="sidebar-link" asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader">
                         <i class="bi bi-check2-square"></i>
                         Transactions
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Inventory">
-                        <i class="bi bi-database"></i>
-                        Inventory
-                    </a>
-                </li>
-
                 <li class="sidebar-item">
                     <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Notification">
                         <i class="bi bi-bell"></i>
@@ -102,7 +95,7 @@
                                 <div class="collapse navbar-collapse" id="navbarNav">
                                     <ul class="navbar-nav">
                                         <li class="nav-item">
-                                            <a class="sidebar-link" asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisition">Purchase Requisition Header</a>
+                                            <a class="sidebar-link" asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader">Purchase Requisition Header</a>
                                         </li>
                                         <div class="vr"></div>
                                         <li class="nav-item">
@@ -127,7 +120,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>PR Detail ID</th>
+                                        <th>PR Detail ID</th>                                      
                                         <th>PR Header ID</th>
                                         <th>Product</th>
                                         <th>Unit Price</th>
@@ -137,11 +130,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var obj in Model.OrderBy(u => u.ProductID))
+                                    @foreach (var obj in Model.OrderBy(u => u.PRDtlID))
                                     {
                                         <tr>
                                             <td>@obj.PRDtlID</td>
-                                            <td>@obj.PRHdrID</td>
+                                            <td>@obj.PurchaseRequisitionHeader.PRHdrID</td>
                                             <td>@obj.Product.ProductName</td>
                                             <td>@obj.UnitPrice</td>
                                             <td>@obj.UnitOfMeasurement</td>
@@ -152,7 +145,7 @@
                                                     <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="UpsertPurchaseRequisitionDetail" asp-route-PRDtlID="@obj.PRDtlID" class="btn btn-primary mx-2">
                                                         <i class="bi bi-pencil-square"></i> Edit
                                                     </a>
-                                                    <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="DeleteProductCategory" asp-route-PRDtlID="@obj.PRDtlID" class="btn btn-danger mx-2">
+                                                    <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="DeletePurchaseRequisitionDetail" asp-route-PRDtlID="@obj.PRDtlID" class="btn btn-danger mx-2">
                                                         <i class="bi bi-trash"></i> Delete
                                                     </a>
                                                 </div>

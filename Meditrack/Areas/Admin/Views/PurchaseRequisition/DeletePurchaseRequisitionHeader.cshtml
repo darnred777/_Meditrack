@@ -1,0 +1,39 @@
+﻿@model PurchaseRequisitionHeader
+
+<div class="container">
+    <h1 class="my-4">Delete Purchase Requisition Header</h1>
+    <form method="post">
+        <div class="mb-3">
+            <label asp-for="PRHdrID" class="form-label">PR Header ID</label>
+            <input asp-for="PRHdrID" disabled class="form-control" readonly>
+        </div>
+        <div class="mb-3">
+            <label asp-for="SupplierID" class="form-label">Supplier ID</label>
+            <input asp-for="SupplierID" disabled class="form-control" readonly>
+        </div>
+        <div class="mb-3">
+            <label asp-for="LocationID" class="form-label">Location ID</label>
+            <input asp-for="LocationID" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="StatusID" class="form-label">Status ID</label>
+            <input asp-for="StatusID" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="PRDate" class="form-label">PRHeader Date</label>
+            <input asp-for="PRDate" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="TotalAmount" class="form-label">Total Amount</label>
+            <input asp-for="TotalAmount" disabled class="form-control">
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-danger mt-4 form-control">Delete</button>
+            </div>
+            <div class="col-6">
+                <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+            </div>
+        </div>
+    </form>
+</div>

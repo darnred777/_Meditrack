@@ -15,7 +15,7 @@ namespace Meditrack.Models
         [ForeignKey("PRHdrID")]
         [ValidateNever]
         public virtual PurchaseRequisitionHeader PurchaseRequisitionHeader { get; set; }
-
+       
         public int? ProductID { get; set; }
 
         [ForeignKey("ProductID")]

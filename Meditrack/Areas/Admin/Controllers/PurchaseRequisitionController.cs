@@ -29,10 +29,30 @@ namespace Meditrack.Areas.Admin.Controllers
 
         public IActionResult ManagePurchaseRequisitionDetail()
         {
-            List<PurchaseRequisitionDetail> objPurchaseRequisitionDetailList = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "Product").ToList();
+            List<PurchaseRequisitionDetail> objPurchaseRequisitionDetailList = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "PurchaseRequisitionHeader,Product").ToList();
 
             return View(objPurchaseRequisitionDetailList);
         }
+
+
+
+        ///////
+
+        public IActionResult ManagePurchaseOrderHeader()
+        {
+            List<PurchaseOrderHeader> objPurchaseOrderHeaderList = _unitOfWork.PurchaseOrderHeader.GetAll(includeProperties: "Supplier,Location,Status").ToList();
+
+            return View(objPurchaseOrderHeaderList);
+        }
+
+        public IActionResult ManagePurchaseOrderDetail()
+        {
+            List<PurchaseOrderDetail> objPurchaseOrderDetailList = _unitOfWork.PurchaseOrderDetail.GetAll(includeProperties: "Product").ToList();
+
+            return View(objPurchaseOrderDetailList);
+        }
+
+        //
 
         //ViewBag
         public IActionResult UpsertPurchaseRequisitionHeader(int? PRHdrID)
@@ -121,7 +141,11 @@ namespace Meditrack.Areas.Admin.Controllers
 
                 return View(purchaseRequisitionHeaderVM);
             }
+
         }
+
+
+
 
         public IActionResult DeletePurchaseRequisitionHeader(int? PRHdrID)
         {
@@ -138,7 +162,7 @@ namespace Meditrack.Areas.Admin.Controllers
             return View(purchaseRequisitionHeaderFromDb);
         }
 
-        [HttpPost, ActionName("DeletePurchaseRequisition")]
+        [HttpPost, ActionName("DeletePurchaseRequisitionHeader")]
         public IActionResult DeletePOSTPurchaseRequisitionHeader(int? PRHdrID)
         {
             PurchaseRequisitionHeader? obj = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == PRHdrID);
@@ -149,7 +173,7 @@ namespace Meditrack.Areas.Admin.Controllers
             _unitOfWork.PurchaseRequisitionHeader.Remove(obj);
             _unitOfWork.Save();
 
-            return RedirectToAction("ManagePurchaseRequisition");
+            return RedirectToAction("ManagePurchaseRequisitionHeader");
         }
 
 
@@ -158,9 +182,15 @@ namespace Meditrack.Areas.Admin.Controllers
 
         public IActionResult UpsertPurchaseRequisitionDetail(int? PRDtlID)
         {
-
             PurchaseRequisitionDetailVM purchaseRequisitionDetailVM = new()
             {
+                HeaderIdList = _unitOfWork.PurchaseRequisitionHeader.GetAll()
+                                .Select(header => new SelectListItem
+                                {
+                                    Value = header.PRHdrID.ToString(),
+                                    Text = header.PRHdrID.ToString() // You can use other properties here like header description, etc.
+                                }),
+
                 ProductList = _unitOfWork.Product.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.ProductName,
@@ -182,7 +212,6 @@ namespace Meditrack.Areas.Admin.Controllers
                 //update
                 return View(purchaseRequisitionDetailVM);
             }
-
         }
 
         [HttpPost]
@@ -199,6 +228,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 {
                     // Adding a new detail
                     _unitOfWork.PurchaseRequisitionDetail.Add(purchaseRequisitionDetailVM.PurchaseRequisitionDetail);
+                
                 }
                 else
                 {
@@ -218,9 +248,47 @@ namespace Meditrack.Areas.Admin.Controllers
                     Value = u.ProductID.ToString()
                 });
 
+                purchaseRequisitionDetailVM.HeaderIdList = _unitOfWork.PurchaseRequisitionHeader.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.PRHdrID.ToString(),
+                    Value = u.PRHdrID.ToString()
+                });
+
                 return View(purchaseRequisitionDetailVM);
             }
         }
+
+
+        public IActionResult DeletePurchaseRequisitionDetail(int? PRDtlID)
+        {
+            if (PRDtlID == null || PRDtlID == 0)
+            {
+                return NotFound();
+            }
+            PurchaseRequisitionDetail? purchaseRequisitionDetailFromDb = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRDtlID == PRDtlID);
+
+            if (purchaseRequisitionDetailFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(purchaseRequisitionDetailFromDb);
+        }
+
+
+        [HttpPost, ActionName("DeletePurchaseRequisitionDetail")]
+        public IActionResult DeletePOSTPurchaseRequisitionDetail(int? PRDtlID)
+        {
+            PurchaseRequisitionDetail? obj = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRDtlID == PRDtlID);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _unitOfWork.PurchaseRequisitionDetail.Remove(obj);
+            _unitOfWork.Save();
+
+            return RedirectToAction("ManagePurchaseRequisitionDetail");
+        }
+
 
     }
 }
