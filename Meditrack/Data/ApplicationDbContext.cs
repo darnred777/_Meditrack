@@ -1,30 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Meditrack.Models;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
 namespace Meditrack.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
-    {
-       
+    {      
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
 
-        public DbSet<UserGroup> UserGroup { get; set; }
+        public DbSet<TransactionLogs> TransactionLogs { get; set; }
+
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
         public DbSet<Status> Status { get; set; }
 
         public DbSet<Location> Location { get; set; }
 
         public DbSet<ProductCategory> ProductCategory { get; set; }
-
-        public DbSet<User> User { get; set; }
-
-        public DbSet<UserGroupMatrix> UserGroupMatrix { get; set; }
 
         public DbSet<Supplier> Supplier { get; set; }
 
@@ -38,8 +34,6 @@ namespace Meditrack.Data
 
         public DbSet<PurchaseOrderDetail> PurchaseOrderDetail { get; set; }
 
-        public DbSet<TransactionLogs> TransactionLogs { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<UserGroup>().HasData(
@@ -48,8 +42,6 @@ namespace Meditrack.Data
             //    new UserGroup { UserGroupID = 1, UserGroupName = "Approver" },
             //    new UserGroup { UserGroupID = 1, UserGroupName = "Viewer" }
             //    );
-
-            //base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.UnitPrice)

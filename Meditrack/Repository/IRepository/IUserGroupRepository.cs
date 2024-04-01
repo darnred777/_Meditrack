@@ -1,9 +1,9 @@
-﻿using Meditrack.Models;
+﻿//using Meditrack.Models;
 
-namespace Meditrack.Repository.IRepository
-{
-    public interface IUserGroupRepository : IRepository<UserGroup>
-    {
-        void Update(UserGroup obj);
-    }
-}
+//namespace Meditrack.Repository.IRepository
+//{
+//    public interface IUserGroupRepository : IRepository<UserGroup>
+//    {
+//        void Update(UserGroup obj);
+//    }
+//}

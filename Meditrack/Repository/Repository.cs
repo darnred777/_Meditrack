@@ -14,7 +14,7 @@ namespace Meditrack.Repository
             _db = db;
             this.dbSet = _db.Set<T>();
             //_db.User == dbSet
-            _db.User.Include(u => u.Location).Include(u => u.LocationID);
+            //_db.User.Include(u => u.Location).Include(u => u.LocationID);
         }
 
         public void Add(T entity)

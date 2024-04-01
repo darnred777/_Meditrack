@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meditrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240321133020_TakingOffTrueInIsActiveStatuses")]
-    partial class TakingOffTrueInIsActiveStatuses
+    [Migration("20240401161258_ExtendIdentityUser")]
+    partial class ExtendIdentityUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,9 +131,6 @@ namespace Meditrack.Migrations
                     b.Property<DateTime>("DateLastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TotalQuantityInStock")
-                        .HasColumnType("int");
-
                     b.HasKey("CategoryID");
 
                     b.ToTable("ProductCategory");
@@ -158,6 +155,9 @@ namespace Meditrack.Migrations
 
                     b.Property<int>("QuantityInOrder")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("DECIMAL(10,2)");
 
                     b.Property<string>("UnitOfMeasurement")
                         .IsRequired()
@@ -237,8 +237,7 @@ namespace Meditrack.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Subtotal")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("MONEY");
+                        .HasColumnType("DECIMAL(10,2)");
 
                     b.Property<string>("UnitOfMeasurement")
                         .IsRequired()
@@ -278,7 +277,7 @@ namespace Meditrack.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("MONEY");
+                        .HasColumnType("DECIMAL(10,2)");
 
                     b.HasKey("PRHdrID");
 
@@ -357,154 +356,6 @@ namespace Meditrack.Migrations
                     b.ToTable("Supplier");
                 });
 
-            modelBuilder.Entity("Meditrack.Models.TransactionLogs", b =>
-                {
-                    b.Property<int>("TransactionID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionID"));
-
-                    b.Property<int?>("POHdrID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PRHdrID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StatusID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TransDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TransType")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("TransactionID");
-
-                    b.HasIndex("POHdrID");
-
-                    b.HasIndex("PRHdrID");
-
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("StatusID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("TransactionLogs");
-                });
-
-            modelBuilder.Entity("Meditrack.Models.User", b =>
-                {
-                    b.Property<int>("UserID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
-
-                    b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastLoginTime_Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("LocationID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("ProfilePicture")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("UserID");
-
-                    b.HasIndex("LocationID");
-
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("Meditrack.Models.UserGroup", b =>
-                {
-                    b.Property<int>("UserGroupID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserGroupID"));
-
-                    b.Property<string>("UserGroupName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("UserGroupID");
-
-                    b.ToTable("UserGroup");
-                });
-
-            modelBuilder.Entity("Meditrack.Models.UserGroupMatrix", b =>
-                {
-                    b.Property<int>("UserGroupMatrixID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserGroupMatrixID"));
-
-                    b.Property<int>("UserGroupID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserGroupMatrixID");
-
-                    b.HasIndex("UserGroupID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("UserGroupMatrix");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -569,6 +420,11 @@ namespace Meditrack.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -620,6 +476,10 @@ namespace Meditrack.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -705,6 +565,43 @@ namespace Meditrack.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Meditrack.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastLoginTime_Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("LocationID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasIndex("LocationID");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Meditrack.Models.Product", b =>
@@ -825,73 +722,6 @@ namespace Meditrack.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("Meditrack.Models.TransactionLogs", b =>
-                {
-                    b.HasOne("Meditrack.Models.PurchaseOrderHeader", "PurchaseOrderHeader")
-                        .WithMany()
-                        .HasForeignKey("POHdrID");
-
-                    b.HasOne("Meditrack.Models.PurchaseRequisitionHeader", "PurchaseRequisitionHeader")
-                        .WithMany()
-                        .HasForeignKey("PRHdrID");
-
-                    b.HasOne("Meditrack.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductID");
-
-                    b.HasOne("Meditrack.Models.Status", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Meditrack.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("PurchaseOrderHeader");
-
-                    b.Navigation("PurchaseRequisitionHeader");
-
-                    b.Navigation("Status");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Meditrack.Models.User", b =>
-                {
-                    b.HasOne("Meditrack.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Location");
-                });
-
-            modelBuilder.Entity("Meditrack.Models.UserGroupMatrix", b =>
-                {
-                    b.HasOne("Meditrack.Models.UserGroup", "UserGroup")
-                        .WithMany()
-                        .HasForeignKey("UserGroupID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Meditrack.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("UserGroup");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -941,6 +771,17 @@ namespace Meditrack.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Meditrack.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Meditrack.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
                 });
 #pragma warning restore 612, 618
         }

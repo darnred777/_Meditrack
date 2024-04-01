@@ -13,10 +13,10 @@ namespace Meditrack.Models
         public required string TransType { get; set; }
 
         [Required]
-        public int UserID { get; set; }
+        public string Id { get; set; }
 
-        [ForeignKey("UserID")]
-        public required User User { get; set; }
+        [ForeignKey("Id")]
+        public required ApplicationUser ApplicationUser { get; set; }
 
         [Required]
         public int StatusID { get; set; }

@@ -2,8 +2,8 @@
 {
     public interface IUnitOfWork
     {
-        IUserRepository User { get; }
-        IUserGroupRepository UserGroup { get; }
+        //IUserRepository User { get; }
+        //IUserGroupRepository UserGroup { get; }
         ISupplierRepository Supplier { get; }
         IProductRepository Product { get; }
         IProductCategoryRepository ProductCategory { get; }
