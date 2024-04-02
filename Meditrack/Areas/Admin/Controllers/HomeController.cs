@@ -1,6 +1,7 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
 using Meditrack.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

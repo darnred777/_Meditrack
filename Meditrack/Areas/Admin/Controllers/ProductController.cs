@@ -3,6 +3,7 @@ using Meditrack.Models;
 using Meditrack.Models.ViewModels;
 using Meditrack.Repository;
 using Meditrack.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;

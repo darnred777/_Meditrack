@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Meditrack.Migrations
 {
     /// <inheritdoc />
-    public partial class addProjectAndIdentityTables : Migration
+    public partial class CreateProjectTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,31 +23,6 @@ namespace Meditrack.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,6 +86,101 @@ namespace Meditrack.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    LocationID = table.Column<int>(type: "int", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastLoginTime_Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Location_LocationID",
+                        column: x => x.LocationID,
+                        principalTable: "Location",
+                        principalColumn: "LocationID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Supplier",
+                columns: table => new
+                {
+                    SupplierID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LocationID = table.Column<int>(type: "int", nullable: true),
+                    SupplierName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ContactPerson = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ContactNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    OfficeAddress = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Supplier", x => x.SupplierID);
+                    table.ForeignKey(
+                        name: "FK_Supplier_Location_LocationID",
+                        column: x => x.LocationID,
+                        principalTable: "Location",
+                        principalColumn: "LocationID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    SKU = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
+                    UnitOfMeasurement = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    QuantityInStock = table.Column<int>(type: "int", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastUnitPriceUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastQuantityInStockUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.ProductID);
+                    table.ForeignKey(
+                        name: "FK_Product_ProductCategory_CategoryID",
+                        column: x => x.CategoryID,
+                        principalTable: "ProductCategory",
+                        principalColumn: "CategoryID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -196,61 +266,6 @@ namespace Meditrack.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Supplier",
-                columns: table => new
-                {
-                    SupplierID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationID = table.Column<int>(type: "int", nullable: true),
-                    SupplierName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    ContactPerson = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    ContactNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    OfficeAddress = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Supplier", x => x.SupplierID);
-                    table.ForeignKey(
-                        name: "FK_Supplier_Location_LocationID",
-                        column: x => x.LocationID,
-                        principalTable: "Location",
-                        principalColumn: "LocationID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    ProductID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryID = table.Column<int>(type: "int", nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    SKU = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    Brand = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
-                    UnitOfMeasurement = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    QuantityInStock = table.Column<int>(type: "int", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastUnitPriceUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastQuantityInStockUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.ProductID);
-                    table.ForeignKey(
-                        name: "FK_Product_ProductCategory_CategoryID",
-                        column: x => x.CategoryID,
-                        principalTable: "ProductCategory",
-                        principalColumn: "CategoryID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -392,6 +407,52 @@ namespace Meditrack.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TransactionLogs",
+                columns: table => new
+                {
+                    TransactionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransType = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    StatusID = table.Column<int>(type: "int", nullable: false),
+                    POHdrID = table.Column<int>(type: "int", nullable: true),
+                    PRHdrID = table.Column<int>(type: "int", nullable: true),
+                    ProductID = table.Column<int>(type: "int", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    TransDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionLogs", x => x.TransactionID);
+                    table.ForeignKey(
+                        name: "FK_TransactionLogs_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TransactionLogs_Product_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Product",
+                        principalColumn: "ProductID");
+                    table.ForeignKey(
+                        name: "FK_TransactionLogs_PurchaseOrderHeader_POHdrID",
+                        column: x => x.POHdrID,
+                        principalTable: "PurchaseOrderHeader",
+                        principalColumn: "POHdrID");
+                    table.ForeignKey(
+                        name: "FK_TransactionLogs_PurchaseRequisitionHeader_PRHdrID",
+                        column: x => x.PRHdrID,
+                        principalTable: "PurchaseRequisitionHeader",
+                        principalColumn: "PRHdrID");
+                    table.ForeignKey(
+                        name: "FK_TransactionLogs_Status_StatusID",
+                        column: x => x.StatusID,
+                        principalTable: "Status",
+                        principalColumn: "StatusID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -423,6 +484,11 @@ namespace Meditrack.Migrations
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_LocationID",
+                table: "AspNetUsers",
+                column: "LocationID");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -495,6 +561,31 @@ namespace Meditrack.Migrations
                 name: "IX_Supplier_LocationID",
                 table: "Supplier",
                 column: "LocationID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionLogs_Id",
+                table: "TransactionLogs",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionLogs_POHdrID",
+                table: "TransactionLogs",
+                column: "POHdrID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionLogs_PRHdrID",
+                table: "TransactionLogs",
+                column: "PRHdrID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionLogs_ProductID",
+                table: "TransactionLogs",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionLogs_StatusID",
+                table: "TransactionLogs",
+                column: "StatusID");
         }
 
         /// <inheritdoc />
@@ -522,22 +613,25 @@ namespace Meditrack.Migrations
                 name: "PurchaseRequisitionDetail");
 
             migrationBuilder.DropTable(
+                name: "TransactionLogs");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "PurchaseOrderHeader");
-
-            migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
-                name: "PurchaseRequisitionHeader");
+                name: "PurchaseOrderHeader");
 
             migrationBuilder.DropTable(
                 name: "ProductCategory");
+
+            migrationBuilder.DropTable(
+                name: "PurchaseRequisitionHeader");
 
             migrationBuilder.DropTable(
                 name: "Status");

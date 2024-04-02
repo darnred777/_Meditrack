@@ -1,12 +1,14 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
 using Meditrack.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Meditrack.Areas.Viewer.Controllers
 {
     [Area("Viewer")]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -19,7 +21,6 @@ namespace Meditrack.Areas.Viewer.Controllers
         {
             return View();
         }
-
         public IActionResult Profile()
         {
             return View();
