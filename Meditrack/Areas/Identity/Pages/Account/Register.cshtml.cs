@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -109,6 +110,17 @@ namespace Meditrack.Areas.Identity.Pages.Account
 
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
+
+            [StringLength(30)]
+            public string? FirstName { get; set; }
+
+            [StringLength(30)]
+            public string? LastName { get; set; }
+
+            public DateTime? BirthDate { get; set; }
+
+            [ValidateNever]
+            public string? ProfilePicture { get; set; }
         }
 
 
@@ -145,6 +157,10 @@ namespace Meditrack.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.BirthDate = Input.BirthDate;
+                user.ProfilePicture = Input.ProfilePicture;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -178,7 +194,14 @@ namespace Meditrack.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(StaticDetails.Role_Admin))
+                        {
+                            TempData["success"] = "New User Created Successfully";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }                      
                         return LocalRedirect(returnUrl);
                     }
                 }

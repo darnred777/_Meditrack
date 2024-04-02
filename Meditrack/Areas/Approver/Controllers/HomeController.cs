@@ -1,12 +1,15 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
 using Meditrack.Repository.IRepository;
+using Meditrack.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Meditrack.Areas.Approver.Controllers
 {
     [Area("Approver")]
+    [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer + "," + StaticDetails.Role_Approver)]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

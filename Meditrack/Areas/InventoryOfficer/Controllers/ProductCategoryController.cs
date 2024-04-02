@@ -2,12 +2,15 @@
 using Meditrack.Models;
 using Meditrack.Repository;
 using Meditrack.Repository.IRepository;
+using Meditrack.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
     [Area("InventoryOfficer")]
+    [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer)]
     public class ProductCategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

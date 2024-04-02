@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace Meditrack.Areas.Admin.Controllers
+namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
-    [Area("Admin")]
+    [Area("InventoryOfficer")]
     [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer)]
     public class PurchaseRequisitionController : Controller
     {
