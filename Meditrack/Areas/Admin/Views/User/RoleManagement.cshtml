@@ -1,0 +1,67 @@
+﻿@model RoleManagementVM
+
+<!-- Main Component -->
+<div class="main">
+    <nav class="navbar navbar-expand px-3 border-bottom">
+        <!-- Button for sidebar toggle -->
+        <button class="btn" type="button" data-bs-theme="light">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    <main class="content px-3 py-2">
+        <div class="container-fluid">
+            <div class="mb-3">
+
+                <div class="container mt-5">
+                    <h3>Edit User</h3>
+                    <form method="post">
+                        <input asp-for="ApplicationUser.Id" hidden />                       
+                        <div class="form-floating mb-3 col-md-12">
+                            <input asp-for="ApplicationUser.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label asp-for="ApplicationUser.Email" class="ms-2 text-muted">Email</label>
+                        </div>
+                        <div class="form-floating mb-3 col-md-6">
+                            <input asp-for="ApplicationUser.PasswordHash" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="ApplicationUser.PasswordHash" class="ms-2 text-muted">Password</label>
+                        </div>
+                        <div class="form-floating mb-3 col-md-6">
+                            <select asp-for="ApplicationUser.Role" asp-items="@Model.RoleList" class="form-select">
+                                <option disabled selected>--Select Role--</option>
+                            </select>
+                        </div>
+                        <div class="form-floating mb-3 col-md-6">
+                            <select asp-for="ApplicationUser.LocationID" asp-items="@Model.LocationList" class="form-select">
+                                <option disabled selected>--Select Location--</option>
+                            </select>
+                        </div>
+                        <div class="form-floating mb-3 col-md-12">
+                            <input asp-for="ApplicationUser.FirstName" class="form-control" aria-required="true" placeholder="First Name" />
+                            <label asp-for="ApplicationUser.FirstName" class="ms-2 text-muted">FirstName</label>
+                        </div>
+                        <div class="form-floating mb-3 col-md-12">
+                            <input asp-for="ApplicationUser.LastName" class="form-control" aria-required="true" placeholder="Last Name" />
+                            <label asp-for="ApplicationUser.LastName" class="ms-2 text-muted">LastName</label>
+                        </div>
+                        <div class="form-floating mb-3 col-md-12">
+                            <input asp-for="ApplicationUser.BirthDate" class="form-control" aria-required="true" placeholder="Birth Date" />
+                            <label asp-for="ApplicationUser.BirthDate" class="ms-2 text-muted">Birth Date</label>
+                        </div>
+                        <div class="form-floating mb-3 col-md-12">
+                            <input type="file" class="form-control" aria-required="true" />
+                            <label asp-for="ApplicationUser.ProfilePicture" class="ms-2 text-muted">Profile Picture</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+                            </div>
+                            <div class="col-6">
+                                <a asp-area="Admin" asp-controller="User" asp-action="ManageUserAccount" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>

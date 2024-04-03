@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace Meditrack.Areas.Viewer.Controllers
 {
     [Area("Viewer")]
-    [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer + "," + StaticDetails.Role_Approver + "," + StaticDetails.Role_Viewer)]
+    [Authorize(StaticDetails.Role_Viewer)]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -27,7 +27,7 @@ namespace Meditrack.Areas.Viewer.Controllers
             return View();
         }
 
-        public IActionResult Inventory()
+        public IActionResult ManageProduct()
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "ProductCategory").ToList();
             return View(objProductList);

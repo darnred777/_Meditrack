@@ -12,7 +12,7 @@ using System.Diagnostics;
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
     [Area("InventoryOfficer")]
-    [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer)]
+    //[Authorize(Roles = StaticDetails.Role_InventoryOfficer)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -86,35 +86,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 return View(productVM);
             }
         }
-
-        //public IActionResult EditProduct(int? ProductID)
-        //{
-        //    if (ProductID == null || ProductID == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Product? productFromDb = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
-
-        //    if (productFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(productFromDb);
-        //}
-
-        //[HttpPost]
-        //public IActionResult EditProduct(Product obj)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.Product.Update(obj);
-        //        _unitOfWork.Save();
-
-        //        return RedirectToAction("ManageProduct");
-        //    }
-        //    return View();
-        //}
-
+      
         public IActionResult DeleteProduct(int? ProductID)
         {
             if (ProductID == null || ProductID == 0)

@@ -9,6 +9,7 @@ using System.Diagnostics;
 namespace Meditrack.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    //[Authorize(Roles = StaticDetails.Role_Admin)]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -16,56 +17,39 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-
+        
         public IActionResult Index()
         {
             return View();
         }
-        
+
         public IActionResult Dashboard()
         {
             return View();
         }
-
-        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer + "," + StaticDetails.Role_Approver + "," + StaticDetails.Role_Viewer)]
 
         public IActionResult Profile()
         {
             return View();
         }
 
-        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer)]
-
         public IActionResult Transaction()
         {
             return View();
         }
-
-        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer + "," + StaticDetails.Role_Approver + "," + StaticDetails.Role_Viewer)]
-
-        public IActionResult Inventory()
-        {
-            List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
-            return View(objProductList);
-        }
-
-        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer + "," + StaticDetails.Role_Approver)]
 
         public IActionResult Notification()
         {
             return View();
         }
 
-        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer + "," + StaticDetails.Role_Approver)]
-
         public IActionResult Report()
         {
             return View();
         }
 
-        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer + "," + StaticDetails.Role_Approver)]
         public IActionResult Feedback()
-        {
+        {   
             return View();
         }
 

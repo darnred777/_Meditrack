@@ -4,9 +4,6 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-@if (User.IsInRole(StaticDetails.Role_Admin) ||
-    User.IsInRole(StaticDetails.Role_InventoryOfficer))
-{
     <div class="wrapper">
         <!-- Sidebar -->
         <aside id="sidebar">
@@ -105,4 +102,3 @@
             </main>
         </div>
     </div>
-}
