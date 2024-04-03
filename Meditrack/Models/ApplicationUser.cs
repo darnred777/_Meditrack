@@ -31,5 +31,8 @@ namespace Meditrack.Models
         public DateTime LastLoginTime_Date { get; set; } = DateTime.Now;
 
         public bool IsActive { get; set; } = true;
+
+        [NotMapped]
+        public string Role { get; set; }
     }
 }

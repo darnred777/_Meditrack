@@ -12,6 +12,7 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using Meditrack.Models;
+using Meditrack.Repository.IRepository;
 using Meditrack.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -35,6 +36,7 @@ namespace Meditrack.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -42,8 +44,11 @@ namespace Meditrack.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
-        {           
+            IEmailSender emailSender,
+            IUnitOfWork unitOfWork)
+
+        {
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _roleManager = roleManager;
             _userStore = userStore;
@@ -121,6 +126,11 @@ namespace Meditrack.Areas.Identity.Pages.Account
 
             [ValidateNever]
             public string? ProfilePicture { get; set; }
+
+            public string? LocationID { get; set; }
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> LocationList { get; set; }
         }
 
 
@@ -140,6 +150,12 @@ namespace Meditrack.Areas.Identity.Pages.Account
                 {
                     Text = i,   
                     Value = i
+                }),
+
+                LocationList = _unitOfWork.Location.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.LocationAddress,
+                    Value = i.LocationID.ToString()
                 })
             };
 
@@ -161,6 +177,19 @@ namespace Meditrack.Areas.Identity.Pages.Account
                 user.LastName = Input.LastName;
                 user.BirthDate = Input.BirthDate;
                 user.ProfilePicture = Input.ProfilePicture;
+
+                if (Input.Role == StaticDetails.Role_Admin ||
+                    Input.Role == StaticDetails.Role_InventoryOfficer ||
+                    Input.Role == StaticDetails.Role_Approver ||
+                    Input.Role == StaticDetails.Role_Viewer)
+                {                  
+                    if (int.TryParse(Input.LocationID, out int locationId))
+                    {                       
+                        user.LocationID = locationId;
+                    }                   
+                }
+
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
