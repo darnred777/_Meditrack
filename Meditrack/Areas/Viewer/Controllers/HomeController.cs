@@ -9,13 +9,17 @@ using System.Diagnostics;
 namespace Meditrack.Areas.Viewer.Controllers
 {
     [Area("Viewer")]
-    [Authorize(StaticDetails.Role_Viewer)]
+    [Authorize(Roles = StaticDetails.Role_Viewer)]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         public HomeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+        public IActionResult Dashboard()
+        {
+            return View();
         }
 
         public IActionResult Index()

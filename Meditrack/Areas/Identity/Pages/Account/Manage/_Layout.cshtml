@@ -1,4 +1,7 @@
-﻿@{
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
     if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
     {
         Layout = parentLayout.ToString();
@@ -8,11 +11,21 @@
         Layout = "/Views/Shared/_Layout.cshtml";
     }
 }
-
-<h1>Manage your account</h1>
-
+@if (User.IsInRole(StaticDetails.Role_Admin))
+    {
+        <h1>Manage your account</h1>
+    }
+@if (User.IsInRole(StaticDetails.Role_InventoryOfficer) ||
+   User.IsInRole(StaticDetails.Role_Approver) ||
+   User.IsInRole(StaticDetails.Role_Viewer))
+    {
+        <h1>Account Details</h1>
+    }
 <div>
-    <h2>Change your account settings</h2>
+    @if (User.IsInRole(StaticDetails.Role_Admin))
+    {
+        <h2>Change your account settings</h2>
+    }
     <hr />
     <div class="row">
         <div class="col-md-3">
