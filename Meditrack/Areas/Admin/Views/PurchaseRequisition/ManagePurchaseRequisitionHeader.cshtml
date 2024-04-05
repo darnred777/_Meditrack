@@ -1,4 +1,10 @@
-﻿@model List<PurchaseRequisitionHeader>
+﻿@using Microsoft.AspNetCore.Identity
+@using Meditrack.Utility
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model List<PurchaseRequisitionHeader>
 
 <div class="wrapper">
     <!-- Sidebar -->
@@ -15,27 +21,33 @@
                         Dashboard
                     </a>
                 </li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                            <i class="bi bi-person"></i>
+                            Profile
+                        </a>
+                    </li>
+                }
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Profile">
-                        <i class="bi bi-person"></i>
-                        Profile
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
+                    <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
                        aria-expanded="false" aria-controls="pages">
                         <i class="fa-regular fa-file-lines pe-2"></i>
                         Management
                     </a>
                     <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Admin" asp-controller="User" asp-action="ManageUserAccount">Manage User Account</a>
+                            <a class="sidebar-link" asp-area="Admin" asp-controller="User" asp-action="ManageUserAccount">Manage Users</a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" asp-area="Admin" asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" asp-area="Admin" asp-controller="Product" asp-action="ManageProduct">Manage Inventory</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="Admin" asp-controller="Location" asp-action="ManageLocation">Manage Location</a>
                         </li>
                     </ul>
                 </li>
@@ -64,11 +76,14 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Index">
-                        <i class="bi bi-box-arrow-right"></i>
-                        Logout
-                    </a>
+                    <form id="logoutForm" class="sidebar-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button id="logout" type="submit" class="btn btn-link border-0 sidebar-logout">
+                            <i class="bi bi-box-arrow-right ms-1"></i>
+                            Logout
+                        </button>
+                    </form>
                 </li>
+
             </ul>
         </div>
     </aside>
@@ -135,7 +150,7 @@
                                             <td>@obj.PRHdrID</td>
                                             <td>@obj.Supplier.SupplierName</td>
                                             <td>@obj.Location.LocationAddress</td>
-                                            <td>@obj.Status.StatusDescription</td>
+                                            <td>@(obj.Status != null ? obj.Status.StatusDescription : "")</td>
                                             <td>@obj.TotalAmount</td>
                                             <td>@obj.PRDate</td>
                                             <td>

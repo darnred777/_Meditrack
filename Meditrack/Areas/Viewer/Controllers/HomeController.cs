@@ -26,10 +26,6 @@ namespace Meditrack.Areas.Viewer.Controllers
         {
             return View();
         }
-        public IActionResult Profile()
-        {
-            return View();
-        }
 
         public IActionResult ManageProduct()
         {

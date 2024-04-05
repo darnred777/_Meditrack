@@ -1,9 +1,15 @@
-﻿    <div class="wrapper">
+﻿@using Microsoft.AspNetCore.Identity
+@using Meditrack.Utility
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<div class="wrapper">
     <!-- Sidebar -->
     <aside id="sidebar">
         <div class="h-100">
             <div class="sidebar-logo">
-                <a href="#">Meditrack</a>
+                <a>Meditrack</a>
             </div>
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
@@ -13,12 +19,15 @@
                         Dashboard
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Profile">
-                        <i class="bi bi-person"></i>
-                        Profile
-                    </a>
-                </li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                            <i class="bi bi-person"></i>
+                            Profile
+                        </a>
+                    </li>
+                }
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
                        aria-expanded="false" aria-controls="pages">
@@ -38,7 +47,7 @@
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="PR" asp-action="ManagePR">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader">
                         <i class="bi bi-check2-square"></i>
                         Transactions
                     </a>

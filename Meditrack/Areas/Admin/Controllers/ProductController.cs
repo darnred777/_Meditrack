@@ -85,35 +85,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 });
                 return View(productVM);
             }
-        }
-
-        //public IActionResult EditProduct(int? ProductID)
-        //{
-        //    if (ProductID == null || ProductID == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Product? productFromDb = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
-
-        //    if (productFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(productFromDb);
-        //}
-
-        //[HttpPost]
-        //public IActionResult EditProduct(Product obj)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.Product.Update(obj);
-        //        _unitOfWork.Save();
-
-        //        return RedirectToAction("ManageProduct");
-        //    }
-        //    return View();
-        //}
+        }        
 
         public IActionResult DeleteProduct(int? ProductID)
         {

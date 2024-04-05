@@ -1,153 +1,56 @@
 ﻿@model ProductVM
-
-<div class="wrapper">
-    <!-- Sidebar -->
-    <aside id="sidebar">
-        <div class="h-100">
-            <div class="sidebar-logo">
-                <a href="#">Meditrack</a>
-            </div>
-            <!-- Sidebar Navigation -->
-            <ul class="sidebar-nav">
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Dashboard">
-                        <i class="bi bi-grid"></i>
-                        Dashboard
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Profile">
-                        <i class="bi bi-person"></i>
-                        Profile
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
-                       aria-expanded="false" aria-controls="pages">
-                        <i class="fa-regular fa-file-lines pe-2"></i>
-                        Management
-                    </a>
-                    <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Admin" asp-controller="User" asp-action="ManageUserAccount">Manage User Account</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Admin" asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Admin" asp-controller="Product" asp-action="ManageProduct">Manage Product</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Transaction">
-                        <i class="bi bi-check2-square"></i>
-                        Transactions
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Inventory">
-                        <i class="bi bi-database"></i>
-                        Inventory
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Notification">
-                        <i class="bi bi-bell"></i>
-                        Notifications
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Report">
-                        <i class="bi bi-list-task"></i>
-                        Reports
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Feedback">
-                        <i class="bi bi-hand-thumbs-up"></i>
-                        Feedback
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Index">
-                        <i class="bi bi-box-arrow-right"></i>
-                        Logout
-                    </a>
-                </li>
-            </ul>
+ 
+<div class="container mt-5">
+    <h3>@(Model.Product.ProductID != 0 ? "Update" : "Create") Product</h3>
+    <form method="post">
+        <div class="form-group">
+            <input asp-for="Product.ProductID" hidden />
         </div>
-    </aside>
-    <!-- Main Component -->
-    <div class="main">
-        <nav class="navbar navbar-expand px-3 border-bottom">
-            <!-- Button for sidebar toggle -->
-            <button class="btn" type="button" data-bs-theme="light">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-        <main class="content px-3 py-2">
-            <div class="container-fluid">
-                <div class="mb-3">
-                    
-                    <div class="container mt-5">
-                        <h3>@(Model.Product.ProductID != 0 ? "Update" : "Create") Product</h3>
-                        <form method="post">
-                            <div class="form-group">
-                                <input asp-for="Product.ProductID" hidden />
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.CategoryID">Product Category</label>
-                                <select asp-for="@Model.Product.CategoryID" asp-items="@Model.ProductCategoryList" class="form-select">
-                                    <option disabled selected>--Select Product Category--</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.ProductName" class="form-label">Product Name:</label>
-                                <input asp-for="Product.ProductName" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.SKU" class="form-label">SKU:</label>
-                                <input asp-for="Product.SKU" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.Brand" class="form-label">Brand:</label>
-                                <input asp-for="Product.Brand" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.ProductDescription" class="form-label">Product Description:</label>
-                                <textarea asp-for="Product.ProductDescription" class="form-control" rows="3" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.UnitPrice" class="form-label">Unit Price:</label>
-                                <input asp-for="Product.UnitPrice" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.UnitOfMeasurement" class="form-label">Unit of Measurement:</label>
-                                <input asp-for="Product.UnitOfMeasurement" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.QuantityInStock" class="form-label">Quantity in Stock:</label>
-                                <input asp-for="Product.QuantityInStock" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Product.ExpirationDate" class="form-label">Expiration Date:</label>
-                                <input asp-for="Product.ExpirationDate" class="form-control" required>
-                            </div>                           
-                            <div class="row">
-                                <div class="col-6">
-                                    <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
-                                </div>
-                                <div class="col-6">
-                                    <a asp-area="Admin" asp-controller="Product" asp-action="ManageProduct" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                </div>
+        <div class="mb-3">
+            <label asp-for="Product.CategoryID">Product Category</label>
+            <select asp-for="@Model.Product.CategoryID" asp-items="@Model.ProductCategoryList" class="form-select">
+                <option disabled selected>--Select Product Category--</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Product.ProductName" class="form-label">Product Name:</label>
+            <input asp-for="Product.ProductName" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Product.SKU" class="form-label">SKU:</label>
+            <input asp-for="Product.SKU" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Product.Brand" class="form-label">Brand:</label>
+            <input asp-for="Product.Brand" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Product.ProductDescription" class="form-label">Product Description:</label>
+            <textarea asp-for="Product.ProductDescription" class="form-control" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Product.UnitPrice" class="form-label">Unit Price:</label>
+            <input asp-for="Product.UnitPrice" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Product.UnitOfMeasurement" class="form-label">Unit of Measurement:</label>
+            <input asp-for="Product.UnitOfMeasurement" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Product.QuantityInStock" class="form-label">Quantity in Stock:</label>
+            <input asp-for="Product.QuantityInStock" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Product.ExpirationDate" class="form-label">Expiration Date:</label>
+            <input asp-for="Product.ExpirationDate" class="form-control" required>
+        </div>                           
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
             </div>
-        </main>
-    </div>
+            <div class="col-6">
+                <a asp-area="Admin" asp-controller="Product" asp-action="ManageProduct" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+            </div>
+        </div>
+    </form>
 </div>

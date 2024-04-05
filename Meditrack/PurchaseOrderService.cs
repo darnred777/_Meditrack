@@ -20,7 +20,7 @@ namespace Meditrack.Services
                                                     .Include(pr => pr.Location)
                                                     .Include(pr => pr.Status)
                                                     .Include(pr => pr.Supplier)
-                                                    .Include(pr => pr.PRDate)
+                                                    
                                                     .FirstOrDefault(pr => pr.PRHdrID == prHdrId);        
             if (purchaseRequisitionHeader != null)
             {
@@ -31,12 +31,12 @@ namespace Meditrack.Services
                     Supplier = purchaseRequisitionHeader.Supplier, // Use the Supplier from PurchaseRequisitionHeader
                     Location = purchaseRequisitionHeader.Location, // Use the Location from PurchaseRequisitionHeader
                     PurchaseRequisitionHeader = purchaseRequisitionHeader,
-                    PODate = purchaseRequisitionHeader.PRDate,
+                    //PODate = purchaseRequisitionHeader.PRDate,
                     PRHdrID = purchaseRequisitionHeader.PRHdrID,
-                    TotalAmount = purchaseRequisitionHeader.TotalAmount,
-                    LocationID = purchaseRequisitionHeader.LocationID,
-                    StatusID = (int)purchaseRequisitionHeader.StatusID,
-                    SupplierID = purchaseRequisitionHeader.SupplierID
+                    //TotalAmount = purchaseRequisitionHeader.TotalAmount,
+                    //LocationID = purchaseRequisitionHeader.LocationID,
+                    //StatusID = (int)purchaseRequisitionHeader.StatusID,
+                    //SupplierID = purchaseRequisitionHeader.SupplierID
                 };
 
                 // Save the new PurchaseOrderHeader to the database

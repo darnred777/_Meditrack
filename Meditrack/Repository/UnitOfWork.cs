@@ -21,8 +21,6 @@ namespace Meditrack.Repository
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
-            //User = new UserRepository(_db);
-            //UserGroup = new UserGroupRepository(_db);
             Supplier = new SupplierRepository(_db);
             Product = new ProductRepository(_db);
             ProductCategory = new ProductCategoryRepository(_db);

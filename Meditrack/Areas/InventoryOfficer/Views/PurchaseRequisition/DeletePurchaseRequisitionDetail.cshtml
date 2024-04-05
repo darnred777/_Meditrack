@@ -1,7 +1,7 @@
 ﻿@model PurchaseRequisitionDetail
 
 <div class="container">
-    <h1 class="my-4">Delete Purchase Requisition Header</h1>
+    <h1 class="my-4">Delete Purchase Requisition Detail</h1>
     <form method="post">
         <div class="mb-3">
             <label asp-for="PRDtlID" class="form-label">PR Detail ID</label>
@@ -36,7 +36,7 @@
                 <button type="submit" class="btn btn-danger mt-4 form-control">Delete</button>
             </div>
             <div class="col-6">
-                <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionDetail" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+                <a asp-area="InventoryOfficer" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionDetail" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
             </div>
         </div>
     </form>

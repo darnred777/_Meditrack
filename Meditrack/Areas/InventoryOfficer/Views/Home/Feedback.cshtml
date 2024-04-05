@@ -1,24 +1,33 @@
-﻿<div class="wrapper">
+﻿@using Microsoft.AspNetCore.Identity
+@using Meditrack.Utility
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<div class="wrapper">
     <!-- Sidebar -->
     <aside id="sidebar">
         <div class="h-100">
             <div class="sidebar-logo">
-                <a href="#">Meditrack</a>
+                <a>Meditrack</a>
             </div>
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="ManageUserAccount">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Dashboard">
                         <i class="bi bi-grid"></i>
                         Dashboard
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Profile">
-                        <i class="bi bi-person"></i>
-                        Profile
-                    </a>
-                </li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                            <i class="bi bi-person"></i>
+                            Profile
+                        </a>
+                    </li>
+                }
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
                        aria-expanded="false" aria-controls="pages">
@@ -27,42 +36,47 @@
                     </a>
                     <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
+                            <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Supplier" asp-action="ManageVendor">Manage Supplier</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Product" asp-action="ManageProduct">Manage Inventory</a>
+                            <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Product" asp-action="ManageProduct">Manage Inventory</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Location" asp-action="ManageLocation">Manage Location</a>
                         </li>
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Transaction">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader">
                         <i class="bi bi-check2-square"></i>
                         Transactions
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Notification">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Notification">
                         <i class="bi bi-bell"></i>
                         Notifications
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Report">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Report">
                         <i class="bi bi-list-task"></i>
                         Reports
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Feedback">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Feedback">
                         <i class="bi bi-hand-thumbs-up"></i>
                         Feedback
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Inventory Officer" asp-controller="Home" asp-action="Index">
-                        <i class="bi bi-box-arrow-right"></i>
-                        Logout
-                    </a>
+                    <form id="logoutForm" class="sidebar-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button id="logout" type="submit" class="btn btn-link border-0 sidebar-logout">
+                            <i class="bi bi-box-arrow-right ms-1"></i>
+                            Logout
+                        </button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -78,7 +92,7 @@
         <main class="content px-3 py-2">
             <div class="container-fluid">
                 <div class="mb-3">
-                    <h3>Display Feedback</h3>
+                    <h3>Dashboard</h3>
                 </div>
             </div>
         </main>
