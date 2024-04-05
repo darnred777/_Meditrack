@@ -1,0 +1,53 @@
+﻿@model List<Product>
+
+<!--Main Content-->
+<div class="mt-5">
+    <h3>Inventory List</h3>
+    <div class="table-responsive table-bordered table-striped">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ProductID</th>
+                    <th>Category</th>
+                    <th>Product Name</th>
+                    <th>SKU</th>
+                    <th>Brand</th>
+                    <th>Product Description</th>
+                    <th>Unit Price</th>
+                    <th>Unit Of Measurement</th>
+                    <th>Quantity In Stock</th>
+                    <th>Expiration Date</th>
+                    <th>LastUnit Price Updated</th>
+                    <th>Last Quantity In Stock Updated</th>
+                    <th>Is Active</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model.OrderBy(u => u.ProductID))
+                {
+                    <tr>
+                        <td>@obj.ProductID</td>
+                        <td>@obj.ProductCategory.CategoryName</td>
+                        <td>@obj.ProductName</td>
+                        <td>@obj.SKU</td>
+                        <td>@obj.Brand</td>
+                        <td>@obj.ProductDescription</td>
+                        <td>@obj.UnitPrice</td>
+                        <td>@obj.UnitOfMeasurement</td>
+                        <td>@obj.QuantityInStock</td>
+                        <td>@obj.ExpirationDate</td>
+                        <td>@obj.LastUnitPriceUpdated</td>
+                        <td>@obj.LastQuantityInStockUpdated</td>
+                        <td>@obj.isActive</td>                    
+                    </tr>
+                }
+            </tbody>
+        </table>       
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <a href="@Url.Action("Dashboard", "Home", new { area = "Approver" })" class="btn btn-primary w-100 mt-3">Back</a>
+    </div>
+</div>
+<!--End of Content-->

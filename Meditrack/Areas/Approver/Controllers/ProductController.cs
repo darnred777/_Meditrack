@@ -1,57 +1,30 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Models.ViewModels;
+using Meditrack.Repository;
 using Meditrack.Repository.IRepository;
 using Meditrack.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
 namespace Meditrack.Areas.Approver.Controllers
 {
     [Area("Approver")]
     [Authorize(Roles = StaticDetails.Role_Approver)]
-    public class HomeController : Controller
+    public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public HomeController(IUnitOfWork unitOfWork)
+        public ProductController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Profile()
-        {
-            return View();
-        }
-
-        public IActionResult Product()
+        public IActionResult ManageProduct()
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "ProductCategory").ToList();
             return View(objProductList);
-        }
-
-        public IActionResult Notification()
-        {
-            return View();
-        }
-
-        public IActionResult Report()
-        {
-            return View();
-        }
-
-        public IActionResult Feedback()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -60,4 +33,5 @@ namespace Meditrack.Areas.Approver.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
 }

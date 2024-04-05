@@ -1,0 +1,67 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Meditrack.Utility
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <div class="h-100">
+                <div class="sidebar-logo">
+                    <a>Meditrack</a>
+                </div>
+                <!-- Sidebar Navigation -->
+                <ul class="sidebar-nav">                              
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                                    <i class="bi bi-person"></i>
+                                    Profile
+                                </a>
+                            </li>
+                        }
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Approver" asp-controller="Product" asp-action="ManageProduct">
+                        <i class="bi bi-check2-square"></i>
+                        View Inventory
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Approver" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader">
+                        <i class="bi bi-check2-square"></i>
+                        Transactions
+                    </a>
+                </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Notification">
+                            <i class="bi bi-bell"></i>
+                            Notifications
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Report">
+                            <i class="bi bi-list-task"></i>
+                            Reports
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Feedback">
+                            <i class="bi bi-hand-thumbs-up"></i>
+                            Feedback
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <form id="logoutForm" class="sidebar-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">                           
+                            <button id="logout" type="submit" class="btn btn-link border-0 sidebar-logout">
+                                <i class="bi bi-box-arrow-right ms-1"></i>
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+
+                </ul>
+            </div>
+        </aside>      
+    </div>

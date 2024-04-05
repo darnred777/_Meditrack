@@ -4,7 +4,16 @@
 @inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Manage Email";
+    @if (User.IsInRole(StaticDetails.Role_Admin))
+    {
+        ViewData["Title"] = "Manage Email";
+    }
+    @if (User.IsInRole(StaticDetails.Role_Viewer) ||
+         User.IsInRole(StaticDetails.Role_InventoryOfficer) ||
+         User.IsInRole(StaticDetails.Role_Approver))
+    {
+        ViewData["Title"] = "Email";
+    }
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
