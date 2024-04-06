@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
     [Area("InventoryOfficer")]
-    [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer)]
+    [Authorize(Roles = StaticDetails.Role_InventoryOfficer)]
     public class PurchaseRequisitionController : Controller
     {
 

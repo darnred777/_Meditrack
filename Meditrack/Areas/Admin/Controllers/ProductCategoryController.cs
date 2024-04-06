@@ -1,5 +1,6 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Models.ViewModels;
 using Meditrack.Repository;
 using Meditrack.Repository.IRepository;
 using Meditrack.Utility;
@@ -26,45 +27,68 @@ namespace Meditrack.Areas.Admin.Controllers
             return View(objProductCategoryList);
         }
 
-        public IActionResult AddNewProductCategory()
+        public IActionResult UpsertProductCategory(int? categoryID)
         {
-            return View();
+            ProductCategoryVM categoryVM = new()
+            {
+                ProductCategory = new ProductCategory()
+                {
+                    CategoryName = "",
+                    CategoryDescription = ""
+                }
+            };
+
+            if (categoryID == null || categoryID == 0)
+            {
+                // Create
+                return View(categoryVM);
+            }
+            else
+            {
+                categoryVM.ProductCategory = _unitOfWork.ProductCategory.Get(u => u.CategoryID == categoryID);
+
+                // Update
+                return View(categoryVM);
+            }
         }
 
         [HttpPost]
-        public IActionResult AddNewProductCategory(ProductCategory obj)
-        {
-            _unitOfWork.ProductCategory.Add(obj);
-            _unitOfWork.Save();
-            return RedirectToAction("ManageProductCategory");
-        }
-
-        public IActionResult EditProductCategory(int? CategoryID)
-        {
-            if (CategoryID == null || CategoryID == 0)
-            {
-                return NotFound();
-            }
-            ProductCategory? productCategoryFromDb = _unitOfWork.ProductCategory.Get(u => u.CategoryID == CategoryID);
-
-            if (productCategoryFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(productCategoryFromDb);
-        }
-
-        [HttpPost]
-        public IActionResult EditProductCategory(ProductCategory obj)
+        public IActionResult UpsertProductCategory(ProductCategoryVM productCategoryVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.ProductCategory.Update(obj);
+                if (productCategoryVM.ProductCategory.CategoryID == 0)
+                {
+                    // Adding a new location
+                    _unitOfWork.ProductCategory.Add(productCategoryVM.ProductCategory);
+                }
+                else
+                {
+                    // Updating an existing location
+                    // Get the existing location entity from the database
+                    var existingCategory = _unitOfWork.ProductCategory.Get(u => u.CategoryID == productCategoryVM.ProductCategory.CategoryID);
+
+                    if (existingCategory == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update the properties of the existing location entity with the new values
+                    existingCategory.CategoryName = productCategoryVM.ProductCategory.CategoryName;
+                    existingCategory.CategoryDescription = productCategoryVM.ProductCategory.CategoryDescription;
+
+                    // Update the location entity in the database
+                    _unitOfWork.ProductCategory.Update(existingCategory);
+                }
+
                 _unitOfWork.Save();
 
                 return RedirectToAction("ManageProductCategory");
             }
-            return View();
+            else
+            {
+                return View(productCategoryVM);
+            }
         }
 
         public IActionResult DeleteProductCategory(int? CategoryID)

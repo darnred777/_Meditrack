@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
     [Area("InventoryOfficer")]
-    //[Authorize(Roles = StaticDetails.Role_InventoryOfficer)]
+    [Authorize(Roles = StaticDetails.Role_InventoryOfficer)]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

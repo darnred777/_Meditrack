@@ -1,0 +1,26 @@
+﻿@model LocationVM
+                 
+<div class="container mt-5">
+    <h3>@(Model.Location.LocationID != 0 ? "Update" : "Create") Product Category</h3>
+    <form method="post">
+        <div class="form-group">
+            <input asp-for="Location.LocationID" hidden />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Location.LocationType" class="form-label">Location Type:</label>
+            <input asp-for="Location.LocationType" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Location.LocationAddress" class="form-label">Location Address:</label>
+            <textarea asp-for="Location.LocationAddress" class="form-control" required></textarea>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+            </div>
+            <div class="col-6">
+                <a asp-area="InventoryOfficer" asp-controller="Location" asp-action="ManageLocation" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+            </div>
+        </div>
+    </form>
+</div>             

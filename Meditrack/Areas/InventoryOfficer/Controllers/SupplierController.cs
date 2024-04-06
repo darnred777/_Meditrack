@@ -11,7 +11,7 @@ using System.Diagnostics;
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
     [Area("InventoryOfficer")]
-    [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_InventoryOfficer)]
+    [Authorize(Roles = StaticDetails.Role_InventoryOfficer)]
     public class SupplierController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -25,35 +25,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             List<Supplier> objSupplierList = _unitOfWork.Supplier.GetAll(includeProperties: "Location").ToList();
 
             return View(objSupplierList);
-        }
-
-        //public IActionResult EditVendor(int? SupplierID)
-        //{
-        //    if (SupplierID == null || SupplierID == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Supplier? supplierFromDb = _unitOfWork.Supplier.Get(u => u.SupplierID == SupplierID);
-
-        //    if (supplierFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(supplierFromDb);
-        //}
-
-        //[HttpPost]
-        //public IActionResult EditVendor(Supplier obj)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.Supplier.Update(obj);
-        //        _unitOfWork.Save();
-
-        //        return RedirectToAction("ManageVendor");
-        //    }
-        //    return View();
-        //}
+        }  
 
         public IActionResult DeleteVendor(int? SupplierID)
         {
