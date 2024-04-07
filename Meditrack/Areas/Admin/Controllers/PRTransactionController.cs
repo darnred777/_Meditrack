@@ -1,7 +1,9 @@
 ﻿using Meditrack.Models;
+using Meditrack.Models.ViewModels;
 using Meditrack.Repository.IRepository;
 using Meditrack.Utility;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 
 namespace Meditrack.Areas.Admin.Controllers
@@ -20,6 +22,58 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public IActionResult PRDetails(int prId)
+        {
+            // Fetch all products and convert them to SelectListItem objects
+            var productList = _unitOfWork.Product.GetAll().Select(p => new SelectListItem
+            {
+                Value = p.ProductID.ToString(), // Assuming Id is the property you want to use as the value
+                Text = p.ProductName // Assuming Name is the property you want to display as the text
+            });
+
+            PRTransactionVM prTransactionVM = new PRTransactionVM
+            {
+                PurchaseRequisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == prId, includeProperties: "Supplier,Location,Status"),
+                PurchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRDtlID == prId, includeProperties: "Product"),
+                ProductList = productList
+            };
+            return View(prTransactionVM);
+        }
+
+        //[HttpPost]
+        //public IActionResult PRDetails(PRTransactionVM prTransactionVM)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Add or update PurchaseRequisitionHeader
+        //        if (prTransactionVM.PurchaseRequisitionHeader.PRHdrID == 0)
+        //        {
+        //            _unitOfWork.PurchaseRequisitionHeader.Add(prTransactionVM.PurchaseRequisitionHeader);
+        //        }
+        //        // Save changes to the PurchaseRequisitionHeader
+        //        _unitOfWork.Save();
+
+        //        // Add or update PurchaseRequisitionDetails
+        //        foreach (var prDetail in prTransactionVM.PurchaseRequisitionDetailList)
+        //        {
+        //            if (prDetail.PRDtlID == 0)
+        //            {
+        //                prDetail.PRHdrID = prTransactionVM.PurchaseRequisitionHeader.PRHdrID;
+        //                _unitOfWork.PurchaseRequisitionDetail.Add(prDetail);
+        //            }
+        //        }
+        //        // Save changes to the PurchaseRequisitionDetails
+        //        _unitOfWork.Save();
+
+        //        return RedirectToAction("PRList"); // Redirect to desired action after saving
+        //    }
+        //    else
+        //    {
+        //        // Model validation failed, return the view with errors
+        //        return View(prTransactionVM);
+        //    }
+        //}
 
         #region API CALLS
 

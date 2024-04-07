@@ -15,17 +15,12 @@ function loadDataTable(status) {
             { data: 'totalAmount', "width": "10%" },
             { data: 'prDate', "width": "10%" },
             {
-                data: 'id',
-                "render": function (data) {
-                    
-
-                    
+                data: 'prHdrID',
+                "render": function (data) {                                       
                         return `
                         <div class="w-75 btn-group" role="group">
-                            <a href="/admin/prtransaction/details?prId=${data}" class="btn btn-primary max-2"><i class="bi bi-pencil-square"></i></a>                              
-                        </div>
-                    `
-                                                                                        
+                            <a href="/admin/prtransaction/prdetails?prId=${data}" class="btn btn-primary max-2"><i class="bi bi-pencil-square"></i></a>                              
+                        </div>`                                                                                                          
                 },
                 "width": "20%"
             }
