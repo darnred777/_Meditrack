@@ -23,11 +23,11 @@ namespace Meditrack.Models
         [ValidateNever]
         public virtual Location Location { get; set; }
 
-        public int? StatusID { get; set; }
+        public int StatusID { get; set; }
 
         [ForeignKey("StatusID")]
         [ValidateNever]
-        public virtual Status? Status { get; set; }
+        public virtual Status Status { get; set; }
 
         public decimal TotalAmount { get; set; }
 

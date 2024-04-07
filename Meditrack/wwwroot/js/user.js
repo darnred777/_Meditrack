@@ -8,15 +8,15 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/user/getall' },
         "columns": [
-            { "data": "firstName", "width": "10%" },
-            { "data": "lastName", "width": "10%" },
-            { "data": "email", "width": "10%" },
-            { "data": "location.locationAddress", "width": "10%" },
-            { "data": "birthDate", "width": "10%" },
-            { "data": "registrationDate", "width": "10%" },
-            { "data": "lastLoginTime_Date", "width": "10%" }, 
-            { "data": "role", "width": "10%" },
-            { "data": "isActive", "width": "10%" },
+            { data: 'firstName', "width": "10%" },
+            { data: 'lastName', "width": "10%" },
+            { data: 'email', "width": "10%" },
+            { data: 'location.locationAddress', "width": "10%" },
+            { data: 'birthDate', "width": "10%" },
+            { data: 'registrationDate', "width": "10%" },
+            { data: 'lastLoginTime_Date', "width": "10%" }, 
+            { data: 'role', "width": "10%" },
+            { data: 'isActive', "width": "10%" },
             {
                 data: { id:"id", lockoutEnd:"lockoutEnd" },
                 "render": function (data) {
@@ -47,7 +47,7 @@ function loadDataTable() {
                     `
                     }                                                                      
                 },
-                "width": "25%"
+                "width": "50%"
             }
         ]
     });

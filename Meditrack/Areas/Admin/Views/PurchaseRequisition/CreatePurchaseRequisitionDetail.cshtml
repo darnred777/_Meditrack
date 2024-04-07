@@ -1,0 +1,55 @@
+﻿@model PurchaseRequisitionHeaderVM
+
+<div class="wrapper">
+    <!-- Main Component -->
+    <div class="main">
+        <nav class="navbar navbar-expand px-3 border-bottom">
+            <!-- Button for sidebar toggle -->
+            <button class="btn" type="button" data-bs-theme="light">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+        <main class="content px-3 py-2">
+            <div class="container-fluid">
+                <div class="mb-3">
+
+                    <div class="container">
+                        <h1 class="my-4">@(Model.PurchaseRequisitionHeader.PRHdrID != 0 ? "Update" : "Create") Purchase Requisition Header</h1>
+                        <form method="post">
+                            <div class="form-group">
+                                <input asp-for="PurchaseRequisitionHeader.PRHdrID" readonly/>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PurchaseRequisitionHeader.Supplier.SupplierName">Supplier</label>
+                                <input asp-for="@Model.PurchaseRequisitionHeader.Supplier.SupplierName" asp-items="@Model.SupplierList" class="form-control" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PurchaseRequisitionHeader.Location.LocationAddress">Location</label>
+                                <input asp-for="@Model.PurchaseRequisitionHeader.Location.LocationAddress" asp-items="@Model.SupplierList" class="form-control" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PurchaseRequisitionHeader.Status.StatusDescription">Status</label>
+                                <input asp-for="@Model.PurchaseRequisitionHeader.Status.StatusDescription" asp-items="@Model.SupplierList" class="form-control" disabled>
+                            </div>
+                            <div class="form-row">                              
+                                <div class="form-group">
+                                    <label asp-for="PurchaseRequisitionHeader.PRDate">PR Date:</label>
+                                    <input asp-for="PurchaseRequisitionHeader.PRDate" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+                                </div>
+                                <div class="col-6">
+                                    <a asp-area="Admin" asp-controller="PurchaseRequisition" asp-action="ManagePurchaseRequisitionHeader" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

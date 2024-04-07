@@ -187,7 +187,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         {
             PurchaseRequisitionDetailVM purchaseRequisitionDetailVM = new()
             {
-                HeaderIdList = _unitOfWork.PurchaseRequisitionHeader.GetAll()
+				HeaderIdList = _unitOfWork.PurchaseRequisitionHeader.GetAll()
                                 .Select(header => new SelectListItem
                                 {
                                     Value = header.PRHdrID.ToString(),

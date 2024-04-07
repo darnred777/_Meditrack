@@ -4,6 +4,7 @@ using Meditrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meditrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240407021132_MakeStatusNullableInPOHeader")]
+    partial class MakeStatusNullableInPOHeader
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,7 +197,7 @@ namespace Meditrack.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("StatusID")
+                    b.Property<int?>("StatusID")
                         .HasColumnType("int");
 
                     b.Property<int>("SupplierID")
@@ -267,7 +270,7 @@ namespace Meditrack.Migrations
                     b.Property<DateTime>("PRDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusID")
+                    b.Property<int?>("StatusID")
                         .HasColumnType("int");
 
                     b.Property<int>("SupplierID")
@@ -690,9 +693,7 @@ namespace Meditrack.Migrations
 
                     b.HasOne("Meditrack.Models.Status", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StatusID");
 
                     b.HasOne("Meditrack.Models.Supplier", "Supplier")
                         .WithMany()
@@ -736,9 +737,7 @@ namespace Meditrack.Migrations
 
                     b.HasOne("Meditrack.Models.Status", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StatusID");
 
                     b.HasOne("Meditrack.Models.Supplier", "Supplier")
                         .WithMany()

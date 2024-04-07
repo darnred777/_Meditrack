@@ -9,7 +9,6 @@ namespace Meditrack.Models
         [Key]
         public int POHdrID { get; set; }
 
-        [Required]
         public int StatusID { get; set; }
 
         [ForeignKey("StatusID")]
