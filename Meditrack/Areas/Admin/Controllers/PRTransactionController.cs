@@ -34,14 +34,39 @@ namespace Meditrack.Areas.Admin.Controllers
 
         public IActionResult ViewPRDetails(int prdId)
         {
-            PRTransactionVM prTransactionVM = new()
+            // Fetch the PRDetail based on PRDtlID
+            var purchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRDtlID == prdId, includeProperties: "Product");
+
+            if (purchaseRequisitionDetail == null)
             {
-                PurchaseRequisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == prdId, includeProperties: "Supplier,Location,Status"),
-                PurchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRHdrID == prdId, includeProperties: "PurchaseRequisitionHeader")
+                // Handle the case where PRDetail is not found
+                return NotFound();
+            }
+
+            // Fetch the corresponding PRHeader based on PRHdrID in the PRDetail
+            var purchaseRequisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == purchaseRequisitionDetail.PRHdrID, includeProperties: "Supplier,Location,Status");
+
+            if (purchaseRequisitionHeader == null)
+            {
+                // Handle the case where PRHeader is not found
+                return NotFound();
+            }
+
+            // Create a view model to hold both PRHeader and PRDetail
+            var prTransactionVM = new PRTransactionVM
+            {
+                PurchaseRequisitionHeader = purchaseRequisitionHeader,
+                PurchaseRequisitionDetail = purchaseRequisitionDetail
             };
+
             return View(prTransactionVM);
         }
 
+
+        // Pass the PRDetail to the view
+        //return View(prDetail);      
+
+        ////////////////////////////////////
 
         //Adding PR Details
         public IActionResult PRDetails(int prId)
@@ -84,13 +109,22 @@ namespace Meditrack.Areas.Admin.Controllers
                 _unitOfWork.PurchaseRequisitionDetail.Add(prTransactionVM.PurchaseRequisitionDetail);
 
                 // Update TotalAmount in PurchaseRequisitionHeader
+                // Retrieve the PR Header based on its ID
                 var requisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(header => header.PRHdrID == prTransactionVM.PurchaseRequisitionDetail.PRHdrID);
+
                 if (requisitionHeader != null)
-                {
-                    requisitionHeader.TotalAmount += prTransactionVM.PurchaseRequisitionDetail.Subtotal;
+                {                                       
+
+                    // Add the new PR Detail's subtotal to the PR Header's total amount
+                    requisitionHeader.TotalAmount = prTransactionVM.PurchaseRequisitionDetail.Subtotal;
+
+                    // Update the PR Header in the database
+                    _unitOfWork.PurchaseRequisitionHeader.Update(requisitionHeader);
+
+                    // Save changes to the database
+                    _unitOfWork.Save();
                 }
 
-                _unitOfWork.Save();
 
                 return RedirectToAction("PRDList");
             }          
@@ -101,7 +135,7 @@ namespace Meditrack.Areas.Admin.Controllers
 
 
         ///////
-           
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -188,10 +222,20 @@ namespace Meditrack.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             // Fetch all PurchaseRequisitionHeaders
-            var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status");
-        
+            var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status")
+                .Select(header => new
+                {
+                    header.PRHdrID,
+                    header.Supplier.SupplierName,
+                    header.Location.LocationAddress,
+                    header.Status.StatusDescription,
+                    header.PRDate
+                    // Exclude totalAmount field
+                });
+
             return Json(new { data = headers });
         }
+
 
 
         //Retrieving the PR Headers and PR Details

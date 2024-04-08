@@ -9,10 +9,9 @@ function loadDataTable(status) {
         "ajax": { url: '/admin/prtransaction/getall?status=' +status },
         "columns": [
             { data: 'prHdrID', "width": "10%" },
-            { data: 'supplier.supplierName', "width": "10%" },
-            { data: 'location.locationAddress', "width": "10%" },
-            { data: 'status.statusDescription', "width": "10%" },
-            { data: 'totalAmount', "width": "10%" },
+            { data: 'supplierName', "width": "10%" },
+            { data: 'locationAddress', "width": "10%" },
+            { data: 'statusDescription', "width": "10%" },           
             { data: 'prDate', "width": "10%" },
             {
                 data: 'prHdrID',
