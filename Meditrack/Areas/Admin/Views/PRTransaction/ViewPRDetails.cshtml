@@ -28,10 +28,10 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <!-- Additional Purchase Requisition Detail Fields -->              
+                <!-- Additional Purchase Requisition Detail Fields -->
                 <div class="mb-3">
                     <div class="mb-3">
-                        <input asp-for="PurchaseRequisitionDetail.PRDtlID" class="form-control"  hidden/>
+                        <input asp-for="PurchaseRequisitionDetail.PRDtlID" class="form-control" hidden />
                     </div>
                 </div>
                 <div class="mb-3">
@@ -61,11 +61,15 @@
         </div>
         <div class="row mt-4">
             <div class="col-md-6">
-                <button type="submit" class="btn btn-primary form-control">Save</button>
+                <button type="submit" class="btn btn-primary">Approve</button>
             </div>
             <div class="col-md-6">
-                <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PRList" class="btn btn-outline-secondary form-control">Back</a>
+                <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PRDList" class="btn btn-outline-secondary">Back</a>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary">Cancel</button>
             </div>
         </div>
     </form>
 </div>
+

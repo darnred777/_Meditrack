@@ -5,7 +5,7 @@
     var cancelled = "text-primary";
     var all = "text-primary";
 
-    switch(status)
+    switch (status)
     {
         case "pending":
             pending = "active text-white bg-primary";
@@ -15,7 +15,7 @@
             break;
         case "cancelled":
             cancelled = "active text-white bg-primary";
-            break;   
+            break;
         default:
             all = "active text-white bg-primary";
             break;
@@ -29,7 +29,7 @@
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12">
-                <h3 class="py-2">Requisition Header List</h3>
+                <h3 class="py-2">Purchase Requisition List</h3>
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
             <span></span>
             <ul class="list-group list-group-horizontal-sm">
                 <a style="text-decoration:none;" asp-controller="PRTransaction" asp-action="PRList" asp-route-status="pending">
-                    <li class="list-group-item @pending">Pending</li>
+                <li class="list-group-item @pending">Pending</li>
                 </a>
                 <a style="text-decoration:none;" asp-controller="PRTransaction" asp-action="PRList" asp-route-status="approved">
                 <li class="list-group-item @approved">Approved</li>
@@ -51,27 +51,34 @@
                 </a>
             </ul>
         </div>
-        <table id="tblData" class="table table-responsive table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>PRHdrID</th>
-                    <th>Supplier</th>
-                    <th>Location</th>
-                    <th>Status</th>
-                    <th>Total Amount</th>
-                    <th>PR Date</th>
-                    <th></th>
-                </tr>
-            </thead>
-        </table>        
-    </div>  
+        <div class="table-responsive">
+            <table id="tblData" class="table table-responsive table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>PRDtlID</th>
+                        <th>PRHdrID</th>    
+                        <th>Supplier</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Total Amount</th>
+                        <th>PR Date</th>
+                        <th>Product Name</th>
+                        <th>Unit Price</th>
+                        <th>Unit Of Measurement</th>
+                        <th>Quantity in Order</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 </div>
 <div class="col-md-6">
-    <a asp-area="Admin" asp-controller="Home" asp-action="Dashboard" class="btn btn-outline-secondary form-control">Back</a>
+    <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PRList" class="btn btn-outline-secondary form-control">Back</a>
 </div>
 
 <!--End of Content-->
-
 @section Scripts {
-    <script src="~/js/prheader.js"></script>
+    <script src="~/js/prdetail.js"></script>
 }

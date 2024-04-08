@@ -20,8 +20,9 @@ function loadDataTable(status) {
                         return `
                         <div class="w-75 btn-group" role="group">
                             <a href="/admin/prtransaction/prdetails?prId=${data}" class="btn btn-primary max-2"><i class="bi bi-pencil-square"></i></a>                              
-                        </div>`                                                                                                          
-                },
+                        </div>                      
+                        `                                                                                                          
+                },  
                 "width": "20%"
             }
         ]
