@@ -33,6 +33,6 @@ namespace Meditrack.Models
         public decimal Subtotal { get; set; }
 
         [Required]
-        public bool IsVATExclusive { get; set; }
+        public bool IsVATExclusive { get; set; } = true;
     }
 }

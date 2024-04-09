@@ -31,5 +31,12 @@ namespace Meditrack.Models
         public int QuantityInOrder { get; set; }
 
         public decimal Subtotal { get; set; }
+
+        //[NotMapped]
+        //public string myStatus { get; set; }
+
+        //[NotMapped]
+        //public decimal Total { get; set; }
+     
     }
 }

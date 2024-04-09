@@ -9,11 +9,11 @@ namespace Meditrack.Models
         [Key]
         public int POHdrID { get; set; }
 
-        public int StatusID { get; set; }
+        public int? StatusID { get; set; }
 
         [ForeignKey("StatusID")]
         [ValidateNever]
-        public virtual required Status Status { get; set; }
+        public virtual required Status? Status { get; set; }
 
         [Required]
         public int SupplierID { get; set; }
@@ -22,9 +22,11 @@ namespace Meditrack.Models
         public virtual required Supplier Supplier { get; set; }
 
         [Required]
+        [ValidateNever]
         public int LocationID { get; set; }
 
         [ForeignKey("LocationID")]
+        [ValidateNever]
         public virtual required Location Location { get; set; }
 
         [Required]

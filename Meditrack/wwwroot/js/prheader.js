@@ -11,7 +11,6 @@ function loadDataTable(status) {
             { data: 'prHdrID', "width": "10%" },
             { data: 'supplierName', "width": "10%" },
             { data: 'locationAddress', "width": "10%" },
-            { data: 'statusDescription', "width": "10%" },           
             { data: 'prDate', "width": "10%" },
             {
                 data: 'prHdrID',

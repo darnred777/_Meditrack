@@ -20,13 +20,13 @@
 //                                                    .Include(pr => pr.Location)
 //                                                    .Include(pr => pr.Status)
 //                                                    .Include(pr => pr.Supplier)
-                                                    
-//                                                    .FirstOrDefault(pr => pr.PRHdrID == prHdrId);        
+
+//                                                    .FirstOrDefault(pr => pr.PRHdrID == prHdrId);
 //            if (purchaseRequisitionHeader != null)
 //            {
 //                // Create a new PurchaseOrderHeader instance
 //                var purchaseOrderHeader = new PurchaseOrderHeader
-//                {                  
+//                {
 //                    Status = purchaseRequisitionHeader.Status, // Provide the required Status object here
 //                    Supplier = purchaseRequisitionHeader.Supplier, // Use the Supplier from PurchaseRequisitionHeader
 //                    Location = purchaseRequisitionHeader.Location, // Use the Location from PurchaseRequisitionHeader

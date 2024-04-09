@@ -10,12 +10,10 @@ function loadDataTable(status) {
         "columns": [
             { data: 'prDtlID', "width": "5%" },
             { data: 'prHdrID', "width": "5%" },
-            { data: 'purchaseRequisitionHeader.supplier.supplierName', "width": "10%" },
-            { data: 'purchaseRequisitionHeader.location.locationAddress', "width": "10%" },
-            { data: 'purchaseRequisitionHeader.status.statusDescription', "width": "10%" },
-            { data: 'purchaseRequisitionHeader.totalAmount', "width": "10%" },
+            { data: 'purchaseRequisitionHeader.supplierName', "width": "10%" },
+            { data: 'purchaseRequisitionHeader.locationAddress', "width": "10%" },
             { data: 'purchaseRequisitionHeader.prDate', "width": "10%" },
-            { data: 'product.productName', "width": "10%" },
+            { data: 'productName', "width": "10%" },
             { data: 'unitPrice', "width": "10%" },
             { data: 'unitOfMeasurement', "width": "10%" },
             { data: 'quantityInOrder', "width": "10%" }, 
@@ -31,7 +29,7 @@ function loadDataTable(status) {
                 },  
                 "width": "20%"
             }
-        ]
+        ]  
     });
 }
 

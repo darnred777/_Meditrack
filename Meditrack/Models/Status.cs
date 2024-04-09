@@ -9,7 +9,7 @@ namespace Meditrack.Models
 
         [Required]
         [Display(Name = "Status Description")]
-        public string StatusDescription { get; set; }
+        public string? StatusDescription { get; set; }
 
     }
 }

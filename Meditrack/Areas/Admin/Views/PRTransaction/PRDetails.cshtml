@@ -17,11 +17,7 @@
                 <div class="mb-3">
                     <label for="locationAddress" class="form-label">Location Address</label>
                     <input id="locationAddress" asp-for="PurchaseRequisitionHeader.Location.LocationAddress" class="form-control" disabled />
-                </div>
-                <div class="mb-3">
-                    <label for="statusDescription" class="form-label">Status Description</label>
-                    <input id="statusDescription" asp-for="PurchaseRequisitionHeader.Status.StatusDescription" class="form-control" disabled />
-                </div>
+                </div>              
                 <div class="mb-3">
                     <label for="prDate" class="form-label">PR Date</label>
                     <input id="prDate" asp-for="PurchaseRequisitionHeader.PRDate" class="form-control" disabled />
@@ -42,6 +38,10 @@
                     <select asp-for="PurchaseRequisitionDetail.ProductID" asp-items="@Model.ProductList" class="form-select">
                         <option disabled selected>--Select Product--</option>
                     </select>
+                </div>
+                <div class="mb-3">
+                    <label for="prID" class="form-label"></label>
+                    <input id="prID" asp-for="PurchaseRequisitionHeader.PRHdrID" class="form-control" hidden />
                 </div>
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
