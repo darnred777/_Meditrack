@@ -11,13 +11,16 @@ namespace Meditrack.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = StaticDetails.Role_Admin)]
+
     public class PRTransactionController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPurchaseOrderService _purchaseOrderService;
 
-        public PRTransactionController(IUnitOfWork unitOfWork)
+        public PRTransactionController(IUnitOfWork unitOfWork , IPurchaseOrderService purchaseOrderService)
         {
             _unitOfWork = unitOfWork;
+            _purchaseOrderService = purchaseOrderService;
         }
 
         //PRHeader List
@@ -31,6 +34,29 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult ApprovePR(int prdId)
+        {
+            try
+            {
+                // Logic to approve the purchase requisition with the specified prdId
+                // You can use the prdId parameter to identify the purchase requisition to approve
+                // Call the appropriate service method to handle the approval process
+
+                // Assuming you have a service instance available
+                _purchaseOrderService.CreatePurchaseOrderFromRequisition(prdId);
+
+                // Return a success response
+                return Ok("Purchase requisition approved successfully!");
+            }
+            catch (Exception ex)
+            {
+                // Return an error response if there's an exception
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
 
         // GET: /Admin/AddPurchase/CreatePR
         public IActionResult CreatePR()
@@ -164,7 +190,6 @@ namespace Meditrack.Areas.Admin.Controllers
             return View(prTransactionVM);
         }
 
-        //Adding PR Details
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult PRDetails(PRTransactionVM prTransactionVM)
@@ -185,9 +210,14 @@ namespace Meditrack.Areas.Admin.Controllers
 
                 if (requisitionHeader != null)
                 {
+                    // Fetch all related PurchaseRequisitionDetails based on PRHdrID
+                    var requisitionDetails = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "Product,PurchaseRequisitionHeader");
 
-                    // Add the new PR Detail's subtotal to the PR Header's total amount
-                    requisitionHeader.TotalAmount = prTransactionVM.PurchaseRequisitionDetail.Subtotal;
+                    // Calculate the total amount by summing up the subtotals of all details
+                    decimal totalAmount = requisitionDetails.Sum(detail => detail.Subtotal);
+
+                    // Update the TotalAmount property in the PurchaseRequisitionHeader
+                    requisitionHeader.TotalAmount = totalAmount;
 
                     // Update the PR Header in the database
                     _unitOfWork.PurchaseRequisitionHeader.Update(requisitionHeader);
@@ -200,9 +230,48 @@ namespace Meditrack.Areas.Admin.Controllers
             }
 
             return View(prTransactionVM);
-
         }
-   
+
+
+        ////Adding PR Details
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult PRDetails(PRTransactionVM prTransactionVM)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Compute subtotal before saving
+        //        prTransactionVM.PurchaseRequisitionDetail.Subtotal =
+        //            prTransactionVM.PurchaseRequisitionDetail.UnitPrice *
+        //            prTransactionVM.PurchaseRequisitionDetail.QuantityInOrder;
+
+        //        // Adding a new detail
+        //        _unitOfWork.PurchaseRequisitionDetail.Add(prTransactionVM.PurchaseRequisitionDetail);
+
+        //        // Update TotalAmount in PurchaseRequisitionHeader
+        //        // Retrieve the PR Header based on its ID
+        //        var requisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(header => header.PRHdrID == prTransactionVM.PurchaseRequisitionDetail.PRHdrID);
+
+        //        if (requisitionHeader != null)
+        //        {
+
+        //            // Add the new PR Detail's subtotal to the PR Header's total amount
+        //            requisitionHeader.TotalAmount = prTransactionVM.PurchaseRequisitionDetail.Subtotal;
+
+        //            // Update the PR Header in the database
+        //            _unitOfWork.PurchaseRequisitionHeader.Update(requisitionHeader);
+
+        //            // Save changes to the database
+        //            _unitOfWork.Save();
+        //        }
+
+        //        return RedirectToAction("PRDList");
+        //    }
+
+        //    return View(prTransactionVM);
+
+        //}
+
         #region API CALLS
 
         //Retrieving the PR Headers

@@ -25,7 +25,8 @@ function loadDataTable(status) {
                     return `  
                         <div class="w-75 btn-group" role="group">
                             <a href="/admin/prtransaction/viewprdetails?prdId=${data}" class="btn btn-primary max-2"><i class="bi bi-pencil-square"></i>View</a>                              
-                        </div>                   
+                            <button type="button" class="btn btn-success max-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i>Approve</button>
+                            </div>                   
                         `                                                                                                          
                 },  
                 "width": "20%"
@@ -33,4 +34,20 @@ function loadDataTable(status) {
         ]  
     });
 }
+
+function approvePR(prdId) {
+    $.ajax({
+        url: '/Admin/PRTransaction/ApprovePR?prdId=' + prdId,
+        type: 'POST',
+        success: function (response) {
+            // Handle success, such as refreshing the data table or showing a success message
+            console.log("Purchase requisition approved successfully!");
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            // Handle error, such as displaying an error message
+            console.error("Error approving purchase requisition:", errorThrown);
+        }
+    });
+}
+
 
