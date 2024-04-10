@@ -19,7 +19,8 @@
                     <input id="locationAddress" asp-for="PurchaseRequisitionHeader.Location.LocationAddress" class="form-control" readonly />
                 </div>  
                 <div class="mb-3">
-                    <input id="statusDescription" asp-for="PurchaseRequisitionHeader.Status.StatusDescription" class="form-control" hidden />
+                    <label for="statusDescription" class="form-label">Status</label>
+                    <input id="statusDescription" asp-for="PurchaseRequisitionHeader.Status.StatusDescription" class="form-control" readonly />
                 </div>
                 <div class="mb-3">
                     <label for="prDate" class="form-label">PR Date</label>

@@ -12,6 +12,7 @@ function loadDataTable(status) {
             { data: 'prHdrID', "width": "5%" },
             { data: 'purchaseRequisitionHeader.supplierName', "width": "10%" },
             { data: 'purchaseRequisitionHeader.locationAddress', "width": "10%" },
+            { data: 'purchaseRequisitionHeader.statusDescription', "width": "10%" },
             { data: 'purchaseRequisitionHeader.prDate', "width": "10%" },
             { data: 'productName', "width": "10%" },
             { data: 'unitPrice', "width": "10%" },

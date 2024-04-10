@@ -28,8 +28,11 @@
 <div class="card shadow border-0 my-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 <h3 class="py-2">Purchase Requisition List</h3>
+            </div>
+            <div class="col-6 text-end"> 
+                <a asp-area="Admin" asp-controller="PRTransaction" asp-action="CreatePR" class="btn btn-primary">Create Purchase Requisition</a>       
             </div>
         </div>
     </div>
@@ -59,6 +62,7 @@
                         <th>PRHdrID</th>    
                         <th>Supplier</th>
                         <th>Location</th>
+                        <th>Status</th>
                         <th>PR Date</th>
                         <th>Product Name</th>
                         <th>Unit Price</th>

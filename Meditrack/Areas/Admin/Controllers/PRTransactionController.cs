@@ -101,11 +101,11 @@ namespace Meditrack.Areas.Admin.Controllers
                 _unitOfWork.PurchaseRequisitionDetail.Add(viewModel.PurchaseRequisitionDetail);
                 _unitOfWork.Save();
 
-                return RedirectToAction(nameof(Index)); // Redirect to the index action after successful submission
+                return RedirectToAction("PRDList", "PRTransaction");  
             }
 
             // If model state is not valid, return the view with validation errors
-            return View("CreatePR", viewModel);
+            return View("PRDList", viewModel);
         }
 
         //View the Purchase Requisition Details for Approval
@@ -237,16 +237,17 @@ namespace Meditrack.Areas.Admin.Controllers
         //    return Json(new { data =  details });
         //}
 
+        //Retrieving the PR Headers and PR Details
         [HttpGet]
         public IActionResult GetAllPRDetails()
         {
-            // Fetch all PurchaseRequisitionHeaders
-            var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location");
+            // Fetch all PurchaseRequisitionHeaders including related entities
+            var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status");
 
-            // Fetch all PurchaseRequisitionDetails
+            // Fetch all PurchaseRequisitionDetails including related entities
             var details = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "Product,PurchaseRequisitionHeader");
 
-            // Project the details to include myStatus
+            // Project the details and headers into an anonymous type
             var detailsWithStatus = details.Select(detail => new
             {
                 detail.PRDtlID,
@@ -255,6 +256,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 {
                     detail.PurchaseRequisitionHeader.Supplier.SupplierName,
                     detail.PurchaseRequisitionHeader.Location.LocationAddress,
+                    detail.PurchaseRequisitionHeader.Status.StatusDescription,
                     detail.PurchaseRequisitionHeader.PRDate
                 },
                 detail.Product.ProductName,
@@ -264,8 +266,10 @@ namespace Meditrack.Areas.Admin.Controllers
                 detail.Subtotal,
             });
 
+            // Return the result as JSON
             return Json(new { data = detailsWithStatus });
         }
+
 
         #endregion
     }
