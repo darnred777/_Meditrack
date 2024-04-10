@@ -30,7 +30,7 @@ namespace Meditrack.Models
         [ValidateNever]
         public virtual Status? Status { get; set; }
 
-        public decimal TotalAmount { get; set; }
+        public decimal? TotalAmount { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]

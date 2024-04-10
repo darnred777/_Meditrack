@@ -31,7 +31,83 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             return View();
         }
-        
+
+        // GET: /Admin/AddPurchase/CreatePR
+        public IActionResult CreatePR()
+        {
+            // Fetch all products and convert them to SelectListItem objects
+            var productList = _unitOfWork.Product.GetAll().Select(p => new SelectListItem
+            {
+                Value = p.ProductID.ToString(), // Assuming Id is the property you want to use as the value
+                Text = p.ProductName // Assuming Name is the property you want to display as the text
+            });
+
+            // Fetch all suppliers and convert them to SelectListItem objects
+            var supplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
+            {
+                Value = s.SupplierID.ToString(),
+                Text = s.SupplierName
+            });
+
+            // Fetch all locations and convert them to SelectListItem objects
+            var locationList = _unitOfWork.Location.GetAll().Select(l => new SelectListItem
+            {
+                Value = l.LocationID.ToString(),
+                Text = l.LocationAddress
+            });
+
+            // Fetch all statuses and convert them to SelectListItem objects
+            var statusList = _unitOfWork.Status.GetAll().Select(s => new SelectListItem
+            {
+                Value = s.StatusID.ToString(),
+                Text = s.StatusDescription
+            });
+
+            // Create a new instance of the view model with empty lists
+            var viewModel = new PRTransactionVM
+            {
+                ProductList = productList,
+                SupplierList = supplierList,
+                LocationList = locationList,
+                StatusList = statusList,
+                PurchaseRequisitionHeader = new PurchaseRequisitionHeader(),
+                PurchaseRequisitionDetail = new PurchaseRequisitionDetail()
+            };
+
+            return View(viewModel);
+        }
+
+
+        // POST: /Admin/AddPurchase/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreatePR(PRTransactionVM viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // Compute subtotal before saving
+                viewModel.PurchaseRequisitionDetail.Subtotal =
+                    viewModel.PurchaseRequisitionDetail.UnitPrice *
+                    viewModel.PurchaseRequisitionDetail.QuantityInOrder;
+
+                // Add the new PurchaseRequisitionHeader to the database
+                _unitOfWork.PurchaseRequisitionHeader.Add(viewModel.PurchaseRequisitionHeader);
+                _unitOfWork.Save();
+
+                // Assign the newly generated header ID to the detail
+                viewModel.PurchaseRequisitionDetail.PRHdrID = viewModel.PurchaseRequisitionHeader.PRHdrID;
+
+                // Add the new PurchaseRequisitionDetail to the database
+                _unitOfWork.PurchaseRequisitionDetail.Add(viewModel.PurchaseRequisitionDetail);
+                _unitOfWork.Save();
+
+                return RedirectToAction(nameof(Index)); // Redirect to the index action after successful submission
+            }
+
+            // If model state is not valid, return the view with validation errors
+            return View("CreatePR", viewModel);
+        }
+
         //View the Purchase Requisition Details for Approval
         public IActionResult ViewPRDetails(int prdId)
         {
@@ -61,107 +137,7 @@ namespace Meditrack.Areas.Admin.Controllers
             };
 
             return View(prTransactionVM);
-        }
-
-        //1
-        //public IActionResult CreatePurchaseOrder(PRTransactionVM prTransactionVM)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Create PurchaseOrderHeader object and set required properties
-        //        PurchaseOrderHeader purchaseOrderHeader = new PurchaseOrderHeader
-        //        {
-        //            Status = prTransactionVM.PurchaseRequisitionHeader.Status,
-        //            Supplier = prTransactionVM.PurchaseRequisitionHeader.Supplier, // Reference the supplier
-        //            Location = prTransactionVM.PurchaseRequisitionHeader.Location, // Reference the location
-        //            PurchaseRequisitionHeader = prTransactionVM.PurchaseRequisitionHeader // Reference the corresponding PR header
-        //        };
-
-        //        // Add the PurchaseOrderHeader to the database
-        //        _unitOfWork.PurchaseOrderHeader.Add(purchaseOrderHeader);
-
-        //        // Create PurchaseOrderDetail object and set required properties
-        //        PurchaseOrderDetail purchaseOrderDetail = new PurchaseOrderDetail
-        //        {
-        //            PurchaseOrderHeader = purchaseOrderHeader, // Reference the PurchaseOrderHeader
-        //            Product = prTransactionVM.PurchaseRequisitionDetail.Product, // Reference the product
-        //            UnitOfMeasurement = prTransactionVM.PurchaseRequisitionDetail.UnitOfMeasurement, // Set the unit of measurement
-        //                                                                                             // Add other properties as needed
-        //        };
-
-        //        // Add the PurchaseOrderDetail to the database
-        //        _unitOfWork.PurchaseOrderDetail.Add(purchaseOrderDetail);
-
-        //        // Save changes to the database
-        //        _unitOfWork.Save();
-
-        //        // Redirect to a success page or another action
-        //        return RedirectToAction("Index", "Home"); // Change to the appropriate action and controller
-        //    }
-        //    else
-        //    {
-        //        // If model state is not valid, return to the form with validation errors
-        //        return View(prTransactionVM);
-        //    }
-        //}
-
-
-        //2
-        //[HttpPost]
-        //public IActionResult CreatePurchaseOrder(PRTransactionVM model)
-        //{
-        //    if (model == null || model.PurchaseRequisitionHeader == null || model.PurchaseRequisitionDetail == null)
-        //    {
-        //        // Handle null model or empty header list
-        //        return RedirectToAction("PRDList", "PRTransaction", new { area = "Admin" });
-        //    }
-
-        //    // Create a new Purchase Order Header
-        //    var poHeader = new PurchaseOrderHeader
-        //    {
-        //        // Set properties from PR Header
-        //        Status = model.PurchaseRequisitionHeader.Status,
-        //        Supplier = model.PurchaseRequisitionHeader.Supplier,
-        //        Location = model.PurchaseRequisitionHeader.Location,
-        //        TotalAmount = model.PurchaseRequisitionHeader.TotalAmount,
-        //        PurchaseRequisitionHeader = model.PurchaseRequisitionHeader,
-        //        // Other properties as needed
-        //    };
-
-        //    // Add the new Purchase Order Header to the database
-        //    _unitOfWork.PurchaseOrderHeader.Add(poHeader);  
-
-        //    // Iterate over the details and create corresponding PO details
-        //    foreach (var detail in model.PurchaseRequisitionDetailList)
-        //    {
-        //        // Create a new Purchase Order Detail
-        //        var poDetail = new PurchaseOrderDetail
-        //        {
-        //            // Set properties from PR Detail
-        //            PurchaseOrderHeader = poHeader,
-        //            Product = detail.Product,
-        //            UnitPrice = detail.UnitPrice,
-        //            UnitOfMeasurement = detail.UnitOfMeasurement,
-        //            QuantityInOrder = detail.QuantityInOrder,
-        //            Subtotal = detail.Subtotal,
-        //            // Other properties as needed
-        //        };
-
-        //        // Add the new Purchase Order Detail to the database
-        //        _unitOfWork.PurchaseOrderDetail.Add(poDetail);
-        //    }
-
-        //    // Save changes to the database
-        //    _unitOfWork.Save();
-
-        //    // Redirect to some action (e.g., a view displaying the newly created purchase orders)
-        //    return RedirectToAction("PRTransaction", "PRDList");
-        //}
-
-
-
-
-        ////////////////////////////////////
+        }      
 
         //Adding PR Details
         public IActionResult PRDetails(int prId)
@@ -226,89 +202,7 @@ namespace Meditrack.Areas.Admin.Controllers
             return View(prTransactionVM);
 
         }
-
-
-        ///////
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        //public IActionResult DisplayPRDetails(int prId)
-        //{
-        //    // Fetch all products and convert them to SelectListItem objects
-        //    var productList = _unitOfWork.Product.GetAll().Select(p => new SelectListItem
-        //    {
-        //        Value = p.ProductID.ToString(), // Assuming Id is the property you want to use as the value
-        //        Text = p.ProductName // Assuming Name is the property you want to display as the text
-        //    });
-
-        //    // Fetch purchase requisition header
-        //    var prHeader = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == prId, includeProperties: "Supplier,Location,Status");
-
-        //    // Fetch purchase requisition details for the given PR ID
-        //    var prDetails = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRHdrID == prId, includeProperties: "Product");
-
-        //    PRTransactionVM prTransactionVM = new PRTransactionVM
-        //    {
-        //        PurchaseRequisitionHeader = prHeader,
-        //        //PurchaseRequisitionDetail = prDetails,
-        //        ProductList = productList
-        //    };
-
-        //    return View(prTransactionVM);
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult DisplayPRDetails(PRTransactionVM prTransactionVM)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Compute subtotal before saving
-        //            prTransactionVM.PurchaseRequisitionDetail.Subtotal =
-        //            prTransactionVM.PurchaseRequisitionDetail.UnitPrice *
-        //            prTransactionVM.PurchaseRequisitionDetail.QuantityInOrder;
-
-        //        if (prTransactionVM.PurchaseRequisitionDetail.PRDtlID == 0)
-        //        {
-        //            // Adding a new detail
-        //            _unitOfWork.PurchaseRequisitionDetail.Add(prTransactionVM.PurchaseRequisitionDetail);
-
-        //        }
-        //        else
-        //        {
-        //            // Updating an existing detail
-        //            _unitOfWork.PurchaseRequisitionDetail.Update(prTransactionVM.PurchaseRequisitionDetail);
-        //        }
-
-        //        // Update TotalAmount in PurchaseRequisitionHeader
-        //        var requisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(header => header.PRHdrID == prTransactionVM.PurchaseRequisitionDetail.PRHdrID);
-        //        if (requisitionHeader != null)
-        //        {
-        //            requisitionHeader.TotalAmount += prTransactionVM.PurchaseRequisitionDetail.Subtotal;
-        //        }
-
-        //        _unitOfWork.Save();
-
-        //        return RedirectToAction("ManagePurchaseRequisitionDetail");
-        //    }
-        //    else
-        //    {
-        //        // Re-fetch product list and PR header for dropdowns
-        //        prTransactionVM.ProductList = _unitOfWork.Product.GetAll().Select(u => new SelectListItem
-        //        {
-        //            Text = u.ProductName,
-        //            Value = u.ProductID.ToString()
-        //        });
-
-        //        prTransactionVM.PurchaseRequisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == prTransactionVM.PurchaseRequisitionDetail.PRHdrID, includeProperties: "Supplier,Location,Status");
-
-        //        return View(prTransactionVM);
-        //    }
-        //}
-
-
-
+   
         #region API CALLS
 
         //Retrieving the PR Headers

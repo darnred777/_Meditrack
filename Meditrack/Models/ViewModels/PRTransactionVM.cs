@@ -9,10 +9,24 @@ namespace Meditrack.Models.ViewModels
         [ValidateNever]
         public IEnumerable<Transaction> PRTransactionList { get; set; }
 
+        [ValidateNever]
         public PurchaseRequisitionHeader PurchaseRequisitionHeader { get; set; }
 
-        //[ValidateNever]
+        [ValidateNever]
         public PurchaseRequisitionDetail PurchaseRequisitionDetail { get; set; }
+
+        //public PurchaseOrderHeader PurchaseOrderHeader { get; set; }
+
+        //public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetailList { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> SupplierList { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> LocationList { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> StatusList { get; set; }
 
         [ValidateNever]
         public IEnumerable<PurchaseRequisitionDetail> PurchaseRequisitionDetailList { get; set; }

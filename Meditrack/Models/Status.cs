@@ -7,7 +7,6 @@ namespace Meditrack.Models
         [Key]
         public int StatusID { get; set; }
 
-        [Required]
         [Display(Name = "Status Description")]
         public string? StatusDescription { get; set; }
 

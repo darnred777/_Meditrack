@@ -8,17 +8,14 @@ namespace Meditrack.Models
         [Key]
         public int LocationID { get; set; }
 
-        [Required]
         [StringLength(30)]
         [Display(Name = "Location Type")]
-        public required string LocationType { get; set; }
+        public string? LocationType { get; set; }
 
-        [Required]
         [StringLength(30)]
         [Display(Name = "Location Address")]
-        public required string LocationAddress { get; set; }
+        public string? LocationAddress { get; set; }
 
-        [Required]
         [DataType(DataType.DateTime)]
         [Display(Name = "Date/Time")]
         public DateTime DateCreated { get; set; } = DateTime.Now;
