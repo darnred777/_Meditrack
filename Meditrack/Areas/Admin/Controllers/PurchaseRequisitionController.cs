@@ -1,6 +1,7 @@
 ﻿using Meditrack.Models;
 using Meditrack.Models.ViewModels;
 using Meditrack.Repository.IRepository;
+using Meditrack.Services;
 using Meditrack.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,15 +15,15 @@ namespace Meditrack.Areas.Admin.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
-		//private readonly PurchaseOrderService _purchaseOrderService;
+		private readonly PurchaseOrderService _purchaseOrderService;
 		//private readonly PurchaseDetailService _purchaseDetailService;
 
 		//public PurchaseRequisitionController(IUnitOfWork unitOfWork, PurchaseOrderService purchaseOrderService, PurchaseDetailService purchaseDetailService)
-		public PurchaseRequisitionController(IUnitOfWork unitOfWork)
+		public PurchaseRequisitionController(IUnitOfWork unitOfWork, PurchaseOrderService purchaseOrderService)
 		{
             {
                 _unitOfWork = unitOfWork;
-                //_purchaseOrderService = purchaseOrderService;
+                _purchaseOrderService = purchaseOrderService;
                 //_purchaseDetailService = purchaseDetailService;
             }
         }
@@ -214,7 +215,7 @@ namespace Meditrack.Areas.Admin.Controllers
 
                 _unitOfWork.Save();
 
-                //_purchaseOrderService.PopulatePurchaseOrderFromRequisition(purchaseRequisitionHeaderVM.PurchaseRequisitionHeader.PRHdrID);
+                _purchaseOrderService.PopulatePurchaseOrderFromRequisition(purchaseRequisitionHeaderVM.PurchaseRequisitionHeader.PRHdrID);
 
                 return RedirectToAction("ManagePurchaseRequisitionHeader");
             }

@@ -14,6 +14,10 @@ namespace Meditrack.Models.ViewModels
         //[ValidateNever]
         public PurchaseRequisitionDetail PurchaseRequisitionDetail { get; set; }
 
+        public PurchaseOrderHeader PurchaseOrderHeader { get; set; }
+
+        public PurchaseOrderDetail PurchaseOrderDetail { get; set; }
+
         [ValidateNever]
         public IEnumerable<PurchaseRequisitionDetail> PurchaseRequisitionDetailList { get; set; }
 
