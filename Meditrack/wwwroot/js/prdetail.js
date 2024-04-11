@@ -13,6 +13,7 @@ function loadDataTable(status) {
             { data: 'purchaseRequisitionHeader.supplierName', "width": "10%" },
             { data: 'purchaseRequisitionHeader.locationAddress', "width": "10%" },
             { data: 'purchaseRequisitionHeader.statusDescription', "width": "10%" },
+            { data: 'purchaseRequisitionHeader.totalAmount', "width": "10%" },
             { data: 'purchaseRequisitionHeader.prDate', "width": "10%" },
             { data: 'productName', "width": "10%" },
             { data: 'unitPrice', "width": "10%" },
@@ -20,16 +21,17 @@ function loadDataTable(status) {
             { data: 'quantityInOrder', "width": "10%" }, 
             { data: 'subtotal', "width": "10%" },
             {
-                data: 'prDtlID',
-                "render": function (data) {                                       
-                    return `  
+                data: 'prHdrID', // Assuming prHdrID is accessible in your data
+                "render": function (data) {
+                    return `
                         <div class="w-75 btn-group" role="group">
-                            <a href="/admin/prtransaction/viewprdetails?prdId=${data}" class="btn btn-primary max-2"><i class="bi bi-pencil-square"></i>View</a>                              
-                            <button type="button" class="btn btn-success max-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i>Approve</button>
-                            </div>                   
-                        `                                                                                                          
-                },  
+                            <a href="/admin/prtransaction/viewprdetails?prHdrId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> View</a>
+                            <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i> Approve</button>
+                        </div>
+                    `;
+                },
                 "width": "20%"
+
             }
         ]  
     });

@@ -35,5 +35,7 @@ namespace Meditrack.Models
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime PRDate { get; set; } = DateTime.Now;
+
+        public virtual ICollection<PurchaseRequisitionDetail> PurchaseRequisitionDetail { get; set; }
     }
 }

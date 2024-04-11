@@ -17,15 +17,19 @@
                 <div class="mb-3">
                     <label for="locationAddress" class="form-label">Location Address</label>
                     <input id="locationAddress" asp-for="PurchaseRequisitionHeader.Location.LocationAddress" class="form-control" readonly />
-                </div>  
+                </div>
                 <div class="mb-3">
                     <label for="statusDescription" class="form-label">Status</label>
                     <input id="statusDescription" asp-for="PurchaseRequisitionHeader.Status.StatusDescription" class="form-control" readonly />
                 </div>
                 <div class="mb-3">
+                    <label for="totalAmount" class="form-label">Total Amount</label>
+                    <input id="totalAmount" asp-for="PurchaseRequisitionHeader.TotalAmount" class="form-control" readonly />
+                </div>
+                <div class="mb-3">
                     <label for="prDate" class="form-label">PR Date</label>
                     <input id="prDate" asp-for="PurchaseRequisitionHeader.PRDate" class="form-control" readonly />
-                </div>            
+                </div>
             </div>
             <div class="col-md-6">
                 <!-- Additional Purchase Requisition Detail Fields -->
@@ -36,7 +40,7 @@
                 </div>
                 <div class="mb-3">
                     <input asp-for="PurchaseRequisitionDetail.PRHdrID" class="form-control" readonly />
-                </div>               
+                </div>
                 <div class="mb-3">
                     <label for="productName" class="form-label">Product Name</label>
                     <input id="productName" asp-for="PurchaseRequisitionDetail.Product.ProductName" class="form-control" readonly />
@@ -62,9 +66,9 @@
             </div>
         </div>
         <div class="row mt-4">
-            <div class="col-md-6">         
+            <div class="col-md-6">
                 <button type="submit" class="btn btn-primary">Approve</button>
-                
+
             </div>
             <div class="col-md-6">
                 <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PRDList" class="btn btn-outline-secondary">Back</a>

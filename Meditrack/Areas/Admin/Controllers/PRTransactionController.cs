@@ -5,6 +5,7 @@ using Meditrack.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Meditrack.Areas.Admin.Controllers
@@ -141,7 +142,7 @@ namespace Meditrack.Areas.Admin.Controllers
             var purchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRDtlID == prdId, includeProperties: "Product");
 
             if (purchaseRequisitionDetail == null)
-            {
+            {   
                 // Handle the case where PRDetail is not found
                 return NotFound();
             }
@@ -326,6 +327,7 @@ namespace Meditrack.Areas.Admin.Controllers
                     detail.PurchaseRequisitionHeader.Supplier.SupplierName,
                     detail.PurchaseRequisitionHeader.Location.LocationAddress,
                     detail.PurchaseRequisitionHeader.Status.StatusDescription,
+                    detail.PurchaseRequisitionHeader.TotalAmount,
                     detail.PurchaseRequisitionHeader.PRDate
                 },
                 detail.Product.ProductName,
