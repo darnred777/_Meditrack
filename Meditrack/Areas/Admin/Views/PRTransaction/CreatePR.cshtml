@@ -33,15 +33,13 @@
                     <input asp-for="PurchaseRequisitionDetail.PRHdrID" class="form-control" hidden />
                 </div>
                 <div class="mb-3">
-                    <label asp-for="PurchaseRequisitionDetail.ProductID">Product</label>
-                    <select asp-for="@Model.PurchaseRequisitionDetail.ProductID" asp-items="@Model.ProductList" class="form-select">
+                    <select asp-for="@Model.PurchaseRequisitionDetail.ProductID" asp-items="@Model.ProductList" class="form-select" id="productDropdown">
                         <option disabled selected>--Select Product--</option>
                     </select>
                 </div>
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="PurchaseRequisitionDetail.UnitPrice">Unit Price:</label>
-                        <input asp-for="PurchaseRequisitionDetail.UnitPrice" class="form-control">
+                        <input asp-for="PurchaseRequisitionDetail.UnitPrice" class="form-control" id="unitPrice">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label asp-for="PurchaseRequisitionDetail.UnitOfMeasurement">Unit Of Measurement:</label>

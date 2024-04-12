@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace Meditrack.Areas.Admin.Controllers
+namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = StaticDetails.Role_Admin)]
+    [Area("InventoryOfficer")]
+    [Authorize(Roles = StaticDetails.Role_InventoryOfficer)]
 
     public class PRTransactionController : Controller
     {
