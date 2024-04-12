@@ -116,15 +116,26 @@ namespace Meditrack.Areas.Admin.Controllers
                     viewModel.PurchaseRequisitionDetail.UnitPrice *
                     viewModel.PurchaseRequisitionDetail.QuantityInOrder;
 
+                // Fetch the 'Pending' status from the database
+                var pendingStatus = _unitOfWork.Status.GetFirstOrDefault(s => s.StatusDescription == StaticDetails.Status_Pending);
+                if (pendingStatus == null)
+                {
+                    ModelState.AddModelError("", "Pending status not found in database.");
+                    return View(viewModel); // or handle this scenario as necessary
+                }
+
+                // Set the status of the new Purchase Requisition to "Pending"
+                viewModel.PurchaseRequisitionHeader.Status = pendingStatus;
+
                 // Add the new PurchaseRequisitionHeader to the database
                 // Initialize the TotalAmount with 0
                 viewModel.PurchaseRequisitionHeader.TotalAmount = 0;
 
                 // Set the status of the new Purchase Requisition to "Pending"
-                viewModel.PurchaseRequisitionHeader.Status = new Status
-                {
-                    StatusDescription = StaticDetails.Status_Pending
-                };
+                //viewModel.PurchaseRequisitionHeader.Status = new Status
+                //{
+                //    StatusDescription = StaticDetails.Status_Pending
+                //};
 
 
                 _unitOfWork.PurchaseRequisitionHeader.Add(viewModel.PurchaseRequisitionHeader);
@@ -146,7 +157,12 @@ namespace Meditrack.Areas.Admin.Controllers
                 return RedirectToAction("PRDList", "PRTransaction");
             }
 
-            // Re-populate the dropdown lists if the ModelState is not valid
+            PopulateDropdowns(viewModel);
+            return View(viewModel);
+        }
+
+        private void PopulateDropdowns(PRTransactionVM viewModel)
+        {
             viewModel.ProductList = _unitOfWork.Product.GetAll().Select(p => new SelectListItem
             {
                 Value = p.ProductID.ToString(),
@@ -170,9 +186,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 Value = s.StatusID.ToString(),
                 Text = s.StatusDescription
             }).ToList();
-
-            return View(viewModel);
-        }    
+        }
 
         //View the Purchase Requisition Details for Approval
         public IActionResult ViewPRDetails(int prdId)

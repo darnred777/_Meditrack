@@ -1,5 +1,6 @@
 ﻿using Meditrack.Models;
 using Meditrack.Repository.IRepository;
+using Meditrack.Utility;
 
 public class PurchaseOrderService : IPurchaseOrderService
 {
@@ -18,6 +19,13 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         if (prHeader == null) throw new Exception("Purchase Requisition not found.");
 
+        var statusApproved = _unitOfWork.Status.GetFirstOrDefault(s => s.StatusDescription == StaticDetails.Status_Approved);
+        if (statusApproved == null) throw new Exception("Approved status not found in the database.");
+
+        // Update the Status of the Purchase Requisition to 'Approved'
+        prHeader.StatusID = statusApproved.StatusID;
+        _unitOfWork.Save(); // Save the status update
+
         // Create a new Purchase Order Header
         var poHeader = new PurchaseOrderHeader()
         {
@@ -27,15 +35,16 @@ public class PurchaseOrderService : IPurchaseOrderService
             SupplierID = prHeader.SupplierID,
             Location = prHeader.Location,
             LocationID = prHeader.LocationID,
-            Status = prHeader.Status,
-            StatusID = prHeader.StatusID,
+            Status = statusApproved, // Use the fetched status
+            StatusID = statusApproved.StatusID,
             TotalAmount = (decimal)prHeader.TotalAmount,
             PurchaseRequisitionHeader = prHeader
 
             // Other necessary properties...
         };
+
         _unitOfWork.PurchaseOrderHeader.Add(poHeader);
-        _unitOfWork.Save(); // Consider saving here to ensure POHdrID is populated
+        /*_unitOfWork.Save();*/ // Consider saving here to ensure POHdrID is populated
 
         // For each detail in the Purchase Requisition, create a Purchase Order Detail
         foreach (var prDetail in prHeader.PurchaseRequisitionDetail)
@@ -58,8 +67,5 @@ public class PurchaseOrderService : IPurchaseOrderService
         // Final save to persist details
         _unitOfWork.Save();
 
-        // Optionally, mark the Purchase Requisition as approved
-        //prHeader.Status = "Approved";
-        _unitOfWork.Save();
     }
 }
