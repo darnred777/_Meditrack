@@ -25,7 +25,7 @@
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Supplier.LocationID">Location</label>
-                                <select asp-for="@Model.Supplier.LocationID" asp-items="@Model.LocationList" class="form-select">
+                                <select asp-for="@Model.Supplier.LocationID" asp-items="@Model.LocationList" class="form-select" required>
                                     <option disabled selected>--Select Location--</option>
                                 </select>
                             </div>
@@ -54,8 +54,8 @@
                                 <input asp-for="Supplier.DateCreated" class="form-control" rows="3">
                             </div>
                             <div class="mb-3">
-                                <label asp-for="Supplier.isActive" class="form-label">Is Active:</label>
-                                <input asp-for="Supplier.isActive" class=" form-control-file">
+                                <label asp-for="Supplier.isActive" class="form-label" hidden>Is Active:</label>
+                                <input asp-for="Supplier.isActive" class=" form-control-file" hidden>
                             </div>
                             <div class="row">
                                 <div class="col-6">

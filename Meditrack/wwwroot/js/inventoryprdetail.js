@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 function loadDataTable(status) {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/admin/prtransaction/getallprdetails?status=' +status },
+        "ajax": { url: '/inventoryofficer/prtransaction/getallprdetails?status=' +status },
         "columns": [
             { data: 'prDtlID', "width": "5%" },
             { data: 'prHdrID', "width": "5%" },
@@ -25,7 +25,7 @@ function loadDataTable(status) {
                 "render": function (data) {
                     return `
                         <div class="w-75 btn-group" role="group">
-                            <a href="/admin/prtransaction/viewprdetails?prviewId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> View</a>                          
+                            <a href="/inventoryofficer/prtransaction/viewprdetails?prviewId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> View</a>                     
                         </div>
                     `;
                 },

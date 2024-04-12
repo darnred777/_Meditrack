@@ -2,7 +2,7 @@
 
 <div class="container">
     <h3 class="my-4">Purchase Requisition</h3>
-    <form method="post" asp-controller="PRTransaction" asp-action="CreatePR" asp-area="Admin">
+    <form method="post" asp-controller="PRTransaction" asp-action="CreatePR" asp-area="InventoryOfficer">
         <div class="row">
             <div class="col-md-6">
                 <!-- Purchase Requisition Header Fields -->
@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
-                        <input asp-for="PurchaseRequisitionDetail.UnitPrice" class="form-control" id="unitPrice">
+                        <input asp-for="PurchaseRequisitionDetail.UnitPrice" class="form-control" id="unitPrice" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label asp-for="PurchaseRequisitionDetail.UnitOfMeasurement">Unit Of Measurement:</label>
@@ -57,7 +57,7 @@
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
             <div class="col-md-6">
-                <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PRDList" class="btn btn-outline-secondary">Back</a>
+                <a asp-area="InventoryOfficer" asp-controller="PRTransaction" asp-action="PRDList" class="btn btn-outline-secondary">Back</a>
             </div>
         </div>
     </form>

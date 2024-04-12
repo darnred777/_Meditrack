@@ -8,7 +8,7 @@
         </div>
         <div class="mb-3">
             <label asp-for="Product.CategoryID">Product Category</label>
-            <select asp-for="@Model.Product.CategoryID" asp-items="@Model.ProductCategoryList" class="form-select">
+            <select asp-for="@Model.Product.CategoryID" asp-items="@Model.ProductCategoryList" class="form-select" required>
                 <option disabled selected>--Select Product Category--</option>
             </select>
         </div>
@@ -45,8 +45,8 @@
             <input asp-for="Product.ExpirationDate" class="form-control" required>
         </div>
         <div class="form-group col-md-6 mt-3 mb-3">
-            <label asp-for="Product.isActive" class="form-label">Is Active:</label>
-            <input asp-for="Product.isActive" class=" form-control-file">
+            <label asp-for="Product.isActive" class="form-label" hidden>Is Active:</label>
+            <input asp-for="Product.isActive" class=" form-control-file" hidden>
         </div>
         <div class="row">
             <div class="col-6">

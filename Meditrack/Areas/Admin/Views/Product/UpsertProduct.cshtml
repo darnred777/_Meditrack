@@ -8,7 +8,7 @@
         </div>
         <div class="mb-3">
             <label asp-for="Product.CategoryID">Product Category</label>
-            <select asp-for="@Model.Product.CategoryID" asp-items="@Model.ProductCategoryList" class="form-select">
+            <select asp-for="@Model.Product.CategoryID" asp-items="@Model.ProductCategoryList" class="form-select" required>
                 <option disabled selected>--Select Product Category--</option>
             </select>
         </div>

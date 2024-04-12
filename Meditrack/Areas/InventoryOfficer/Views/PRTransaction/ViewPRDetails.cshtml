@@ -2,7 +2,7 @@
 
 <div class="container">
     <h3 class="my-4">Purchase Requisition</h3>
-    <form method="post" asp-controller="PRTransaction" asp-action="CreatePurchaseOrder" asp-area="Admin">
+    <form method="post" asp-controller="PRTransaction" asp-action="CreatePurchaseOrder" asp-area="InventoryOfficer">
         <div class="row">
             <div class="col-md-6">
                 <!-- Purchase Requisition Header Fields -->
@@ -65,9 +65,9 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4">           
+        <div class="row mt-4">          
             <div class="col-md-6">
-                <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PRDList" class="btn btn-outline-secondary">Back</a>
+                <a asp-area="InventoryOfficer" asp-controller="PRTransaction" asp-action="PRDList" class="btn btn-outline-secondary">Back</a>
             </div>
             <div class="col-md-6">
                 <button type="submit" class="btn btn-primary">Cancel</button>

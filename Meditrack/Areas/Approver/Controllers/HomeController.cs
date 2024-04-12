@@ -39,6 +39,11 @@ namespace Meditrack.Areas.Approver.Controllers
             return View(objProductList);
         }
 
+        public IActionResult PRTransaction()
+        {
+            return View();
+        }
+
         public IActionResult Notification()
         {
             return View();

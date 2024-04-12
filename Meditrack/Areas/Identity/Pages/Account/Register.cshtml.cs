@@ -226,6 +226,8 @@ namespace Meditrack.Areas.Identity.Pages.Account
                         if (User.IsInRole(StaticDetails.Role_Admin))
                         {
                             TempData["success"] = "New User Created Successfully";
+                            return RedirectToAction("ManageUserAccount", "User", new { area = "Admin" });
+
                         }
                         else
                         {

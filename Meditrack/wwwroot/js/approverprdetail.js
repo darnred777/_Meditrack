@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 function loadDataTable(status) {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/admin/prtransaction/getallprdetails?status=' +status },
+        "ajax": { url: '/approver/prtransaction/getallprdetails?status=' +status },
         "columns": [
             { data: 'prDtlID', "width": "5%" },
             { data: 'prHdrID', "width": "5%" },
@@ -25,7 +25,8 @@ function loadDataTable(status) {
                 "render": function (data) {
                     return `
                         <div class="w-75 btn-group" role="group">
-                            <a href="/admin/prtransaction/viewprdetails?prviewId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> View</a>                          
+                            <a href="/approver/prtransaction/viewprdetails?prviewId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> View</a>
+                            <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i> Approve</button>
                         </div>
                     `;
                 },
@@ -35,3 +36,20 @@ function loadDataTable(status) {
         ]  
     });
 }
+
+function approvePR(prdId) {
+    $.ajax({
+        url: '/Approver/PRTransaction/ApprovePR?prdId=' + prdId,
+        type: 'POST',
+        success: function (response) {
+            // Handle success, such as refreshing the data table or showing a success message
+            console.log("Purchase requisition approved successfully!");
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            // Handle error, such as displaying an error message
+            console.error("Error approving purchase requisition:", errorThrown);
+        }
+    });
+}
+
+
