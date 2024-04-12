@@ -24,8 +24,8 @@ namespace Meditrack.Areas.Admin.Controllers
             _purchaseOrderService = purchaseOrderService;
         }
 
-        //PRHeader List
-        public IActionResult PRList()
+        //PODetails List
+        public IActionResult PODList()
         {
             return View();
         }
@@ -296,6 +296,41 @@ namespace Meditrack.Areas.Admin.Controllers
                     detail.PurchaseRequisitionHeader.Status.StatusDescription,
                     detail.PurchaseRequisitionHeader.TotalAmount,
                     detail.PurchaseRequisitionHeader.PRDate
+                },
+                detail.Product.ProductName,
+                detail.UnitPrice,
+                detail.UnitOfMeasurement,
+                detail.QuantityInOrder,
+                detail.Subtotal,
+            });
+
+            // Return the result as JSON
+            return Json(new { data = detailsWithStatus });
+        }
+
+
+        //Retrieving the PO Headers and PO Details
+        [HttpGet]
+        public IActionResult GetAllPODetails()
+        {
+            // Fetch all PurchaseOrderHeaders including related entities
+            var headers = _unitOfWork.PurchaseOrderHeader.GetAll(includeProperties: "Supplier,Location,Status");
+
+            // Fetch all PurchaseOrderDetails including related entities
+            var details = _unitOfWork.PurchaseOrderDetail.GetAll(includeProperties: "Product,PurchaseOrderHeader");
+
+            // Project the details and headers into an anonymous type
+            var detailsWithStatus = details.Select(detail => new
+            {
+                detail.PODtlID,
+                detail.POHdrID,
+                PurchaseOrderHeader = new
+                {
+                    detail.PurchaseOrderHeader.Supplier.SupplierName,
+                    detail.PurchaseOrderHeader.Location.LocationAddress,
+                    detail.PurchaseOrderHeader.Status.StatusDescription,
+                    detail.PurchaseOrderHeader.TotalAmount,
+                    detail.PurchaseOrderHeader.PODate
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,
