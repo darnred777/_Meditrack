@@ -119,6 +119,14 @@ namespace Meditrack.Areas.Admin.Controllers
                 // Add the new PurchaseRequisitionHeader to the database
                 // Initialize the TotalAmount with 0
                 viewModel.PurchaseRequisitionHeader.TotalAmount = 0;
+
+                // Set the status of the new Purchase Requisition to "Pending"
+                viewModel.PurchaseRequisitionHeader.Status = new Status
+                {
+                    StatusDescription = StaticDetails.Status_Pending
+                };
+
+
                 _unitOfWork.PurchaseRequisitionHeader.Add(viewModel.PurchaseRequisitionHeader);
                 _unitOfWork.Save();
 
@@ -164,49 +172,7 @@ namespace Meditrack.Areas.Admin.Controllers
             }).ToList();
 
             return View(viewModel);
-        }
-
-        // POST: /Admin/AddPurchase/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult CreatePR(PRTransactionVM viewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Compute subtotal before saving
-        //        viewModel.PurchaseRequisitionDetail.Subtotal =
-        //            viewModel.PurchaseRequisitionDetail.UnitPrice *
-        //            viewModel.PurchaseRequisitionDetail.QuantityInOrder;
-
-        //        // Add the new PurchaseRequisitionHeader to the database
-        //        _unitOfWork.PurchaseRequisitionHeader.Add(viewModel.PurchaseRequisitionHeader);
-        //        _unitOfWork.Save();
-
-        //        // Assign the newly generated header ID to the detail
-        //        viewModel.PurchaseRequisitionDetail.PRHdrID = viewModel.PurchaseRequisitionHeader.PRHdrID;
-
-        //        // Add the new PurchaseRequisitionDetail to the database
-        //        _unitOfWork.PurchaseRequisitionDetail.Add(viewModel.PurchaseRequisitionDetail);
-        //        _unitOfWork.Save();
-
-        //        return RedirectToAction("PRDList", "PRTransaction");  
-        //    }
-
-        //    // If model state is not valid, return the view with validation errors
-        //    return View("PRDList", viewModel);
-        //}
-
-
-        //public IActionResult ViewPRDetails(int prviewId)
-        //{
-        //    PRTransactionVM prTransactionVM= new()
-        //    {
-        //        PurchaseRequisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == prviewId, includeProperties: "Supplier,Location,Status"),
-        //        PurchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRHdrID == prviewId, includeProperties: "Product")
-        //    };
-
-        //    return View(prTransactionVM);
-        //}
+        }    
 
         //View the Purchase Requisition Details for Approval
         public IActionResult ViewPRDetails(int prdId)
@@ -306,19 +272,7 @@ namespace Meditrack.Areas.Admin.Controllers
             return View(prTransactionVM);
         }
 
-        #region API CALLS
-       
-        //Retrieving the PR Headers and PR Details
-        //[HttpGet]
-        //public IActionResult GetAllPRDetails()
-        //{
-        //    // Fetch all PurchaseRequisitionHeaders
-        //    var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status");
-        //    // Fetch all PurchaseRequisitionDetails
-        //    var details = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "Product,PurchaseRequisitionHeader");
-
-        //    return Json(new { data =  details });
-        //}
+        #region API CALLS             
 
         //Retrieving the PR Headers and PR Details
         [HttpGet]
@@ -354,7 +308,65 @@ namespace Meditrack.Areas.Admin.Controllers
             return Json(new { data = detailsWithStatus });
         }
 
-
         #endregion
     }
 }
+
+// trash section
+
+// POST: /Admin/AddPurchase/Create
+//[HttpPost]
+//[ValidateAntiForgeryToken]
+//public IActionResult CreatePR(PRTransactionVM viewModel)
+//{
+//    if (ModelState.IsValid)
+//    {
+//        // Compute subtotal before saving
+//        viewModel.PurchaseRequisitionDetail.Subtotal =
+//            viewModel.PurchaseRequisitionDetail.UnitPrice *
+//            viewModel.PurchaseRequisitionDetail.QuantityInOrder;
+
+//        // Add the new PurchaseRequisitionHeader to the database
+//        _unitOfWork.PurchaseRequisitionHeader.Add(viewModel.PurchaseRequisitionHeader);
+//        _unitOfWork.Save();
+
+//        // Assign the newly generated header ID to the detail
+//        viewModel.PurchaseRequisitionDetail.PRHdrID = viewModel.PurchaseRequisitionHeader.PRHdrID;
+
+//        // Add the new PurchaseRequisitionDetail to the database
+//        _unitOfWork.PurchaseRequisitionDetail.Add(viewModel.PurchaseRequisitionDetail);
+//        _unitOfWork.Save();
+
+//        return RedirectToAction("PRDList", "PRTransaction");  
+//    }
+
+//    // If model state is not valid, return the view with validation errors
+//    return View("PRDList", viewModel);
+//}
+
+
+//public IActionResult ViewPRDetails(int prviewId)
+//{
+//    PRTransactionVM prTransactionVM= new()
+//    {
+//        PurchaseRequisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == prviewId, includeProperties: "Supplier,Location,Status"),
+//        PurchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRHdrID == prviewId, includeProperties: "Product")
+//    };
+
+//    return View(prTransactionVM);
+//}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Retrieving the PR Headers and PR Details
+//[HttpGet]
+//public IActionResult GetAllPRDetails()
+//{
+//    // Fetch all PurchaseRequisitionHeaders
+//    var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status");
+//    // Fetch all PurchaseRequisitionDetails
+//    var details = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "Product,PurchaseRequisitionHeader");
+
+//    return Json(new { data =  details });
+//}

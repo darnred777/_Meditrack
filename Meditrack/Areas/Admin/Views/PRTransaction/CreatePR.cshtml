@@ -20,20 +20,7 @@
                     <select asp-for="@Model.PurchaseRequisitionHeader.LocationID" asp-items="@Model.LocationList" class="form-select">
                         <option disabled selected>--Select Location--</option>
                     </select>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="PurchaseRequisitionHeader.StatusID">Status</label>
-                    <select asp-for="@Model.PurchaseRequisitionHeader.StatusID" asp-items="@Model.StatusList" class="form-select">
-                        <option disabled selected>--Select Status--</option>
-                    </select>
-                </div>
-               @*  <div class="mb-3">
-                    <div class="mb-3">
-                        <input asp-for="PurchaseRequisitionHeader.TotalAmount" class="form-control"/>
-                    </div>
-                </div> *@
-                <!-- Add more fields for PurchaseRequisitionHeader -->
-
+                </div>   
             </div>
             <div class="col-md-6">
                 <!-- Additional Purchase Requisition Detail Fields -->
@@ -65,7 +52,6 @@
                     <label asp-for="PurchaseRequisitionDetail.QuantityInOrder">Quantity In Order:</label>
                     <input asp-for="PurchaseRequisitionDetail.QuantityInOrder" class="form-control">
                 </div>
-                <!-- Add more fields for PurchaseRequisitionDetail -->
             </div>
         </div>
         <div class="row mt-4">
