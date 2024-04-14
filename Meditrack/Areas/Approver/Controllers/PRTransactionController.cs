@@ -58,7 +58,22 @@ namespace Meditrack.Approver.Controllers
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
-     
+
+        [HttpPost]
+        public IActionResult CancelPR(int prdId)
+        {
+            try
+            {
+                _purchaseOrderService.CancelPurchaseRequisition(prdId);
+                return Json(new { success = true, message = "Purchase requisition cancelled successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+
         //View the Purchase Requisition Details for Approval
         public IActionResult ViewPRDetails(int prdId)
         {

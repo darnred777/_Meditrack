@@ -72,4 +72,20 @@ public class PurchaseOrderService : IPurchaseOrderService
         _unitOfWork.Save();
 
     }
+
+    public void CancelPurchaseRequisition(int prdId)
+    {
+        var prHeader = _unitOfWork.PurchaseRequisitionHeader
+                        .GetFirstOrDefault(prh => prh.PRHdrID == prdId);
+
+        if (prHeader == null) throw new Exception("Purchase Requisition not found.");
+
+        var statusCancelled = _unitOfWork.Status.GetFirstOrDefault(s => s.StatusDescription == StaticDetails.Status_Cancelled);
+        if (statusCancelled == null) throw new Exception("Cancelled status not found in the database.");
+
+        // Update the Status of the Purchase Requisition to 'Cancelled'
+        prHeader.StatusID = statusCancelled.StatusID;
+        _unitOfWork.Save(); // Save the status update
+    }
+
 }

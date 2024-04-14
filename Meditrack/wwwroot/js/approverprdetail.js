@@ -23,14 +23,12 @@ function loadDataTable(status) {
             {
                 data: 'prHdrID', // Assuming prHdrID is accessible in your data
                 "render": function (data) {
-                    return `
-                        <div class="w-75 btn-group" role="group">
-                            <a href="/approver/prtransaction/viewprdetails?prviewId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> View</a>
-                            <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i> Approve</button>
-                        </div>
-                    `;
+                    return `<div class="w-75 btn-group" role="group">                          
+                                <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i> Approve</button>
+                                <button type="button" class="btn btn-danger mx-2" onclick="cancelPR(${data})"><i class="bi bi-x-square"></i> Cancel</button>
+                            </div>`
                 },
-                "width": "20%"
+                "width": "25%"
 
             }
         ]  
@@ -53,3 +51,25 @@ function approvePR(prdId) {
 }
 
 
+function cancelPR(prId) {
+    if (!confirm('Are you sure you want to cancel this purchase requisition?')) return;
+
+    fetch(`/Approver/PRTransaction/CancelPR?prdId=${prId}`, {
+        method: 'POST',
+        headers: {
+            // Include any necessary headers, like CSRF tokens if needed
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': $('input[name="__RequestVerificationToken"]').val()
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert('Purchase requisition cancelled successfully.');
+            // You might want to redirect or refresh the page here
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error cancelling the purchase requisition:', error);
+            alert('Failed to cancel the purchase requisition.');
+        });
+}
