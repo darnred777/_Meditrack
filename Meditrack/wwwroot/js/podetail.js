@@ -26,7 +26,7 @@ function loadDataTable(status) {
                     return `
                         <div class="w-75 btn-group" role="group">                          
                             <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i>Send</button>
-                            <button type="button" class="btn btn-danger" onclick="cancelPO(${data})">Cancel</button>
+                            <button type="button" class="btn btn-danger" onclick="cancelPO(${data})" ${status === 'Cancelled' ? 'disabled' : ''}>Cancel</button>
                         </div>
                     `
                 },
@@ -40,20 +40,29 @@ function loadDataTable(status) {
 function cancelPO(poId) {
     if (confirm("Are you sure you want to cancel this Purchase Order?")) {
         fetch(`/Admin/PRTransaction/CancelPO?poId=${poId}`, {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': $('input[name="__RequestVerificationToken"]').val()
+            }
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
+                    throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
-                dataTable.ajax.reload();
+                if (data.success) {
+                    alert(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    throw new Error(data.message);
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Failed to cancel the Purchase Order: ' + error.message);
+                alert(error.message || 'Something went wrong, please try again.');
             });
     }
 }

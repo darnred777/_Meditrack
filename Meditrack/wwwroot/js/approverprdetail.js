@@ -47,7 +47,7 @@ function cancelPR(prId) {
     })
         .then(response => response.json())
         .then(data => {
-            alert('Purchase requisition cancelled successfully.');
+            //alert('Purchase requisition cancelled successfully.');
             dataTable.ajax.reload(); // Reload DataTable to reflect changes
         })
         .catch(error => {
@@ -61,7 +61,7 @@ function approvePR(prdId) {
         url: '/Approver/PRTransaction/ApprovePR?prdId=' + prdId,
         type: 'POST',
         success: function (response) {
-            console.log("Purchase requisition approved successfully!");
+            //console.log("Purchase requisition approved successfully!");
             dataTable.ajax.reload(); // Reload DataTable to reflect changes
         },
         error: function (xhr, textStatus, errorThrown) {

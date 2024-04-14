@@ -26,7 +26,7 @@ function loadDataTable(status) {
                     return `
                         <div class="w-75 btn-group" role="group">                          
                             <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i>Send</button>
-                            <button type="button" class="btn btn-danger" onclick="cancelPO(${data})">Cancel</button>
+                            <button type="button" class="btn btn-danger" onclick="cancelPO(${data})" ${status === 'Cancelled' ? 'disabled' : ''}>Cancel</button>
                         </div>
                     `
                 },
@@ -46,15 +46,23 @@ function cancelPO(poId) {
                 'X-CSRF-TOKEN': $('input[name="__RequestVerificationToken"]').val()
             }
         })
-            .then(response => response.json())
-            .then(data => {
-                alert('Purchase ordered cancelled successfully.');
-                dataTable.ajax.reload(); // Reload DataTable to reflect changes
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
             })
-            
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    throw new Error(data.message);
+                }
+            })
             .catch(error => {
-                console.error('Error cancelling the purchase requisition:', error);
-                alert('Failed to cancel the purchase requisition.');
+                console.error('Error:', error);
+                alert(error.message || 'Something went wrong, please try again.');
             });
     }
 }

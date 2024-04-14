@@ -45,11 +45,12 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             try
             {
                 _purchaseOrderService.CancelPurchaseOrder(poId);
-                return Ok("Purchase Order and its associated Purchase Requisition have been successfully cancelled.");
+
+                return Json(new { success = true, message = "Purchase order cancelled successfully." });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                return Json(new { success = false, message = ex.Message });
             }
         }
 
