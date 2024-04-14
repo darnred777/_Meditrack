@@ -23,9 +23,9 @@ function loadDataTable(status) {
             {
                 data: 'prHdrID', // Assuming prHdrID is accessible in your data
                 "render": function (data) {
-                    return `<div class="w-75 btn-group" role="group">                          
-                                <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i> Approve</button>
-                                <button type="button" class="btn btn-danger mx-2" onclick="cancelPR(${data})"><i class="bi bi-x-square"></i> Cancel</button>
+                    return `<div class="w-75 btn-group" role="group">                                                        
+                                <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})" ${status === 'Cancelled' ? 'disabled' : ''}><i class="bi bi-check-square"></i> Approve</button>
+                                <button type="button" class="btn btn-danger mx-2" onclick="cancelPR(${data})" ${status === 'Cancelled' ? 'disabled' : ''}><i class="bi bi-x-square"></i> Cancel</button>
                             </div>`
                 },
                 "width": "25%"

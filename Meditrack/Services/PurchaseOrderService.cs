@@ -23,6 +23,11 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         if (prHeader == null) throw new Exception("Purchase Requisition not found.");
 
+        //Preventing to Approve a Cancelled PR
+        var statusCancelled = _unitOfWork.Status.GetFirstOrDefault(s => s.StatusDescription == StaticDetails.Status_Cancelled);
+        if (prHeader.StatusID == statusCancelled.StatusID)
+            throw new InvalidOperationException("Cannot approve a cancelled Purchase Requisition.");
+
         var statusApproved = _unitOfWork.Status.GetFirstOrDefault(s => s.StatusDescription == StaticDetails.Status_Approved);
         if (statusApproved == null) throw new Exception("Approved status not found in the database.");
 
@@ -87,5 +92,7 @@ public class PurchaseOrderService : IPurchaseOrderService
         prHeader.StatusID = statusCancelled.StatusID;
         _unitOfWork.Save(); // Save the status update
     }
+
+
 
 }

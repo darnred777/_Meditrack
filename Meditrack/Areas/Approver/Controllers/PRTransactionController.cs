@@ -52,6 +52,10 @@ namespace Meditrack.Approver.Controllers
                 // Return a success response
                 return Ok("Purchase requisition approved successfully!");
             }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 // Return an error response if there's an exception
