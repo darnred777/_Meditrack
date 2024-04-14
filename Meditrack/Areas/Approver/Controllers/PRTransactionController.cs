@@ -75,8 +75,7 @@ namespace Meditrack.Approver.Controllers
             {
                 return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
             }
-        }
-
+        }     
 
         //View the Purchase Requisition Details for Approval
         public IActionResult ViewPRDetails(int prdId)

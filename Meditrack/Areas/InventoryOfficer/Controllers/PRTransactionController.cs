@@ -39,6 +39,20 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult CancelPO(int poId)
+        {
+            try
+            {
+                _purchaseOrderService.CancelPurchaseOrder(poId);
+                return Ok("Purchase Order and its associated Purchase Requisition have been successfully cancelled.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
         [HttpGet]
         public IActionResult GetUnitPrice(int productId)
         {

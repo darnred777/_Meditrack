@@ -93,6 +93,35 @@ public class PurchaseOrderService : IPurchaseOrderService
         _unitOfWork.Save(); // Save the status update
     }
 
+    public void CancelPurchaseOrder(int poId)
+    {
+        // Retrieve the Purchase Order based on poId
+        var purchaseOrder = _unitOfWork.PurchaseOrderHeader.GetFirstOrDefault(
+            po => po.POHdrID == poId,
+            includeProperties: "PurchaseRequisitionHeader.Status");
 
+        if (purchaseOrder == null)
+            throw new Exception("Purchase Order not found.");
 
+        // Check if the status of the associated PR is already Cancelled
+        if (purchaseOrder.PurchaseRequisitionHeader.Status.StatusDescription == StaticDetails.Status_Cancelled)
+            throw new Exception("The associated Purchase Requisition is already cancelled.");
+
+        // Retrieve the Cancelled status from the database
+        var statusCancelled = _unitOfWork.Status.GetFirstOrDefault(s => s.StatusDescription == StaticDetails.Status_Cancelled);
+        if (statusCancelled == null)
+            throw new Exception("Cancelled status not found in the database.");
+
+        // Update the status of the Purchase Order to Cancelled
+        purchaseOrder.Status = statusCancelled;
+        purchaseOrder.StatusID = statusCancelled.StatusID;
+
+        // Also update the status of the associated Purchase Requisition
+        var prHeader = purchaseOrder.PurchaseRequisitionHeader;
+        prHeader.Status = statusCancelled;
+        prHeader.StatusID = statusCancelled.StatusID;
+
+        // Save changes
+        _unitOfWork.Save();
+    }
 }

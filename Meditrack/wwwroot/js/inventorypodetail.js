@@ -24,9 +24,9 @@ function loadDataTable(status) {
                 data: 'poHdrID', // Assuming prHdrID is accessible in your data
                 "render": function (data) {
                     return `
-                        <div class="w-75 btn-group" role="group">
-                            <a href="/inventoryofficer/prtransaction/viewprdetails?prviewId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> View</a>
+                        <div class="w-75 btn-group" role="group">                          
                             <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i>Send</button>
+                            <button type="button" class="btn btn-danger" onclick="cancelPO(${data})">Cancel</button>
                         </div>
                     `
                 },
@@ -35,4 +35,26 @@ function loadDataTable(status) {
             }
         ]  
     });
+}
+
+function cancelPO(poId) {
+    if (confirm("Are you sure you want to cancel this Purchase Order?")) {
+        fetch(`/InventoryOfficer/PRTransaction/CancelPO?poId=${poId}`, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.message); // Assuming the response contains a message field
+                location.reload(); // Reloads the current page to reflect the changes
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to cancel the Purchase Order: ' + error.message);
+            });
+    }
 }
