@@ -40,21 +40,21 @@ function loadDataTable(status) {
 function cancelPO(poId) {
     if (confirm("Are you sure you want to cancel this Purchase Order?")) {
         fetch(`/InventoryOfficer/PRTransaction/CancelPO?poId=${poId}`, {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': $('input[name="__RequestVerificationToken"]').val()
+            }
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                alert(data.message); // Assuming the response contains a message field
-                location.reload(); // Reloads the current page to reflect the changes
+                alert('Purchase ordered cancelled successfully.');
+                dataTable.ajax.reload(); // Reload DataTable to reflect changes
             })
+            
             .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to cancel the Purchase Order: ' + error.message);
+                console.error('Error cancelling the purchase requisition:', error);
+                alert('Failed to cancel the purchase requisition.');
             });
     }
 }

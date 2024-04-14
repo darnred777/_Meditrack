@@ -35,29 +35,12 @@ function loadDataTable(status) {
     });
 }
 
-function approvePR(prdId) {
-    $.ajax({
-        url: '/Approver/PRTransaction/ApprovePR?prdId=' + prdId,
-        type: 'POST',
-        success: function (response) {
-            // Handle success, such as refreshing the data table or showing a success message
-            console.log("Purchase requisition approved successfully!");
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            // Handle error, such as displaying an error message
-            console.error("Error approving purchase requisition:", errorThrown);
-        }
-    });
-}
-
-
 function cancelPR(prId) {
     if (!confirm('Are you sure you want to cancel this purchase requisition?')) return;
 
     fetch(`/Approver/PRTransaction/CancelPR?prdId=${prId}`, {
         method: 'POST',
         headers: {
-            // Include any necessary headers, like CSRF tokens if needed
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': $('input[name="__RequestVerificationToken"]').val()
         }
@@ -65,11 +48,25 @@ function cancelPR(prId) {
         .then(response => response.json())
         .then(data => {
             alert('Purchase requisition cancelled successfully.');
-            // You might want to redirect or refresh the page here
-            window.location.reload();
+            dataTable.ajax.reload(); // Reload DataTable to reflect changes
         })
         .catch(error => {
             console.error('Error cancelling the purchase requisition:', error);
             alert('Failed to cancel the purchase requisition.');
         });
 }
+
+function approvePR(prdId) {
+    $.ajax({
+        url: '/Approver/PRTransaction/ApprovePR?prdId=' + prdId,
+        type: 'POST',
+        success: function (response) {
+            console.log("Purchase requisition approved successfully!");
+            dataTable.ajax.reload(); // Reload DataTable to reflect changes
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.error("Error approving purchase requisition:", errorThrown);
+        }
+    });
+}
+

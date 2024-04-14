@@ -49,8 +49,7 @@ function cancelPO(poId) {
                 return response.json();
             })
             .then(data => {
-                alert(data.message); // Assuming the response contains a message field
-                location.reload(); // Reloads the current page to reflect the changes
+                dataTable.ajax.reload();
             })
             .catch(error => {
                 console.error('Error:', error);

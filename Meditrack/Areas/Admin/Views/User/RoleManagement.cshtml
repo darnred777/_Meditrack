@@ -22,17 +22,19 @@
                         </div>
                         <div class="form-floating mb-3 col-md-6">
                             <input asp-for="ApplicationUser.PasswordHash" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" hidden/>
-                            <label asp-for="ApplicationUser.PasswordHash" class="ms-2 text-muted">Password</label>
+                            @* <label asp-for="ApplicationUser.PasswordHash" class="ms-2 text-muted">Password</label> *@
                         </div>
                         <div class="form-floating mb-3 col-md-6">
                             <select asp-for="ApplicationUser.Role" asp-items="@Model.RoleList" class="form-select">
                                 <option disabled selected>--Select Role--</option>
                             </select>
+                            <label asp-for="ApplicationUser.Role" class="ms-2 text-muted">Role</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
                             <select asp-for="ApplicationUser.LocationID" asp-items="@Model.LocationList" class="form-select">
                                 <option disabled selected>--Select Location--</option>
                             </select>
+                            <label asp-for="ApplicationUser.Location" class="ms-2 text-muted">Location</label>
                         </div>
                         <div class="form-floating mb-3 col-md-12">
                             <input asp-for="ApplicationUser.FirstName" class="form-control" aria-required="true" placeholder="First Name" />
