@@ -52,12 +52,6 @@ namespace Meditrack.Areas.Admin.Controllers
             return View();
         }
 
-        [Authorize(Roles = StaticDetails.Role_Admin)]
-        public IActionResult Feedback()
-        {   
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

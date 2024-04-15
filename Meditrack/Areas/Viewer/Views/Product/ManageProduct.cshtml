@@ -38,7 +38,7 @@
                         <td>@obj.ExpirationDate</td>
                         <td>@obj.LastUnitPriceUpdated</td>
                         <td>@obj.LastQuantityInStockUpdated</td>
-                        <td>@obj.isActive</td>                    
+                        <td>@(obj.isActive ? "Active" : "Inactive")</td>
                     </tr>
                 }
             </tbody>
