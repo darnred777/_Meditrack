@@ -122,7 +122,7 @@ namespace Meditrack.Areas.Identity.Pages.Account
             [StringLength(30)]
             public string? LastName { get; set; }
 
-            public DateTime? BirthDate { get; set; }
+            public DateOnly? BirthDate { get; set; }
 
             [ValidateNever]
             public string? ProfilePicture { get; set; }

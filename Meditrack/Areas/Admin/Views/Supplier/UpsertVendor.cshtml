@@ -25,33 +25,39 @@
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Supplier.LocationID">Location</label>
-                                <select asp-for="@Model.Supplier.LocationID" asp-items="@Model.LocationList" class="form-select" required>
+                                <select asp-for="@Model.Supplier.LocationID" asp-items="@Model.LocationList" class="form-select">
                                     <option disabled selected>--Select Location--</option>
                                 </select>
+                                <span asp-validation-for="Supplier.LocationID" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Supplier.SupplierName" class="form-label">Supplier Name:</label>
-                                <input asp-for="Supplier.SupplierName" class="form-control" placeholder="Enter Supplier Name" required>
+                                <input asp-for="Supplier.SupplierName" class="form-control" placeholder="Enter Supplier Name">
+                                <span asp-validation-for="Supplier.SupplierName" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Supplier.ContactPerson" class="form-label">Contact Person:</label>
-                                <input asp-for="Supplier.ContactPerson" class="form-control" placeholder="Enter Contact Person" required>
+                                <input asp-for="Supplier.ContactPerson" class="form-control" placeholder="Enter Contact Person">
+                                <span asp-validation-for="Supplier.ContactPerson" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Supplier.ContactNumber" class="form-label">Contact Number:</label>
-                                <input asp-for="Supplier.ContactNumber" class="form-control" placeholder="Enter Contact Number" required>
+                                <input asp-for="Supplier.ContactNumber" class="form-control" placeholder="Enter Contact Number">
+                                <span asp-validation-for="Supplier.ContactNumber" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Supplier.Email" class="form-label">Email:</label>
-                                <input asp-for="Supplier.Email" class="form-control" placeholder="Enter Email" required>
+                                <input asp-for="Supplier.Email" class="form-control" placeholder="Enter Email">
+                                <span asp-validation-for="Supplier.Email" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Supplier.OfficeAddress" class="form-label">Office Address:</label>
-                                <textarea asp-for="Supplier.OfficeAddress" class="form-control" rows="3" placeholder="Enter Office Address" required></textarea>
+                                <textarea asp-for="Supplier.OfficeAddress" class="form-control" rows="3" placeholder="Enter Office Address"></textarea>
+                                <span asp-validation-for="Supplier.OfficeAddress" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
-                                <label asp-for="Supplier.DateCreated" class="form-label">Date Created:</label>
-                                <input asp-for="Supplier.DateCreated" class="form-control" rows="3">
+                                <label asp-for="Supplier.DateCreated" class="form-label" hidden>Date Created:</label>
+                                <input asp-for="Supplier.DateCreated" class="form-control" rows="3" hidden>
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Supplier.isActive" class="form-label" hidden>Is Active:</label>

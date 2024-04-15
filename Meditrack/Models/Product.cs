@@ -9,49 +9,51 @@ namespace Meditrack.Models
         [Key]
         public int ProductID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Selecting a Category is required.")]
         public int CategoryID { get; set; }
 
+        [Required]
         [ForeignKey("CategoryID")]
         [ValidateNever]
         public virtual ProductCategory ProductCategory { get; set; }
 
-
+        [Required]
         [StringLength(30)]
-        public string? ProductName { get; set; }
+        public string ProductName { get; set; }
 
-
+        [Required]
         [StringLength(15)]
-        public string? SKU { get; set; }
+        public string SKU { get; set; }
 
-
+        [Required]
         [StringLength(30)]
-        public string? Brand { get; set; }
+        public string Brand { get; set; }
 
+        [Required]
+        public string ProductDescription { get; set; }
 
-        public string? ProductDescription { get; set; }
-
-
+        [Required]
         public decimal UnitPrice { get; set; }
 
-
+        [Required]
         [StringLength(10)]
-        public string? UnitOfMeasurement { get; set; }
+        public string UnitOfMeasurement { get; set; }
 
- 
+        [Required]
         public int QuantityInStock { get; set; }
 
-        public DateTime? ExpirationDate { get; set; }
+        [Required]
+        public DateOnly ExpirationDate { get; set; }
 
-
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime LastUnitPriceUpdated { get; set; } = DateTime.Now;
 
-
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime LastQuantityInStockUpdated { get; set; } = DateTime.Now;
 
-   
+        [Required]
         public bool isActive { get; set; } = true;
     }
 }

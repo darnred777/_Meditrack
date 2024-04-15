@@ -31,21 +31,21 @@
                             <label asp-for="ApplicationUser.Role" class="ms-2 text-muted">Role</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <select asp-for="ApplicationUser.LocationID" asp-items="@Model.LocationList" class="form-select">
-                                <option disabled selected>--Select Location--</option>
+                            <select asp-for="ApplicationUser.LocationID" asp-items="@Model.LocationList" class="form-select" aria-required="true" required>
+                                <option disabled selected required>--Select Location--</option>
                             </select>
                             <label asp-for="ApplicationUser.Location" class="ms-2 text-muted">Location</label>
                         </div>
                         <div class="form-floating mb-3 col-md-12">
-                            <input asp-for="ApplicationUser.FirstName" class="form-control" aria-required="true" placeholder="First Name" />
+                            <input asp-for="ApplicationUser.FirstName" class="form-control" aria-required="true" placeholder="First Name" aria-required="true" required />
                             <label asp-for="ApplicationUser.FirstName" class="ms-2 text-muted">FirstName</label>
                         </div>
                         <div class="form-floating mb-3 col-md-12">
-                            <input asp-for="ApplicationUser.LastName" class="form-control" aria-required="true" placeholder="Last Name" />
+                            <input asp-for="ApplicationUser.LastName" class="form-control" aria-required="true" placeholder="Last Name" aria-required="true" required />
                             <label asp-for="ApplicationUser.LastName" class="ms-2 text-muted">LastName</label>
                         </div>
                         <div class="form-floating mb-3 col-md-12">
-                            <input asp-for="ApplicationUser.BirthDate" class="form-control" aria-required="true" placeholder="Birth Date" />
+                            <input asp-for="ApplicationUser.BirthDate" class="form-control" type="date" placeholder="Birth Date" required />
                             <label asp-for="ApplicationUser.BirthDate" class="ms-2 text-muted">Birth Date</label>
                         </div>
                         <div class="form-floating mb-3 col-md-12">

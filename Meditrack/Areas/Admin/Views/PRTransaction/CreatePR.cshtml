@@ -43,12 +43,13 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label asp-for="PurchaseRequisitionDetail.UnitOfMeasurement">Unit Of Measurement:</label>
-                        <input asp-for="PurchaseRequisitionDetail.UnitOfMeasurement" class="form-control" required>
+                        <input asp-for="PurchaseRequisitionDetail.UnitOfMeasurement" class="form-control" id="unitOfMeasurement">
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="PurchaseRequisitionDetail.QuantityInOrder">Quantity In Order:</label>
                     <input asp-for="PurchaseRequisitionDetail.QuantityInOrder" class="form-control" required>
+                    <span asp-validation-for="PurchaseRequisitionDetail.QuantityInOrder" class="text-danger"></span>
                 </div>
             </div>
         </div>

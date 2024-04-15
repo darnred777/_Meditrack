@@ -13,6 +13,7 @@ namespace Meditrack.Models
         [Display(Name = "Product Category Name")]
         public string CategoryName { get; set; }
 
+        [Required]
         [Display(Name = "Category Description")]
         public string CategoryDescription { get; set; }
 
@@ -20,8 +21,8 @@ namespace Meditrack.Models
         [Display(Name = "Date Last Modified")]
         public DateTime DateLastModified { get; set; } = DateTime.Now;
 
-        [Display(Name = "Total Quantity In Stock")]
         [NotMapped]
+        [Display(Name = "Total Quantity In Stock")]
         public int TotalQuantityInStock { get; set; }
     }
 }

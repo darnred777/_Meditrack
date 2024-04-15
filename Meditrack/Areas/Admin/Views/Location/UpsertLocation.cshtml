@@ -8,11 +8,13 @@
         </div>
         <div class="mb-3">
             <label asp-for="Location.LocationType" class="form-label">Location Type:</label>
-            <input asp-for="Location.LocationType" class="form-control" required>
+            <input asp-for="Location.LocationType" class="form-control">
+            <span asp-validation-for="Location.LocationType" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="Location.LocationAddress" class="form-label">Location Address:</label>
-            <textarea asp-for="Location.LocationAddress" class="form-control" required></textarea>
+            <textarea asp-for="Location.LocationAddress" class="form-control"></textarea>
+            <span asp-validation-for="Location.LocationAddress" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="col-6">

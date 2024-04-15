@@ -65,6 +65,16 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             return Ok(product.UnitPrice);
         }
 
+        [HttpGet]
+        public IActionResult GetUnitOfMeasurement(int productId)
+        {
+            var product = _productRepository.GetProductById(productId);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+            return Ok(product.UnitOfMeasurement);
+        }
 
         [HttpGet]
         public IActionResult GetProductDetails(int productId)
@@ -77,7 +87,8 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
 
             return Ok(new
             {
-                UnitPrice = product.UnitPrice,               
+                UnitPrice = product.UnitPrice,
+                UnitOfMeasurement = product.UnitOfMeasurement,
             });
         }
       

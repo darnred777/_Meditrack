@@ -36,27 +36,28 @@
                         </select>
                     </div>
                     <div class="form-floating mb-3 col-md-6">
-                        <select asp-for="Input.LocationID" asp-items="@Model.Input.LocationList" class="form-select">
+                        <select asp-for="Input.LocationID" asp-items="@Model.Input.LocationList" class="form-select" required>
                             <option disabled selected>--Select Location--</option>
                         </select>
+                        <span asp-validation-for="Input.LocationID" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3 col-md-12">
-                        <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="First Name" />
+                        <input asp-for="Input.FirstName" class="form-control" placeholder="First Name" required />
                         <label asp-for="Input.FirstName" class="ms-2 text-muted">FirstName</label>
                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3 col-md-12">
-                        <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="Last Name" />
+                        <input asp-for="Input.LastName" class="form-control" placeholder="Last Name" required />
                         <label asp-for="Input.LastName" class="ms-2 text-muted">LastName</label>
                         <span asp-validation-for="Input.LastName" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3 col-md-12">
-                        <input asp-for="Input.BirthDate" class="form-control" aria-required="true" placeholder="Birth Date" />
+                        <input asp-for="Input.BirthDate" class="form-control" type="date" placeholder="Birth Date" required />
                         <label asp-for="Input.BirthDate" class="ms-2 text-muted">Birth Date</label>
                         <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3 col-md-12">
-                        <input type="file" class="form-control" aria-required="true"/>
+                        <input type="file" class="form-control" />
                         <label asp-for="Input.ProfilePicture" class="ms-2 text-muted">Profile Picture</label>
                     </div>
                     <div class="row">

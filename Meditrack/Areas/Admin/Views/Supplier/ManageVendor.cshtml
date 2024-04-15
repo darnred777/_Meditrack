@@ -136,7 +136,7 @@
                                             <td>@obj.Email</td>
                                             <td>@obj.OfficeAddress</td>
                                             <td>@obj.DateCreated</td>
-                                            <td>@obj.isActive</td>
+                                            <td>@(obj.isActive ? "Active" : "Inactive")</td>
                                             <td>
                                                 <div class="w-75 btn-group" role="group">
                                                     <a asp-area="Admin" asp-controller="Supplier" asp-action="UpsertVendor" asp-route-SupplierID="@obj.SupplierID" class="btn btn-primary mx-2">
