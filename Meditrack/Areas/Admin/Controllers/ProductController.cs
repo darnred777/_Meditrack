@@ -7,6 +7,7 @@ using Meditrack.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Meditrack.Areas.Admin.Controllers
@@ -314,6 +315,18 @@ namespace Meditrack.Areas.Admin.Controllers
             return RedirectToAction("ManageProduct");
         }
 
+        public IActionResult ExpiringProducts()
+        {
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var tenDaysLater = today.AddDays(10);
+
+            // Access products through the unit of work
+            var expiringProducts = _unitOfWork.Product
+                .GetAll(p => p.ExpirationDate >= today && p.ExpirationDate <= tenDaysLater)
+                .ToList();
+
+            return View(expiringProducts);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

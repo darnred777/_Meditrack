@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Product>
+
+@if (Model.Any())
+{
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Low Stock Alert!</h4>
+        <p>The following products are below the reorder point:</p>
+        <ul>
+            @foreach (var product in Model)
+            {
+                <li>@product.ProductName - Only @product.QuantityInStock left!</li>
+            }
+        </ul>
+    </div>
+}

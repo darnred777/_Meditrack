@@ -74,5 +74,15 @@ namespace Meditrack.Repository
                    _db.PurchaseOrderDetail.Any(p => p.ProductID == productId) ||
                    _db.TransactionLogs.Any(t => t.ProductID == productId);
         }
+
+        public IEnumerable<Product> GetExpiringProducts(DateOnly startDate, DateOnly endDate)
+        {
+            return _db.Product.Where(p => p.ExpirationDate >= startDate && p.ExpirationDate <= endDate).ToList();
+        }
+
+        public IQueryable<Product> AsQueryable()
+        {
+            return _db.Product;
+        }
     }
 }

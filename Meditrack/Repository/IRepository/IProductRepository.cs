@@ -13,5 +13,9 @@ namespace Meditrack.Repository.IRepository
         IQueryable<Product> Products { get; }
 
         bool HasDependencies(int productId);
+
+        IEnumerable<Product> GetExpiringProducts(DateOnly startDate, DateOnly endDate);
+
+        IQueryable<Product> AsQueryable();
     }
 }
