@@ -2,6 +2,14 @@
 
 <div class="container mt-5">
     <h3>Delete Product Category</h3>
+
+    @if (TempData.ContainsKey("Error"))
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
     <form method="post">
         <div class="mb-3">
             <label asp-for="CategoryID" class="form-label">Category ID:</label>
@@ -14,10 +22,6 @@
         <div class="mb-3">
             <label asp-for="CategoryDescription" class="form-label">Category Description:</label>
             <input asp-for="CategoryDescription" disabled class="form-control">
-        </div>
-        <div class="mb-3">
-            <label asp-for="TotalQuantityInStock" class="form-label">Total Quantity in Stock:</label>
-            <input asp-for="TotalQuantityInStock" disabled class="form-control" required>
         </div>
         <div class="row">
             <div class="col-6">

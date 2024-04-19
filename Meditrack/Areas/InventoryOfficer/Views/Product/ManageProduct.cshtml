@@ -120,6 +120,13 @@
                         </div>
                     </div>
 
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["Success"]
+                        </div>
+                    }
+
                     <div class="mt-5">
                         <div class="table-responsive table-bordered table-striped">
                             <table class="table">
@@ -150,7 +157,7 @@
                                             <td>@obj.SKU</td>
                                             <td>@obj.Brand</td>
                                             <td>@obj.ProductDescription</td>
-                                            <td>@obj.UnitPrice</td>
+                                            <td>@String.Format("{0:N2}", obj.UnitPrice)</td>
                                             <td>@obj.UnitOfMeasurement</td>
                                             <td>@obj.QuantityInStock</td>
                                             <td>@obj.ExpirationDate</td>

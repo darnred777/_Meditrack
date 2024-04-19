@@ -99,6 +99,13 @@
                         </div>                      
                     </div>
 
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            @TempData["Success"]
+                        </div>
+                    }
+
                     <div class="mt-5">
                         <div class="table-responsive table-bordered table-striped">
                             <table class="table">

@@ -14,12 +14,14 @@
                     <select asp-for="@Model.PurchaseRequisitionHeader.SupplierID" asp-items="@Model.SupplierList" class="form-select" required>
                         <option disabled selected>--Select Supplier--</option>
                     </select>
+                    <span asp-validation-for="PurchaseRequisitionHeader.SupplierID" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="PurchaseRequisitionHeader.LocationID">Location</label>
                     <select asp-for="@Model.PurchaseRequisitionHeader.LocationID" asp-items="@Model.LocationList" class="form-select" required>
                         <option disabled selected>--Select Location--</option>
                     </select>
+                    <span asp-validation-for="PurchaseRequisitionHeader.LocationID" class="text-danger"></span>
                 </div>   
             </div>
             <div class="col-md-6">
@@ -36,6 +38,7 @@
                     <select asp-for="@Model.PurchaseRequisitionDetail.ProductID" asp-items="@Model.ProductList" class="form-select" id="productDropdown" required>
                         <option disabled selected>--Select Product--</option>
                     </select>
+                    <span asp-validation-for="PurchaseRequisitionDetail.ProductID" class="text-danger"></span>
                 </div>
                 <div class="form-row">
                     <div class="col-md-6 mb-3">

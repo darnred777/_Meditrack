@@ -25,8 +25,8 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             List<Supplier> objSupplierList = _unitOfWork.Supplier.GetAll(includeProperties: "Location").ToList();
 
             return View(objSupplierList);
-        }  
-
+        }
+      
         public IActionResult DeleteVendor(int? SupplierID)
         {
             if (SupplierID == null || SupplierID == 0)
@@ -45,13 +45,27 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         [HttpPost, ActionName("DeleteVendor")]
         public IActionResult DeletePOSTVendor(int? SupplierID)
         {
-            Supplier? obj = _unitOfWork.Supplier.Get(u => u.SupplierID == SupplierID);
-            if (obj == null)
+            if (SupplierID == null)
             {
                 return NotFound();
             }
-            _unitOfWork.Supplier.Remove(obj);
+
+            // Check if there are any Purchase Requisitions related to this Supplier
+            if (_unitOfWork.PurchaseRequisitionHeader.Any(pr => pr.SupplierID == SupplierID))
+            {
+                TempData["error"] = "You can't delete this Supplier because it has associated Data Existed.";
+                return RedirectToAction("DeleteVendor", new { SupplierID });
+            }
+
+            var supplier = _unitOfWork.Supplier.Get(u => u.SupplierID == SupplierID);
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+
+            _unitOfWork.Supplier.Remove(supplier);
             _unitOfWork.Save();
+            TempData["success"] = "Supplier deleted successfully.";
 
             return RedirectToAction("ManageVendor");
         }

@@ -13,13 +13,28 @@ function loadDataTable(status) {
             { data: 'purchaseRequisitionHeader.supplierName', "width": "10%" },
             { data: 'purchaseRequisitionHeader.locationAddress', "width": "10%" },
             { data: 'purchaseRequisitionHeader.statusDescription', "width": "10%" },
-            { data: 'purchaseRequisitionHeader.totalAmount', "width": "10%" },
+            {
+                data: 'purchaseRequisitionHeader.totalAmount', "width": "10%",
+                "render": function (data) {
+                    return data ? parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
+                }
+            },
             { data: 'purchaseRequisitionHeader.prDate', "width": "10%" },
             { data: 'productName', "width": "10%" },
-            { data: 'unitPrice', "width": "10%" },
+            {
+                data: 'unitPrice', "width": "10%",
+                "render": function (data) {
+                    return data ? parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
+                }
+            },
             { data: 'unitOfMeasurement', "width": "10%" },
             { data: 'quantityInOrder', "width": "10%" }, 
-            { data: 'subtotal', "width": "10%" },
+            {
+                data: 'subtotal', "width": "10%",
+                "render": function (data) {
+                    return data ? parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
+                }
+            },
             {
                 data: 'prHdrID', // Assuming prHdrID is accessible in your data
                 "render": function (data) {

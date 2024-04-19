@@ -33,6 +33,7 @@ namespace Meditrack.Models
         public string ProductDescription { get; set; }
 
         [Required]
+        [Range(1,1000000)]
         public decimal UnitPrice { get; set; }
 
         [Required]
@@ -40,6 +41,7 @@ namespace Meditrack.Models
         public string UnitOfMeasurement { get; set; }
 
         [Required]
+        [Range(1, 1000000)]
         public int QuantityInStock { get; set; }
 
         [Required]

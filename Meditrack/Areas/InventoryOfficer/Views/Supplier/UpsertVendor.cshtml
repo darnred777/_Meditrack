@@ -1,53 +1,83 @@
 ﻿@model SupplierVM
 
-<div class="container mt-5">
-    <h3 class="mb-3">@(Model.Supplier.SupplierID != 0 ? "Update" : "Create") Supplier</h3>
-    <form method="post">
-        <div class="form-group">
-            <input asp-for="Supplier.SupplierID" hidden />
-        </div>
-        <div class="mb-3">
-            <label asp-for="Supplier.LocationID">Location</label>
-            <select asp-for="@Model.Supplier.LocationID" asp-items="@Model.LocationList" class="form-select" required>
-                <option disabled selected>--Select Location--</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Supplier.SupplierName" class="form-label">Supplier Name:</label>
-            <input asp-for="Supplier.SupplierName" class="form-control" placeholder="Enter Supplier Name" required>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Supplier.ContactPerson" class="form-label">Contact Person:</label>
-            <input asp-for="Supplier.ContactPerson" class="form-control" placeholder="Enter Contact Person" required>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Supplier.ContactNumber" class="form-label">Contact Number:</label>
-            <input asp-for="Supplier.ContactNumber" class="form-control" placeholder="Enter Contact Number" required>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Supplier.Email" class="form-label">Email:</label>
-            <input asp-for="Supplier.Email" class="form-control" placeholder="Enter Email" required>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Supplier.OfficeAddress" class="form-label">Office Address:</label>
-            <textarea asp-for="Supplier.OfficeAddress" class="form-control" rows="3" placeholder="Enter Office Address" required></textarea>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Supplier.DateCreated" class="form-label">Date Created:</label>
-            <input asp-for="Supplier.DateCreated" class="form-control" rows="3">
-        </div>
-        <div class="mb-3">
-            <label asp-for="Supplier.isActive" class="form-label" hidden>Is Active:</label>
-            <input asp-for="Supplier.isActive" class=" form-control-file" hidden>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+<div class="wrapper">
+    <!-- Main Component -->
+
+    <div class="main">
+        <nav class="navbar navbar-expand px-3 border-bottom">
+            <!-- Button for sidebar toggle -->
+            <button class="btn" type="button" data-bs-theme="light">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+        <main class="content px-3 py-2">
+            <div class="container-fluid">
+                <div class="mb-3">
+
+                    <!--Main Content-->
+
+
+                    <div class="container mt-5">
+                        <h3 class="mb-3">@(Model.Supplier.SupplierID != 0 ? "Update" : "Create") Supplier</h3>
+                        <form method="post">
+                            <div class="form-group">
+                                <input asp-for="Supplier.SupplierID" hidden />
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Supplier.LocationID">Location</label>
+                                <select asp-for="@Model.Supplier.LocationID" asp-items="@Model.LocationList" class="form-select">
+                                    <option disabled selected>--Select Location--</option>
+                                </select>
+                                <span asp-validation-for="Supplier.LocationID" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Supplier.SupplierName" class="form-label">Supplier Name:</label>
+                                <input asp-for="Supplier.SupplierName" class="form-control" placeholder="Enter Supplier Name">
+                                <span asp-validation-for="Supplier.SupplierName" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Supplier.ContactPerson" class="form-label">Contact Person:</label>
+                                <input asp-for="Supplier.ContactPerson" class="form-control" placeholder="Enter Contact Person">
+                                <span asp-validation-for="Supplier.ContactPerson" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Supplier.ContactNumber" class="form-label">Contact Number:</label>
+                                <input asp-for="Supplier.ContactNumber" class="form-control" placeholder="Enter Contact Number">
+                                <span asp-validation-for="Supplier.ContactNumber" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Supplier.Email" class="form-label">Email:</label>
+                                <input asp-for="Supplier.Email" class="form-control" placeholder="Enter Email">
+                                <span asp-validation-for="Supplier.Email" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Supplier.OfficeAddress" class="form-label">Office Address:</label>
+                                <textarea asp-for="Supplier.OfficeAddress" class="form-control" rows="3" placeholder="Enter Office Address"></textarea>
+                                <span asp-validation-for="Supplier.OfficeAddress" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Supplier.DateCreated" class="form-label" hidden>Date Created:</label>
+                                <input asp-for="Supplier.DateCreated" class="form-control" rows="3" hidden>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Supplier.isActive" class="form-label" hidden>Is Active:</label>
+                                <input asp-for="Supplier.isActive" class=" form-control-file" hidden>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+                                </div>
+                                <div class="col-6">
+                                    <a asp-area="InventoryOfficer" asp-controller="Supplier" asp-action="ManageVendor" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--End of Content-->
+
+                </div>
             </div>
-            <div class="col-6">
-                <a asp-area="InventoryOfficer" asp-controller="Supplier" asp-action="ManageVendor" class="btn btn-outline-secondary border mt-4 form-control">Back</a>
-            </div>
-        </div>
-    </form>
+        </main>
+    </div>
 </div>
-<!--End of Content-->             

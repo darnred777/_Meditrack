@@ -123,6 +123,13 @@
                         </div>
                     </div>
 
+                    @if (TempData.ContainsKey("Success"))
+                    {
+                        <div class="alert alert-success">
+                            @TempData["Success"]
+                        </div>
+                    }
+
                     <div class="mt-5">
                         <div class="table-responsive table-bordered table-striped">
                             <table class="table">
@@ -132,7 +139,6 @@
                                         <th>Category Name</th>
                                         <th>Category Description</th>
                                         <th>Date Last Modified</th>
-                                        <th>Total Quantity in Stock</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -143,7 +149,6 @@
                                             <td>@obj.CategoryName</td>
                                             <td>@obj.CategoryDescription</td>
                                             <td>@obj.DateLastModified</td>
-                                            <td>@obj.TotalQuantityInStock</td>
                                             <td>
                                                 <div class="w-75 btn-group" role="group">
                                                     <a asp-area="InventoryOfficer" asp-controller="ProductCategory" asp-action="UpsertProductCategory" asp-route-CategoryID="@obj.CategoryID" class="btn btn-primary mx-2">

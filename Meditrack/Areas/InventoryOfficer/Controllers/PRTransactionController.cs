@@ -20,7 +20,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         private readonly IPurchaseOrderService _purchaseOrderService;
         private readonly IProductRepository _productRepository;
 
-        public PRTransactionController(IUnitOfWork unitOfWork , IPurchaseOrderService purchaseOrderService, IProductRepository productRepository)
+        public PRTransactionController(IUnitOfWork unitOfWork, IPurchaseOrderService purchaseOrderService, IProductRepository productRepository)
         {
             _unitOfWork = unitOfWork;
             _purchaseOrderService = purchaseOrderService;
@@ -76,6 +76,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             return Ok(product.UnitOfMeasurement);
         }
 
+
         [HttpGet]
         public IActionResult GetProductDetails(int productId)
         {
@@ -91,7 +92,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 UnitOfMeasurement = product.UnitOfMeasurement,
             });
         }
-      
+
         // GET: /Admin/AddPurchase/CreatePR
         public IActionResult CreatePR()
         {

@@ -129,11 +129,7 @@
                         <div class="alert alert-success">
                             @TempData["Success"]
                         </div>
-                    }
-
-                    @{
-                        DateTime today = DateTime.Today;
-                    }
+                    }                  
 
                     <div class="mt-5">
                         <h3>Inventory List</h3>
@@ -164,9 +160,9 @@
                                             <td>@obj.ProductCategory.CategoryName</td>
                                             <td>@obj.ProductName</td>
                                             <td>@obj.SKU</td>
-                                            <td>@obj.Brand</td>
+                                            <td>@obj.Brand</td> 
                                             <td>@obj.ProductDescription</td>
-                                            <td>@obj.UnitPrice</td>
+                                            <td>@String.Format("{0:N2}", obj.UnitPrice)</td>
                                             <td>@obj.UnitOfMeasurement</td>
                                             <td>@obj.QuantityInStock</td>
                                             <td>@obj.ExpirationDate</td>

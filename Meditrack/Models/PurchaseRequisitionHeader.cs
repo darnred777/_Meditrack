@@ -9,17 +9,19 @@ namespace Meditrack.Models
         [Key]
         public int PRHdrID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Selecting a Supplier is required.")]
         public int SupplierID { get; set; }
 
+        [Required(ErrorMessage = "Selecting a Supplier is required.")]
         [ForeignKey("SupplierID")]
         [ValidateNever]
         public virtual Supplier Supplier { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Selecting a Location is required.")]
         [ValidateNever]
         public int LocationID { get; set; }
 
+        [Required(ErrorMessage = "Selecting a Location is required.")]
         [ForeignKey("LocationID")]
         [ValidateNever]
         public virtual Location Location { get; set; }

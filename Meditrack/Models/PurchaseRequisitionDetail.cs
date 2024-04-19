@@ -15,9 +15,11 @@ namespace Meditrack.Models
         [ForeignKey("PRHdrID")]
         [ValidateNever]
         public virtual PurchaseRequisitionHeader PurchaseRequisitionHeader { get; set; }
-       
+
+        [Required(ErrorMessage = "Selecting a Product is required.")]
         public int? ProductID { get; set; }
 
+        [Required(ErrorMessage = "Selecting a Product is required.")]
         [ForeignKey("ProductID")]
         [ValidateNever]
         public virtual Product Product { get; set; }
@@ -28,6 +30,7 @@ namespace Meditrack.Models
         [StringLength(10)]
         public string UnitOfMeasurement { get; set; }
 
+        [Range(1, 1000000)]
         public int QuantityInOrder { get; set; }
 
         public decimal Subtotal { get; set; }

@@ -89,9 +89,20 @@
             <div class="container-fluid">
                 <div class="mb-3">
 
-                    <!--Main Content-->
+                    <div class="row">
+                        <div class="col-6">
+                            <h3 class="mt-3">Supplier List</h3>
+                        </div>
+                        <div class="col-6">
+                            <a asp-area="InventoryOfficer" asp-controller="Supplier" asp-action="UpsertVendor" class="btn btn-primary mt-2 form-control">Add Supplier</a>
+                        </div>
+                    </div>
 
-                    <a asp-area="InventoryOfficer" asp-controller="Supplier" asp-action="AddVendor" class="btn btn-primary mt-2 form-control">Add New Supplier</a>
+                    @if (TempData["success"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["success"]</div>
+                    }
+
                     <div class="mt-5">
                         <div class="table-responsive table-bordered table-striped">
                             <table class="table">
@@ -120,7 +131,7 @@
                                             <td>@obj.Email</td>
                                             <td>@obj.OfficeAddress</td>
                                             <td>@obj.DateCreated</td>
-                                            <td>@obj.isActive</td>
+                                            <td>@(obj.isActive ? "Active" : "Inactive")</td>
                                             <td>
                                                 <div class="w-75 btn-group" role="group">
                                                     <a asp-area="InventoryOfficer" asp-controller="Supplier" asp-action="UpsertVendor" asp-route-SupplierID="@obj.SupplierID" class="btn btn-primary mx-2">
