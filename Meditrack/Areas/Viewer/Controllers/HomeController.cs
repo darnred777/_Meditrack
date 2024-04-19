@@ -27,6 +27,11 @@ namespace Meditrack.Areas.Viewer.Controllers
             return View();
         }
 
+        public IActionResult PODList()
+        {
+            return View();
+        }
+
         public IActionResult ManageProduct()
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "ProductCategory").ToList();

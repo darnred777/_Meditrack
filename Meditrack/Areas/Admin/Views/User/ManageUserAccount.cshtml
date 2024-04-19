@@ -29,9 +29,10 @@
 </div>
 <div class="row">
     <div class="col-6">
-        <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Dashboard">Back</a>
+        <a href="@Url.Action("Dashboard", "Home", new { Area = "Admin" })" class="btn btn-primary">Back</a>
     </div>
 </div>
+
 <!--End of Content-->
 
 @section Scripts{
