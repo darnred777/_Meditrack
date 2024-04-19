@@ -59,25 +59,60 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (productVM.Product.ProductID == 0)
+                bool isNewProduct = productVM.Product.ProductID == 0;
+                if (isNewProduct)
                 {
-                    // Adding a new user
                     _unitOfWork.Product.Add(productVM.Product);
                 }
                 else
                 {
-                    // Updating an existing user
-                    _unitOfWork.Product.Update(productVM.Product);
+                    var existingProduct = _unitOfWork.Product.Get(u => u.ProductID == productVM.Product.ProductID);
+                    if (existingProduct != null)
+                    {
+                        bool updateDetails = existingProduct.UnitPrice != productVM.Product.UnitPrice || existingProduct.UnitOfMeasurement != productVM.Product.UnitOfMeasurement;
+
+                        if (updateDetails)
+                        {
+                            var requisitionDetails = _unitOfWork.PurchaseRequisitionDetail.GetAll(r => r.ProductID == productVM.Product.ProductID);
+                            foreach (var detail in requisitionDetails)
+                            {
+                                detail.UnitPrice = productVM.Product.UnitPrice;
+                                detail.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
+                                detail.Subtotal = detail.UnitPrice * detail.QuantityInOrder;
+                                _unitOfWork.PurchaseRequisitionDetail.Update(detail);
+                            }
+
+                            // Update the total amounts in headers
+                            var affectedHeaders = requisitionDetails.Select(r => r.PRHdrID).Distinct();
+                            foreach (var headerId in affectedHeaders)
+                            {
+                                var header = _unitOfWork.PurchaseRequisitionHeader.GetFirstOrDefault(h => h.PRHdrID == headerId);
+                                if (header != null)
+                                {
+                                    header.TotalAmount = _unitOfWork.PurchaseRequisitionDetail.GetAll(d => d.PRHdrID == headerId).Sum(d => d.Subtotal);
+                                    _unitOfWork.PurchaseRequisitionHeader.Update(header);
+                                }
+                            }
+                        }
+
+                        existingProduct.UnitPrice = productVM.Product.UnitPrice;
+                        existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
+                        existingProduct.ProductName = productVM.Product.ProductName;
+                        existingProduct.Brand = productVM.Product.Brand;
+                        existingProduct.ProductDescription = productVM.Product.ProductDescription;
+                        existingProduct.QuantityInStock = productVM.Product.QuantityInStock;
+                        existingProduct.ExpirationDate = productVM.Product.ExpirationDate;
+                        existingProduct.isActive = productVM.Product.isActive;
+
+                        _unitOfWork.Product.Update(existingProduct);
+                    }
                 }
 
                 _unitOfWork.Save();
-
                 return RedirectToAction("ManageProduct");
             }
             else
             {
-                //UserVM userVM = new()
-                //{
                 productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.CategoryName,
@@ -85,7 +120,44 @@ namespace Meditrack.Areas.Admin.Controllers
                 });
                 return View(productVM);
             }
-        }        
+        }
+
+
+
+
+
+        //[HttpPost]
+        //public IActionResult UpsertProduct(ProductVM productVM)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (productVM.Product.ProductID == 0)
+        //        {
+        //            // Adding a new user
+        //            _unitOfWork.Product.Add(productVM.Product);
+        //        }
+        //        else
+        //        {
+        //            // Updating an existing user
+        //            _unitOfWork.Product.Update(productVM.Product);
+        //        }
+
+        //        _unitOfWork.Save();
+
+        //        return RedirectToAction("ManageProduct");
+        //    }
+        //    else
+        //    {
+        //        //UserVM userVM = new()
+        //        //{
+        //        productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
+        //        {
+        //            Text = u.CategoryName,
+        //            Value = u.CategoryID.ToString()
+        //        });
+        //        return View(productVM);
+        //    }
+        //}
 
         public IActionResult DeleteProduct(int? ProductID)
         {

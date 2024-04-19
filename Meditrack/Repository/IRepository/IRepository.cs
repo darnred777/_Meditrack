@@ -4,11 +4,13 @@ namespace Meditrack.Repository.IRepository
 {
     public interface IRepository<T> where T : class
     {
-        //T - User 
-        IEnumerable<T> GetAll(string? includeProperties = null);
-        T Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
+        T GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = "");
+        // Unified GetAll method
+        IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, string includeProperties = "");
+        T Get(Expression<Func<T, bool>> filter, string includeProperties = "");
         void Add(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);
     }
+
 }
