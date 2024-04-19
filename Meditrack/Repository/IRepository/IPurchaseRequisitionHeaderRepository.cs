@@ -7,5 +7,7 @@ namespace Meditrack.Repository.IRepository
     {
         void Update(PurchaseRequisitionHeader obj);
         PurchaseRequisitionHeader GetFirstOrDefault(Expression<Func<PurchaseRequisitionHeader, bool>> filter, string includeProperties = "");
+
+        bool Any(Expression<Func<PurchaseRequisitionHeader, bool>> filter);
     }
 }

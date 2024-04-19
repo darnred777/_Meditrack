@@ -137,7 +137,7 @@
                                         <th>Expiration Date</th>
                                         <th>LastUnit Price Updated</th>
                                         <th>Last Quantity In Stock Updated</th>
-                                        <th>Is Active</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -156,7 +156,7 @@
                                             <td>@obj.ExpirationDate</td>
                                             <td>@obj.LastUnitPriceUpdated</td>
                                             <td>@obj.LastQuantityInStockUpdated</td>
-                                            <td>@obj.isActive</td>
+                                            <td>@(obj.isActive ? "Active" : "Inactive")</td>
                                             <td>
                                                 <div class="w-75 btn-group" role="group">
                                                     <a asp-area="InventoryOfficer" asp-controller="Product" asp-action="UpsertProduct" asp-route-ProductID="@obj.ProductID" class="btn btn-primary mx-2">

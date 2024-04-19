@@ -31,5 +31,12 @@ namespace Meditrack.Repository
         {
             return _db.Product.FirstOrDefault(p => p.ProductID == id);
         }
+
+        public bool HasDependencies(int productId)
+        {
+            return _db.PurchaseRequisitionDetail.Any(p => p.ProductID == productId) ||
+                   _db.PurchaseOrderDetail.Any(p => p.ProductID == productId) ||
+                   _db.TransactionLogs.Any(t => t.ProductID == productId);
+        }
     }
 }

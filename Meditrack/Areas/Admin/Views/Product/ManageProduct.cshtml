@@ -124,6 +124,17 @@
                         </div>
                     </div>
 
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["Success"]
+                        </div>
+                    }
+
+                    @{
+                        DateTime today = DateTime.Today;
+                    }
+
                     <div class="mt-5">
                         <h3>Inventory List</h3>
                         <div class="table-responsive table-bordered table-striped">
@@ -142,7 +153,7 @@
                                         <th>Expiration Date</th>
                                         <th>LastUnit Price Updated</th>
                                         <th>Last Quantity In Stock Updated</th>
-                                        <th>Is Active</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>

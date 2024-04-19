@@ -123,6 +123,13 @@
                         </div>                      
                     </div>
 
+                    @if (TempData.ContainsKey("Success"))
+                    {
+                        <div class="alert alert-success">
+                            @TempData["Success"]
+                        </div>
+                    }
+
                     <div class="mt-5">
                         <div class="table-responsive table-bordered table-striped">
                             <table class="table">

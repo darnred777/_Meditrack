@@ -102,6 +102,12 @@
                             <a asp-area="Admin" asp-controller="Supplier" asp-action="UpsertVendor" class="btn btn-primary mt-2 form-control">Add New Supplier</a>
                         </div>      
                     </div>
+
+                    @if (TempData["success"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["success"]</div>
+                    }
+
                     <div class="mt-5">
                         <div class="table-responsive table-bordered table-striped">
                             <table class="table">

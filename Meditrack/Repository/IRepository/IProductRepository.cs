@@ -11,5 +11,7 @@ namespace Meditrack.Repository.IRepository
         IEnumerable<Product> GetAllProducts();
         // or
         IQueryable<Product> Products { get; }
+
+        bool HasDependencies(int productId);
     }
 }

@@ -102,6 +102,12 @@
                             <a asp-area="Admin" asp-controller="Location" asp-action="UpsertLocation" class="btn btn-primary mt-2 form-control">Add Location</a>
                         </div>                      
                     </div>
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            @TempData["Success"]
+                        </div>
+                    }
 
                     <div class="mt-5">
                         <div class="table-responsive table-bordered table-striped">

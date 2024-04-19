@@ -114,25 +114,52 @@ namespace Meditrack.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult LockUnlock([FromBody]string id)
+        public IActionResult LockUnlock([FromBody] string id)
         {
             var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == id);
 
-            if(objFromDb == null)
+            if (objFromDb == null)
             {
                 return Json(new { success = false, message = "Error while Deactivating/Activating" });
             }
-            if (objFromDb.LockoutEnd!=null && objFromDb.LockoutEnd > DateTime.Now)
+
+            if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
             {
-                objFromDb.LockoutEnd = DateTime.Now;
+                // Deactivate user
+                objFromDb.LockoutEnd = DateTime.Now; // Set LockoutEnd to now to deactivate
+                objFromDb.IsActive = true; // Update isActive status
             }
             else
             {
-                objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+                // Activate user
+                objFromDb.LockoutEnd = DateTime.Now.AddYears(1000); // Set far future lockout date
+                objFromDb.IsActive = false; // Update isActive status
             }
             _db.SaveChanges();
-            return Json(new { success = true, message = "Delete Successful" });
+            return Json(new { success = true, message = "Operation Successful" });
         }
+
+
+        //[HttpPost]
+        //public IActionResult LockUnlock([FromBody]string id)
+        //{
+        //    var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == id);
+
+        //    if(objFromDb == null)
+        //    {
+        //        return Json(new { success = false, message = "Error while Deactivating/Activating" });
+        //    }
+        //    if (objFromDb.LockoutEnd!=null && objFromDb.LockoutEnd > DateTime.Now)
+        //    {
+        //        objFromDb.LockoutEnd = DateTime.Now;
+        //    }
+        //    else
+        //    {
+        //        objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+        //    }
+        //    _db.SaveChanges();
+        //    return Json(new { success = true, message = "Delete Successful" });
+        //}
 
         #endregion 
     }

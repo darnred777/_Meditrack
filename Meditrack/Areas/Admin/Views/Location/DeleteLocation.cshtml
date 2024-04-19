@@ -2,6 +2,17 @@
 
 <div class="container mt-5">
     <h3>Delete Location</h3>
+
+    <div class="container">
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["Error"]
+            </div>
+        }
+        <!-- Existing HTML for the view -->
+    </div>
+
     <form method="post">
         <div class="mb-3">
             <label asp-for="LocationID" class="form-label">Location:</label>

@@ -17,5 +17,15 @@ namespace Meditrack.Repository
         {
             _db.Location.Update(obj);
         }
+
+        public bool ExistsWithRelation(int locationId)
+        {
+            // Check if any Supplier, ApplicationUser, or PurchaseRequisitionHeader is linked to this Location
+            bool existsSupplier = _db.Supplier.Any(s => s.LocationID == locationId);
+            bool existsPurchaseRequisition = _db.PurchaseRequisitionHeader.Any(pr => pr.LocationID == locationId);
+            bool existsApplicationUser = _db.ApplicationUser.Any(au => au.LocationID == locationId);
+
+            return existsSupplier || existsPurchaseRequisition || existsApplicationUser;
+        }
     }
 }

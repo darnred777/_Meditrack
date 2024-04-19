@@ -17,5 +17,11 @@ namespace Meditrack.Repository
         {
             _db.ProductCategory.Update(obj);
         }
+
+        public bool HasProducts(int categoryId)
+        {
+            // Check if any product is linked to this category
+            return _db.Product.Any(p => p.CategoryID == categoryId);
+        }
     }
 }

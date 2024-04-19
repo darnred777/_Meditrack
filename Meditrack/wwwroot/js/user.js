@@ -16,7 +16,12 @@ function loadDataTable() {
             { data: 'registrationDate', "width": "10%" },
             { data: 'lastLoginTime_Date', "width": "10%" }, 
             { data: 'role', "width": "10%" },
-            { data: 'isActive', "width": "10%" },
+            {
+                data: 'isActive', "width": "10%",
+                "render": function (data, type, row) {
+                    return data ? 'Active' : 'Inactive';
+                }
+            },
             {
                 data: { id:"id", lockoutEnd:"lockoutEnd" },
                 "render": function (data) {
@@ -54,16 +59,39 @@ function loadDataTable() {
 }
 
 function LockUnlock(id) {
+    console.log("LockUnlock called with ID:", id);  // Check the ID value here
     $.ajax({
-        type: "POST",   
+        type: "POST",
         url: '/Admin/User/LockUnlock',
-        data: JSON.stringify(id),
+        data: JSON.stringify(id),  // Make sure this matches the expected format on the server
         contentType: "application/json",
         success: function (data) {
             if (data.success) {
-                //success(data.message);
-                dataTable.ajax.reload();
+                dataTable.ajax.reload(); // Reload DataTable to reflect changes
+            } else {
+                alert('Something went wrong: ' + data.message);
             }
+        },
+        error: function (error) {
+            console.error('Error:', error);
+            alert('Failed to change status.');
         }
     });
 }
+
+
+
+//function LockUnlock(id) {
+//    $.ajax({
+//        type: "POST",   
+//        url: '/Admin/User/LockUnlock',
+//        data: JSON.stringify(id),
+//        contentType: "application/json",
+//        success: function (data) {
+//            if (data.success) {
+//                //success(data.message);
+//                dataTable.ajax.reload();
+//            }
+//        }
+//    });
+//}

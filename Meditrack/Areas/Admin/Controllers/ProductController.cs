@@ -105,16 +105,33 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpPost, ActionName("DeleteProduct")]
         public IActionResult DeletePOSTProduct(int? ProductID)
         {
-            Product? obj = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
-            if (obj == null)
+            if (ProductID == null || ProductID == 0)
             {
                 return NotFound();
             }
-            _unitOfWork.Product.Remove(obj);
+
+            Product? product = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the product has dependencies
+            if (_unitOfWork.Product.HasDependencies(product.ProductID))
+            {
+                // If dependencies exist, do not delete and show a message
+                TempData["Error"] = "You can't delete this Product because it has associated Data Existed";
+                return RedirectToAction("DeleteProduct", new { ProductID });
+            }
+
+            _unitOfWork.Product.Remove(product);
             _unitOfWork.Save();
+            TempData["Success"] = "Product deleted successfully.";
 
             return RedirectToAction("ManageProduct");
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

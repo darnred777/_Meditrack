@@ -109,16 +109,45 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpPost, ActionName("DeleteProductCategory")]
         public IActionResult DeletePOSTProductCategory(int? CategoryID)
         {
-            ProductCategory? obj = _unitOfWork.ProductCategory.Get(u => u.CategoryID == CategoryID);
+            if (CategoryID == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the category is linked to any products
+            if (_unitOfWork.ProductCategory.HasProducts(CategoryID.Value))
+            {
+                TempData["Error"] = "Cannot delete this category because it has associated Data Existed.";
+                return RedirectToAction("DeleteProductCategory", new { CategoryID });
+            }
+
+            ProductCategory obj = _unitOfWork.ProductCategory.Get(u => u.CategoryID == CategoryID);
             if (obj == null)
             {
                 return NotFound();
             }
+
             _unitOfWork.ProductCategory.Remove(obj);
             _unitOfWork.Save();
+            TempData["Success"] = "Category deleted successfully.";
 
             return RedirectToAction("ManageProductCategory");
         }
+
+
+        //[HttpPost, ActionName("DeleteProductCategory")]
+        //public IActionResult DeletePOSTProductCategory(int? CategoryID)
+        //{
+        //    ProductCategory? obj = _unitOfWork.ProductCategory.Get(u => u.CategoryID == CategoryID);
+        //    if (obj == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _unitOfWork.ProductCategory.Remove(obj);
+        //    _unitOfWork.Save();
+
+        //    return RedirectToAction("ManageProductCategory");
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -32,5 +32,10 @@ namespace Meditrack.Repository
 
             return query.FirstOrDefault();
         }
+
+        public bool Any(Expression<Func<PurchaseRequisitionHeader, bool>> filter)
+        {
+            return _db.PurchaseRequisitionHeader.Any(filter);
+        }
     }
 }

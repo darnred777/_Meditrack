@@ -5,5 +5,6 @@ namespace Meditrack.Repository.IRepository
     public interface ILocationRepository : IRepository<Location>
     {
         void Update(Location obj);
+        bool ExistsWithRelation(int locationId);
     }
 }
