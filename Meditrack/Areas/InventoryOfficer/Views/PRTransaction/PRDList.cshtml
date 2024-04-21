@@ -55,6 +55,14 @@
                 </a>
             </ul>
         </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
         <div class="table-responsive">
             <table id="tblData" class="table table-responsive table-striped table-bordered" style="width:100%">
                 <thead>

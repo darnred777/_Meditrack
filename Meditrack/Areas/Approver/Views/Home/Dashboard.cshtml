@@ -4,6 +4,10 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
     <div class="wrapper">
         <!-- Sidebar -->
         <aside id="sidebar">
@@ -12,7 +16,11 @@
                     <a>Meditrack</a>
                 </div>
                 <!-- Sidebar Navigation -->
-                <ul class="sidebar-nav">                              
+                <ul class="sidebar-nav"> 
+                <a class="sidebar-link" asp-area="Approver" asp-controller="Home" asp-action="Dashboard">
+                    <i class="bi bi-database"></i>
+                    Dashboard
+                </a>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="sidebar-item">
@@ -24,7 +32,7 @@
                         }
                 <li class="sidebar-item">
                     <a class="sidebar-link" asp-area="Approver" asp-controller="Product" asp-action="ManageProduct">
-                        <i class="bi bi-check2-square"></i>
+                        <i class="bi bi-database"></i>
                         View Inventory
                     </a>
                 </li>
@@ -35,10 +43,10 @@
                     </a>
                 </li>
                     <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="Approver" asp-controller="Home" asp-action="Notification">
-                            <i class="bi bi-bell"></i>
-                            Notifications
-                        </a>
+                    <a class="sidebar-link" asp-area="Approver" asp-controller="Product" asp-action="ExpiringProducts">
+                        <i class="bi bi-bell"></i>
+                        Notifications
+                    </a>
                     </li>
                     <li class="sidebar-item">
                     <a class="sidebar-link" asp-area="Approver" asp-controller="Home" asp-action="Report">
@@ -57,5 +65,24 @@
 
                 </ul>
             </div>
-        </aside>      
+        </aside>
+    <!-- Main Component -->
+        <div class="main">
+            <nav class="navbar navbar-expand px-3 border-bottom">
+                <!-- Button for sidebar toggle -->
+                <button class="btn" type="button" data-bs-theme="light">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </nav>
+            <main class="content px-3 py-2">
+                <div class="container-fluid">
+                    <div class="mb-3">
+                        <h3>Dashboard</h3>
+
+                        @Html.Partial("_LowStockNotification", ViewBag.LowStockProducts as IEnumerable<Product>)
+
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>

@@ -97,6 +97,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
 
         private void UpdateProductDetails(ProductVM productVM, Product existingProduct)
         {
+            existingProduct.CategoryID = productVM.Product.CategoryID;
             existingProduct.SKU = productVM.Product.SKU;
             existingProduct.UnitPrice = productVM.Product.UnitPrice;
             existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
@@ -203,6 +204,19 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             TempData["Success"] = "Product deleted successfully.";
 
             return RedirectToAction("ManageProduct");
+        }
+
+        public IActionResult ExpiringProducts()
+        {
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var tenDaysLater = today.AddDays(10);
+
+            // Access products through the unit of work
+            var expiringProducts = _unitOfWork.Product
+                .GetAll(p => p.ExpirationDate >= today && p.ExpirationDate <= tenDaysLater)
+                .ToList();
+
+            return View(expiringProducts);
         }
 
 

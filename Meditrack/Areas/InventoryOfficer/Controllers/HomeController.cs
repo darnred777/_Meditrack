@@ -25,6 +25,12 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
 
         public IActionResult Dashboard()
         {
+            const int reorderPoint = 10;
+            var lowStockProducts = _unitOfWork.Product.GetAll(p => p.QuantityInStock <= reorderPoint).ToList();
+
+            // Pass these products to the view, perhaps within a ViewModel or ViewBag/ViewData
+            ViewBag.LowStockProducts = lowStockProducts;
+
             return View();
         }
 
@@ -38,11 +44,11 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             return View();
         }
 
-        public IActionResult Notification()
+        public IActionResult ExpiringProducts()
         {
             return View();
         }
-      
+         
         public IActionResult Report()
         {
             return View();

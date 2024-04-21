@@ -1,4 +1,6 @@
-﻿namespace Meditrack.Repository.IRepository
+﻿using Meditrack.Models;
+
+namespace Meditrack.Repository.IRepository
 {
     public interface IUnitOfWork
     {
@@ -13,6 +15,7 @@
         IPurchaseOrderHeaderRepository PurchaseOrderHeader { get; }
         IPurchaseOrderDetailRepository PurchaseOrderDetail { get; }
         IStatusRepository Status { get; }
+        IRepository<TransactionLogs> TransactionLogs { get; }
         void Save();
     }
 }

@@ -31,17 +31,17 @@ namespace Meditrack.Models
 
         [Required]
         public string ProductDescription { get; set; }
-
+       
         [Required]
-        [Range(1,1000000)]
+        [Range(1, 1000000)]
         public decimal UnitPrice { get; set; }
 
         [Required]
         [StringLength(10)]
         public string UnitOfMeasurement { get; set; }
 
-        [Required]
-        [Range(1, 1000000)]
+        [Required(ErrorMessage = "Unit price is required")]
+        [Range(0, 1000000, ErrorMessage = "Unit price must be between 0 and 1,000,000")]
         public int QuantityInStock { get; set; }
 
         [Required]

@@ -27,6 +27,19 @@ namespace Meditrack.Areas.Approver.Controllers
             return View(objProductList);
         }
 
+        public IActionResult ExpiringProducts()
+        {
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var tenDaysLater = today.AddDays(10);
+
+            // Access products through the unit of work
+            var expiringProducts = _unitOfWork.Product
+                .GetAll(p => p.ExpirationDate >= today && p.ExpirationDate <= tenDaysLater)
+                .ToList();
+
+            return View(expiringProducts);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

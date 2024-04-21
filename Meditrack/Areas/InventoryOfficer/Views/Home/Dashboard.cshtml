@@ -4,6 +4,10 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
 <div class="wrapper">
     <!-- Sidebar -->
     <aside id="sidebar">
@@ -53,7 +57,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Home" asp-action="Notification">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Product" asp-action="ExpiringProducts">
                         <i class="bi bi-bell"></i>
                         Notifications
                     </a>
@@ -87,6 +91,9 @@
             <div class="container-fluid">
                 <div class="mb-3">
                     <h3>Dashboard</h3>
+
+                    @Html.Partial("_LowStockNotification", ViewBag.LowStockProducts as IEnumerable<Product>)
+
                 </div>
             </div>
         </main>

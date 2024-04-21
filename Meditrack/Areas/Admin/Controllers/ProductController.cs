@@ -98,6 +98,7 @@ namespace Meditrack.Areas.Admin.Controllers
 
         private void UpdateProductDetails(ProductVM productVM, Product existingProduct)
         {
+            existingProduct.CategoryID = productVM.Product.CategoryID;
             existingProduct.SKU = productVM.Product.SKU;
             existingProduct.UnitPrice = productVM.Product.UnitPrice;
             existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
@@ -304,13 +305,13 @@ namespace Meditrack.Areas.Admin.Controllers
             if (_unitOfWork.Product.HasDependencies(product.ProductID))
             {
                 // If dependencies exist, do not delete and show a message
-                TempData["Error"] = "You can't delete this Product because it has associated Data Existed";
+                TempData["ProductError"] = "You can't delete this Product because it has associated Data Existed";
                 return RedirectToAction("DeleteProduct", new { ProductID });
             }
 
             _unitOfWork.Product.Remove(product);
             _unitOfWork.Save();
-            TempData["Success"] = "Product deleted successfully.";
+            TempData["ProductSuccess"] = "Product deleted successfully.";
 
             return RedirectToAction("ManageProduct");
         }

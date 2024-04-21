@@ -1,0 +1,37 @@
+﻿@model List<Product>
+
+<h2>Products Expiring Within the Next 10 Days</h2>
+
+<li class="sidebar-item">
+    <a class="sidebar-link" asp-area="Approver" asp-controller="Product" asp-action="ExpiringProducts">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        Expiring Products
+    </a>
+</li>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>SKU</th>
+                <th>Expiration Date</th>
+                <th>Quantity In Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.SKU</td>
+                    <td>@product.ExpirationDate</td>
+                    <td>@product.QuantityInStock</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="col-md-6">
+    <a asp-area="Approver" asp-controller="Home" asp-action="Dashboard" class="btn btn-outline-secondary">Back</a>
+</div>

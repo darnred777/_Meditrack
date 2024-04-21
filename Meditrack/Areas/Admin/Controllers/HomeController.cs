@@ -55,7 +55,9 @@ namespace Meditrack.Areas.Admin.Controllers
         [Authorize(Roles = StaticDetails.Role_Admin)]
         public IActionResult Report()
         {
-            return View();
+            var transactionLogs = _unitOfWork.TransactionLogs.GetAll().ToList();
+
+            return View(transactionLogs);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

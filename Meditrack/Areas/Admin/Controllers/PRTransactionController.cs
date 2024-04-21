@@ -222,8 +222,8 @@ namespace Meditrack.Areas.Admin.Controllers
             }).ToList();
         }
 
-        //View the Purchase Requisition Details for Approval
-        public IActionResult ViewPRDetails(int prdId)
+        
+        public IActionResult EditPR(int prdId)
         {
             // Fetch the PRDetail based on PRDtlID
             var purchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRDtlID == prdId, includeProperties: "Product");
@@ -243,14 +243,139 @@ namespace Meditrack.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            // Create a view model to hold both PRHeader and PRDetail
+            // Populate Supplier dropdown list
+            var suppliers = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
+            {
+                Value = s.SupplierID.ToString(),
+                Text = s.SupplierName
+            }).ToList();
+
+            // Populate Location dropdown list
+            var locations = _unitOfWork.Location.GetAll().Select(l => new SelectListItem
+            {
+                Value = l.LocationID.ToString(),
+                Text = l.LocationAddress
+            }).ToList();
+
+            // Populate Product dropdown list
+            var products = _unitOfWork.Product.GetAll().Select(p => new SelectListItem
+            {
+                Value = p.ProductID.ToString(),
+                Text = p.ProductName
+            }).ToList();
+
+            // Create a view model to hold both PRHeader, PRDetail, and dropdown lists
             var prTransactionVM = new PRTransactionVM
             {
                 PurchaseRequisitionHeader = purchaseRequisitionHeader,
-                PurchaseRequisitionDetail = purchaseRequisitionDetail
+                PurchaseRequisitionDetail = purchaseRequisitionDetail,
+                SupplierList = suppliers,
+                LocationList = locations,
+                ProductList = products
             };
 
             return View(prTransactionVM);
+        }
+
+        // Update the Purchase Requisition details
+        [HttpPost]
+        public IActionResult EditPR(PRTransactionVM model)
+        {
+            // Fetch the existing Purchase Requisition Header from the database
+            var existingHeader = _unitOfWork.PurchaseRequisitionHeader.Get(h => h.PRHdrID == model.PurchaseRequisitionHeader.PRHdrID, includeProperties: "Status");
+
+            if (existingHeader == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the Purchase Requisition has been cancelled
+            if (existingHeader.Status.StatusDescription == StaticDetails.Status_Cancelled)
+            {
+                // If the Purchase Requisition is already cancelled, prevent the edit operation
+                TempData["ErrorMessage"] = "Cannot edit a Purchase Requisition that has been cancelled.";
+                PopulateDropdownLists(model);
+                return View(model); // Redirect to PRDList page or any other appropriate action
+            }
+
+            // Check if the Purchase Requisition has been approved
+            if (existingHeader.Status.StatusDescription == StaticDetails.Status_Approved)
+            {
+                // If the Purchase Requisition is already approved, set a TempData notification message
+                TempData["ErrorMessage"] = "Cannot edit a Purchase Requisition that has already been approved.";
+                PopulateDropdownLists(model);
+                return View(model); // Redirect to PRDList page
+            }                       
+
+            if (ModelState.IsValid)
+            {
+                // Fetch the existing Purchase Requisition Detail from the database
+                var existingDetail = _unitOfWork.PurchaseRequisitionDetail.Get(d => d.PRDtlID == model.PurchaseRequisitionDetail.PRDtlID);
+
+                if (existingDetail == null)
+                {
+                    return NotFound();
+                }
+
+                // Update the fields with the new values from the form
+                existingHeader.SupplierID = model.PurchaseRequisitionHeader.SupplierID;
+                existingHeader.LocationID = model.PurchaseRequisitionHeader.LocationID;
+                // Update other header fields as needed...
+
+                existingDetail.ProductID = model.PurchaseRequisitionDetail.ProductID;
+                existingDetail.UnitPrice = model.PurchaseRequisitionDetail.UnitPrice;
+                existingDetail.UnitOfMeasurement = model.PurchaseRequisitionDetail.UnitOfMeasurement;
+                existingDetail.QuantityInOrder = model.PurchaseRequisitionDetail.QuantityInOrder;
+
+                // Update the subtotal based on the new UnitPrice and QuantityInOrder
+                existingDetail.Subtotal = existingDetail.UnitPrice * existingDetail.QuantityInOrder;
+
+                // Update the entities in the database
+                _unitOfWork.PurchaseRequisitionHeader.Update(existingHeader);
+                _unitOfWork.PurchaseRequisitionDetail.Update(existingDetail);
+                _unitOfWork.Save();
+
+                // Update the TotalAmount in the header by summing up the subtotals of all details
+                var totalAmount = _unitOfWork.PurchaseRequisitionDetail
+                    .GetAll(d => d.PRHdrID == existingHeader.PRHdrID)
+                    .Sum(d => d.Subtotal);
+
+                existingHeader.TotalAmount = totalAmount;
+                _unitOfWork.PurchaseRequisitionHeader.Update(existingHeader);
+                _unitOfWork.Save();
+
+                TempData["SuccessMessage"] = "Purchase Requisition updated successfully.";
+                return RedirectToAction("PRDList", "PRTransaction");
+
+            }
+            else
+            {
+                // If the model state is not valid, return the edit view with validation errors
+                // Repopulate dropdown lists with data
+                PopulateDropdownLists(model);
+                return View(model);
+            }
+        }
+
+        private void PopulateDropdownLists(PRTransactionVM model)
+        {
+            model.SupplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
+            {
+                Value = s.SupplierID.ToString(),
+                Text = s.SupplierName
+            }).ToList();
+
+            model.LocationList = _unitOfWork.Location.GetAll().Select(l => new SelectListItem
+            {
+                Value = l.LocationID.ToString(),
+                Text = l.LocationAddress
+            }).ToList();
+
+            model.ProductList = _unitOfWork.Product.GetAll().Select(p => new SelectListItem
+            {
+                Value = p.ProductID.ToString(),
+                Text = p.ProductName
+            }).ToList();
         }
 
         //Adding PR Details

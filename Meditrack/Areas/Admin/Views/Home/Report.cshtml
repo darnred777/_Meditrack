@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Meditrack.Utility
+@model List<Meditrack.Models.TransactionLogs>
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -91,6 +92,39 @@
             <div class="container-fluid">
                 <div class="mb-3">
                     <h3>Display Report</h3>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Transaction Type</th>
+                                <th>User ID</th>
+                                <th>Status ID</th>
+                                <th>Purchase Order ID</th>
+                                <th>Purchase Requisition ID</th>
+                                <th>Product ID</th>
+                                <th>Quantity</th>
+                                <th>Transaction Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var log in Model)
+                            {
+                                <tr>
+                                    <td>@log.TransactionID</td>
+                                    <td>@log.TransType</td>
+                                    <td>@log.Id</td>
+                                    <td>@log.StatusID</td>
+                                    <td>@(log.POHdrID ?? 0)</td>
+                                    <td>@(log.PRHdrID ?? 0)</td>
+                                    <td>@(log.ProductID ?? 0)</td>
+                                    <td>@log.Quantity</td>
+                                    <td>@log.TransDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </main>

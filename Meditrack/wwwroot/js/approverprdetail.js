@@ -19,7 +19,13 @@ function loadDataTable(status) {
                     return data ? parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
                 }
             },
-            { data: 'purchaseRequisitionHeader.prDate', "width": "10%" },
+            {
+                data: 'purchaseRequisitionHeader.prDate',
+                render: function (data) {
+                    return new Date(data).toLocaleString();
+                },
+                width: "10%"
+            },
             { data: 'productName', "width": "10%" },
             {
                 data: 'unitPrice', "width": "10%",

@@ -13,8 +13,20 @@ function loadDataTable() {
             { data: 'email', "width": "10%" },
             { data: 'location.locationAddress', "width": "10%" },
             { data: 'birthDate', "width": "10%" },
-            { data: 'registrationDate', "width": "10%" },
-            { data: 'lastLoginTime_Date', "width": "10%" }, 
+            {
+                data: 'registrationDate',
+                render: function (data) {
+                    return new Date(data).toLocaleString();
+                },
+                width: "10%"
+            },
+            {
+                data: 'lastLoginTime_Date',
+                render: function (data) {
+                    return new Date(data).toLocaleString();
+                },
+                width: "10%"
+            },           
             { data: 'role', "width": "10%" },
             {
                 data: 'isActive', "width": "10%",
