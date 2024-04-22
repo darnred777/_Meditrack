@@ -58,6 +58,37 @@ function loadDataTable(status) {
     });
 }
 
+function sendPO() {
+    if (confirm("Are you sure you want to send this Purchase Order?")) {
+        fetch('/Admin/PRTransaction/SendPurchaseOrderEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': $('input[name="__RequestVerificationToken"]').val()
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message || 'Something went wrong, please try again.');
+            });
+    }
+}
+
+
+
 function cancelPO(poId) {
     if (confirm("Are you sure you want to cancel this Purchase Order?")) {
         fetch(`/Admin/PRTransaction/CancelPO?poId=${poId}`, {

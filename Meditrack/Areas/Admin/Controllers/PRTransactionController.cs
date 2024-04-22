@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 
 namespace Meditrack.Areas.Admin.Controllers
 {
@@ -37,6 +39,39 @@ namespace Meditrack.Areas.Admin.Controllers
         public IActionResult PRDList()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult SendPurchaseOrderEmail()
+        {
+            try
+            {
+                // Your code to send the email
+                string fromMail = "darnred7@gmail.com";
+                string fromPassword = "gdrugqgfnryhgnnu";
+
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress(fromMail);
+                message.Subject = "Test";
+                message.To.Add(new MailAddress("flores.klarke@gmail.com"));
+                message.Body = "<html><body> Test </html></body>";
+                message.IsBodyHtml = true;
+
+                var smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential(fromMail, fromPassword),
+                    EnableSsl = true,
+                };
+
+                smtpClient.Send(message);
+
+                return Json(new { success = true, message = "Email sent successfully." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Failed to send email: {ex.Message}" });
+            }
         }
 
         [HttpPost]
