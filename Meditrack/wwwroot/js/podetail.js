@@ -46,7 +46,7 @@ function loadDataTable(status) {
                 "render": function (data) {
                     return `
                         <div class="w-75 btn-group" role="group">                          
-                            <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i>Send</button>
+                            <button type="button" class="btn btn-success mx-2" onclick="sendPO(${data})"><i class="bi bi-check-square"></i>Send</button>
                             <button type="button" class="btn btn-danger" onclick="cancelPO(${data})" ${status === 'Cancelled' ? 'disabled' : ''}>Cancel</button>
                         </div>
                     `
