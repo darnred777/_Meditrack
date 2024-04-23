@@ -129,7 +129,7 @@ namespace Meditrack.Areas.Admin.Controllers
 
             _unitOfWork.ProductCategory.Remove(obj);
             _unitOfWork.Save();
-            TempData["Success"] = "Category deleted successfully.";
+            TempData["CategorySuccess"] = "Category deleted successfully.";
 
             return RedirectToAction("ManageProductCategory");
         }

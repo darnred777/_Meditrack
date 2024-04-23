@@ -95,7 +95,7 @@ namespace Meditrack.Areas.Admin.Controllers
 
             _unitOfWork.Supplier.Remove(supplier);
             _unitOfWork.Save();
-            TempData["success"] = "Supplier deleted successfully.";
+            TempData["suppliersuccess"] = "Supplier deleted successfully.";
 
             return RedirectToAction("ManageVendor");
         }

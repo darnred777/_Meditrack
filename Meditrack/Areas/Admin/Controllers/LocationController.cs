@@ -130,7 +130,7 @@ namespace Meditrack.Areas.Admin.Controllers
             _unitOfWork.Location.Remove(location);
             _unitOfWork.Save();
 
-            TempData["Success"] = "Location deleted successfully.";
+            TempData["LocationSuccess"] = "Location deleted successfully.";
             return RedirectToAction("ManageLocation");
         }
 

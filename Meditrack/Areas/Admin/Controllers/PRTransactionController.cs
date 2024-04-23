@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace Meditrack.Areas.Admin.Controllers
 {
@@ -42,29 +43,57 @@ namespace Meditrack.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult SendPurchaseOrderEmail()
+        public IActionResult SendPurchaseOrderEmail(int poHdrID)
         {
             try
             {
-                // Your code to send the email
-                string fromMail = "darnred7@gmail.com";
-                string fromPassword = "gdrugqgfnryhgnnu";
+                // Fetch the specific Purchase Order Header based on poHdrID
+                var purchaseOrderHeader = _unitOfWork.PurchaseOrderHeader.Get(
+                    p => p.POHdrID == poHdrID && p.Status.StatusDescription == StaticDetails.Status_Approved,
+                    includeProperties: "Supplier,Location,Status"
+                );
 
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress(fromMail);
-                message.Subject = "Test";
-                message.To.Add(new MailAddress("flores.klarke@gmail.com"));
-                message.Body = "<html><body> Test </html></body>";
-                message.IsBodyHtml = true;
-
-                var smtpClient = new SmtpClient("smtp.gmail.com")
+                if (purchaseOrderHeader == null)
                 {
-                    Port = 587,
-                    Credentials = new NetworkCredential(fromMail, fromPassword),
-                    EnableSsl = true,
-                };
+                    // Handle the case where Purchase Order Header is not found or not approved
+                    return NotFound();
+                }
 
-                smtpClient.Send(message);
+                // Fetch the corresponding Purchase Order Details based on poHdrID
+                var purchaseOrderDetails = _unitOfWork.PurchaseOrderDetail.GetAll(
+                    d => d.POHdrID == poHdrID,
+                    includeProperties: "Product"
+                );
+
+                if (purchaseOrderDetails == null || !purchaseOrderDetails.Any())
+                {
+                    // Handle the case where no Purchase Order Details are found
+                    return NotFound();
+                }
+
+                // Email content
+                string fromMail = "darnred7@gmail.com"; // Update with your email
+                string fromPassword = "gdrugqgfnryhgnnu"; // Update with your email password
+                string toMail = "flores.klarke@gmail.com"; // Update with recipient's email
+                string subject = "Purchase Order Details";
+                string body = ConstructEmailBody(purchaseOrderHeader, purchaseOrderDetails);
+
+                // Send email
+                using (var message = new MailMessage(fromMail, toMail))
+                {
+                    message.Subject = subject;
+                    message.Body = body;
+                    message.IsBodyHtml = true;
+
+                    using (var smtpClient = new SmtpClient("smtp.gmail.com")) // Update with SMTP server address
+                    {
+                        smtpClient.Port = 587; // Update with SMTP port
+                        smtpClient.Credentials = new NetworkCredential(fromMail, fromPassword);
+                        smtpClient.EnableSsl = true;
+
+                        smtpClient.Send(message);
+                    }
+                }
 
                 return Json(new { success = true, message = "Email sent successfully." });
             }
@@ -73,6 +102,73 @@ namespace Meditrack.Areas.Admin.Controllers
                 return Json(new { success = false, message = $"Failed to send email: {ex.Message}" });
             }
         }
+
+        // Method to construct the email body using purchase order data
+        private string ConstructEmailBody(PurchaseOrderHeader purchaseOrderHeader, IEnumerable<PurchaseOrderDetail> purchaseOrderDetails)
+        {
+            
+            string body = $@"
+        <h2>Purchase Order Details</h2>
+        <p><strong>Purchase Order ID:</strong> {purchaseOrderHeader.POHdrID}</p>
+        <p><strong>Supplier:</strong> {purchaseOrderHeader.Supplier.SupplierName}</p>
+        <p><strong>Location:</strong> {purchaseOrderHeader.Location.LocationAddress}</p>
+        <p><strong>Status:</strong> {purchaseOrderHeader.Status.StatusDescription}</p>
+        <p><strong>PO Date:</strong> {purchaseOrderHeader.PODate}</p>
+        <p><strong>TotalAmount:</strong> {purchaseOrderHeader.TotalAmount}</p>
+        <h3>Products:</h3>
+        <ul>";
+
+            foreach (var detail in purchaseOrderDetails)
+            {
+                body += $@"
+            <li>
+                <strong>Product Name:</strong> {detail.Product.ProductName}<br>
+                <strong>Unit Price:</strong> {detail.UnitPrice}<br>
+                <strong>Quantity:</strong> {detail.QuantityInOrder}<br>
+                <strong>Unit Of Measurement:</strong> {detail.UnitOfMeasurement}<br>
+                <strong>Is VATE Exclusive:</strong> {detail.IsVATExclusive}<br>
+                <strong>Subtotal:</strong> {detail.Subtotal}<br>
+            </li>";
+            }
+
+            body += "</ul>";
+
+            return body;
+        }
+
+
+        //[HttpPost]
+        //public IActionResult SendPurchaseOrderEmail()
+        //{
+        //    try
+        //    {
+        //        // Your code to send the email
+        //        string fromMail = "darnred7@gmail.com";
+        //        string fromPassword = "gdrugqgfnryhgnnu";
+
+        //        MailMessage message = new MailMessage();
+        //        message.From = new MailAddress(fromMail);
+        //        message.Subject = "Test";
+        //        message.To.Add(new MailAddress("flores.klarke@gmail.com"));
+        //        message.Body = "<html><body> Test </html></body>";
+        //        message.IsBodyHtml = true;
+
+        //        var smtpClient = new SmtpClient("smtp.gmail.com")
+        //        {
+        //            Port = 587,
+        //            Credentials = new NetworkCredential(fromMail, fromPassword),
+        //            EnableSsl = true,
+        //        };
+
+        //        smtpClient.Send(message);
+
+        //        return Json(new { success = true, message = "Email sent successfully." });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = $"Failed to send email: {ex.Message}" });
+        //    }
+        //}
 
         [HttpPost]
         public IActionResult CancelPO(int poId)
@@ -379,7 +475,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 _unitOfWork.PurchaseRequisitionHeader.Update(existingHeader);
                 _unitOfWork.Save();
 
-                TempData["SuccessMessage"] = "Purchase Requisition updated successfully.";
+                TempData["PRSuccessMessage"] = "Purchase Requisition updated successfully.";
                 return RedirectToAction("PRDList", "PRTransaction");
 
             }

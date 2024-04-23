@@ -102,10 +102,10 @@
                             <a asp-area="Admin" asp-controller="Location" asp-action="UpsertLocation" class="btn btn-primary mt-2 form-control">Add Location</a>
                         </div>                      
                     </div>
-                    @if (TempData["Success"] != null)
+                    @if (TempData["LocationSuccess"] != null)
                     {
                         <div class="alert alert-success" role="alert">
-                            @TempData["Success"]
+                            @TempData["LocationSuccess"]
                         </div>
                     }
 
