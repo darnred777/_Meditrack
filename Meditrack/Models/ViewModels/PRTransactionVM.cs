@@ -15,9 +15,11 @@ namespace Meditrack.Models.ViewModels
         [ValidateNever]
         public PurchaseRequisitionDetail PurchaseRequisitionDetail { get; set; }
 
-        //public PurchaseOrderHeader PurchaseOrderHeader { get; set; }
+        [ValidateNever]
+        public PurchaseOrderHeader PurchaseOrderHeader { get; set; }
 
-        //public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetailList { get; set; }
+        [ValidateNever]
+        public PurchaseOrderDetail PurchaseOrderDetail { get; set; }
 
         [ValidateNever]
         public IEnumerable<SelectListItem> SupplierList { get; set; }
@@ -30,6 +32,9 @@ namespace Meditrack.Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<PurchaseRequisitionDetail> PurchaseRequisitionDetailList { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetailList { get; set; }
 
         [ValidateNever]
         public IEnumerable<SelectListItem> ProductList { get; set; }

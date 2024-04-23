@@ -201,7 +201,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
 
             _unitOfWork.Product.Remove(product);
             _unitOfWork.Save();
-            TempData["Success"] = "Product deleted successfully.";
+            TempData["ProductSuccess"] = "Product deleted successfully.";
 
             return RedirectToAction("ManageProduct");
         }

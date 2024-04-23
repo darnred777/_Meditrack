@@ -17,8 +17,8 @@
                     <form method="post">
                         <input asp-for="ApplicationUser.Id" hidden />                       
                         <div class="form-floating mb-3 col-md-12">
-                            <input asp-for="ApplicationUser.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                            <label asp-for="ApplicationUser.Email" class="ms-2 text-muted">Email</label>
+                            <input asp-for="ApplicationUser.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" hidden />
+                            <label asp-for="ApplicationUser.Email" class="ms-2 text-muted" hidden>Email</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
                             <input asp-for="ApplicationUser.PasswordHash" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" hidden/>
