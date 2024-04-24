@@ -57,7 +57,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 {
                     // Handle the case where Purchase Order Header is not found or not approved
                     return NotFound();
-                }
+                }                
 
                 // Fetch the corresponding Purchase Order Details based on poHdrID
                 var purchaseOrderDetails = _unitOfWork.PurchaseOrderDetail.GetAll(
@@ -72,9 +72,9 @@ namespace Meditrack.Areas.Admin.Controllers
                 }
 
                 // Email content
-                string fromMail = "darnred7@gmail.com"; // Update with your email
-                string fromPassword = "gdrugqgfnryhgnnu"; // Update with your email password
-                string toMail = "flores.klarke@gmail.com"; // Update with recipient's email
+                string fromMail = "darnred7@gmail.com"; 
+                string fromPassword = "gdrugqgfnryhgnnu"; 
+                string toMail = purchaseOrderHeader.Supplier.Email;
                 string subject = "Purchase Order Details";
                 string body = ConstructEmailBody(purchaseOrderHeader, purchaseOrderDetails);
 
