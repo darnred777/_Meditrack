@@ -4,10 +4,13 @@ using Meditrack.Repository;
 using Meditrack.Repository.IRepository;
 using Meditrack.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
@@ -19,12 +22,16 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPurchaseOrderService _purchaseOrderService;
         private readonly IProductRepository _productRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public PRTransactionController(IUnitOfWork unitOfWork, IPurchaseOrderService purchaseOrderService, IProductRepository productRepository)
+        public PRTransactionController(IUnitOfWork unitOfWork, IPurchaseOrderService purchaseOrderService, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _purchaseOrderService = purchaseOrderService;
             _productRepository = productRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
 
         //PODetails List
@@ -37,6 +44,100 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         public IActionResult PRDList()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult SendPurchaseOrderEmail(int poHdrID)
+        {
+            try
+            {
+                // Fetch the specific Purchase Order Header based on poHdrID
+                var purchaseOrderHeader = _unitOfWork.PurchaseOrderHeader.Get(
+                    p => p.POHdrID == poHdrID && p.Status.StatusDescription == StaticDetails.Status_Approved,
+                    includeProperties: "Supplier,Location,Status"
+                );
+
+                if (purchaseOrderHeader == null)
+                {
+                    // Handle the case where Purchase Order Header is not found or not approved
+                    return NotFound();
+                }
+
+                // Fetch the corresponding Purchase Order Details based on poHdrID
+                var purchaseOrderDetails = _unitOfWork.PurchaseOrderDetail.GetAll(
+                    d => d.POHdrID == poHdrID,
+                    includeProperties: "Product"
+                );
+
+                if (purchaseOrderDetails == null || !purchaseOrderDetails.Any())
+                {
+                    // Handle the case where no Purchase Order Details are found
+                    return NotFound();
+                }
+
+                // Email content
+                string fromMail = "darnred7@gmail.com";
+                string fromPassword = "gdrugqgfnryhgnnu";
+                string toMail = purchaseOrderHeader.Supplier.Email;
+                string subject = "Purchase Order Details";
+                string body = ConstructEmailBody(purchaseOrderHeader, purchaseOrderDetails);
+
+                // Send email
+                using (var message = new MailMessage(fromMail, toMail))
+                {
+                    message.Subject = subject;
+                    message.Body = body;
+                    message.IsBodyHtml = true;
+
+                    using (var smtpClient = new SmtpClient("smtp.gmail.com")) // Update with SMTP server address
+                    {
+                        smtpClient.Port = 587; // Update with SMTP port
+                        smtpClient.Credentials = new NetworkCredential(fromMail, fromPassword);
+                        smtpClient.EnableSsl = true;
+
+                        smtpClient.Send(message);
+                    }
+                }
+
+                return Json(new { success = true, message = "Email sent successfully." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Failed to send email: {ex.Message}" });
+            }
+        }
+
+        // Method to construct the email body using purchase order data
+        private string ConstructEmailBody(PurchaseOrderHeader purchaseOrderHeader, IEnumerable<PurchaseOrderDetail> purchaseOrderDetails)
+        {
+
+            string body = $@"
+        <h2>Purchase Order Details</h2>
+        <p><strong>Purchase Order ID:</strong> {purchaseOrderHeader.POHdrID}</p>
+        <p><strong>Supplier:</strong> {purchaseOrderHeader.Supplier.SupplierName}</p>
+        <p><strong>Location:</strong> {purchaseOrderHeader.Location.LocationAddress}</p>
+        <p><strong>Status:</strong> {purchaseOrderHeader.Status.StatusDescription}</p>
+        <p><strong>PO Date:</strong> {purchaseOrderHeader.PODate}</p>
+        <p><strong>TotalAmount:</strong> {purchaseOrderHeader.TotalAmount}</p>
+        <h3>Products:</h3>
+        <ul>";
+
+            foreach (var detail in purchaseOrderDetails)
+            {
+                body += $@"
+            <li>
+                <strong>Product Name:</strong> {detail.Product.ProductName}<br>
+                <strong>Unit Price:</strong> {detail.UnitPrice}<br>
+                <strong>Quantity:</strong> {detail.QuantityInOrder}<br>
+                <strong>Unit Of Measurement:</strong> {detail.UnitOfMeasurement}<br>
+                <strong>Is VATE Exclusive:</strong> {detail.IsVATExclusive}<br>
+                <strong>Subtotal:</strong> {detail.Subtotal}<br>
+            </li>";
+            }
+
+            body += "</ul>";
+
+            return body;
         }
 
         [HttpPost]
@@ -93,6 +194,26 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             });
         }
 
+        private string GetCurrentUserId()
+        {
+            // Get the current HttpContext
+            var httpContext = _httpContextAccessor.HttpContext;
+
+            // Get the user's identity
+            var userIdentity = httpContext.User.Identity;
+
+            // Check if the user is authenticated
+            if (userIdentity.IsAuthenticated)
+            {
+                // Get the user's ID
+                var user = _userManager.GetUserAsync(httpContext.User).Result; // Ensure synchronous execution
+                return user?.Id;
+            }
+
+            // Return null if user is not authenticated
+            return null;
+        }
+
         // GET: /Admin/AddPurchase/CreatePR
         public IActionResult CreatePR()
         {
@@ -124,6 +245,8 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 Text = s.StatusDescription
             });
 
+            string currentUserId = GetCurrentUserId();
+
             // Create a new instance of the view model with empty lists
             var viewModel = new PRTransactionVM
             {
@@ -132,7 +255,8 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 LocationList = locationList,
                 StatusList = statusList,
                 PurchaseRequisitionHeader = new PurchaseRequisitionHeader(),
-                PurchaseRequisitionDetail = new PurchaseRequisitionDetail()
+                PurchaseRequisitionDetail = new PurchaseRequisitionDetail(),
+                CreatedByUserId = currentUserId
             };
 
             return View(viewModel);
@@ -222,6 +346,38 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             }).ToList();
         }
 
+        public IActionResult ViewPR(int prdId)
+        {
+            // Fetch the PRDetail based on PRDtlID
+            var purchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRDtlID == prdId, includeProperties: "Product");
+
+            if (purchaseRequisitionDetail == null)
+            {
+                // Handle the case where PRDetail is not found
+                return NotFound();
+            }
+
+            // Fetch the corresponding PRHeader based on PRHdrID in the PRDetail
+            var purchaseRequisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == purchaseRequisitionDetail.PRHdrID, includeProperties: "Supplier,Location,Status");
+
+            if (purchaseRequisitionHeader == null)
+            {
+                // Handle the case where PRHeader is not found
+                return NotFound();
+            }
+
+            string currentUserId = GetCurrentUserId();
+
+            // Create a view model to hold PRHeader, PRDetail, and user who created them
+            var prTransactionVM = new PRTransactionVM
+            {
+                PurchaseRequisitionHeader = purchaseRequisitionHeader,
+                PurchaseRequisitionDetail = purchaseRequisitionDetail,
+                CreatedByUserId = currentUserId
+            };
+
+            return View(prTransactionVM);
+        }
 
         public IActionResult EditPR(int prdId)
         {

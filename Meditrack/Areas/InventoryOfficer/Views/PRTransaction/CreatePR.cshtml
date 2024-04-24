@@ -1,5 +1,7 @@
 ﻿@model PRTransactionVM
 
+<p>Created by: @Model.CreatedByUserId</p>
+
 <div class="container">
     <h3 class="my-4">Purchase Requisition</h3>
     <form method="post" asp-controller="PRTransaction" asp-action="CreatePR" asp-area="InventoryOfficer">

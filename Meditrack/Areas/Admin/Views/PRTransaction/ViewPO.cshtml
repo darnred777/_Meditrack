@@ -1,15 +1,9 @@
 ﻿@model PRTransactionVM
 
+<p>Created by: @Model.CreatedByUserId</p>
+
 <div class="container">
     <h3 class="my-4">Purchase Order</h3>
-
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
-        </div>
-    }
-
 
     <form method="post" asp-controller="PRTransaction" asp-action="ViewPO" asp-area="Admin">
         <div class="row">
@@ -19,18 +13,24 @@
                     <input asp-for="PurchaseOrderHeader.POHdrID" class="form-control" hidden />
                 </div>
                 <div class="mb-3">
-                    <label asp-for="PurchaseOrderHeader.SupplierID">Supplier</label>
-                    <select asp-for="@Model.PurchaseOrderHeader.SupplierID" asp-items="@Model.SupplierList" class="form-select" required>
-                        <option disabled selected>--Select Supplier--</option>
-                    </select>
-                    <span asp-validation-for="PurchaseOrderHeader.SupplierID" class="text-danger"></span>
+                    <label asp-for="PurchaseOrderHeader.Supplier.SupplierName">Supplier</label>
+                    <input asp-for="PurchaseOrderHeader.Supplier.SupplierName" class="form-control" readonly>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="PurchaseOrderHeader.LocationID">Location</label>
-                    <select asp-for="@Model.PurchaseOrderHeader.LocationID" asp-items="@Model.LocationList" class="form-select" required>
-                        <option disabled selected>--Select Location--</option>
-                    </select>
-                    <span asp-validation-for="PurchaseOrderHeader.LocationID" class="text-danger"></span>
+                    <label asp-for="PurchaseOrderHeader.Location.LocationAddress">Location</label>
+                    <input asp-for="PurchaseOrderHeader.Location.LocationAddress" class="form-control" readonly>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PurchaseOrderHeader.Status.StatusDescription">Status</label>
+                    <input asp-for="PurchaseRequisitionHeader.Status.StatusDescription" class="form-control" readonly>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PurchaseOrderHeader.PODate">PR Date</label>
+                    <input asp-for="PurchaseOrderHeader.PODate" class="form-control" readonly>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PurchaseOrderHeader.TotalAmount">Total Amount</label>
+                    <input asp-for="PurchaseOrderHeader.TotalAmount" class="form-control" readonly>
                 </div>
             </div>
             <div class="col-md-6">
@@ -42,33 +42,32 @@
                     <input asp-for="PurchaseOrderDetail.POHdrID" class="form-control" hidden />
                 </div>
                 <div class="mb-3">
-                    <select asp-for="@Model.PurchaseOrderDetail.ProductID" asp-items="@Model.ProductList" class="form-select" id="productDropdown" required>
-                        <option disabled selected>--Select Product--</option>
-                    </select>
-                    <span asp-validation-for="PurchaseOrderDetail.ProductID" class="text-danger"></span>
+                    <label asp-for="PurchaseOrderDetail.Product.ProductName">Product Name</label>
+                    <input asp-for="PurchaseOrderDetail.Product.ProductName" class="form-control" readonly>
                 </div>
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
+                        <label asp-for="PurchaseOrderDetail.UnitPrice">Unit Price</label>
                         <input asp-for="PurchaseOrderDetail.UnitPrice" class="form-control" id="unitPrice" readonly>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="PurchaseOrderDetail.UnitOfMeasurement">Unit Of Measurement:</label>
+                        <label asp-for="PurchaseOrderDetail.UnitOfMeasurement">Unit Of Measurement</label>
                         <input asp-for="PurchaseOrderDetail.UnitOfMeasurement" class="form-control" id="unitOfMeasurement" readonly>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label asp-for="PurchaseOrderDetail.QuantityInOrder">Quantity In Order:</label>
-                    <input asp-for="PurchaseOrderDetail.QuantityInOrder" class="form-control" required>
-                    <span asp-validation-for="PurchaseOrderDetail.QuantityInOrder" class="text-danger"></span>
+                    <label asp-for="PurchaseOrderDetail.QuantityInOrder">Quantity In Order</label>
+                    <input asp-for="PurchaseOrderDetail.QuantityInOrder" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PurchaseOrderDetail.Subtotal">Subtotal</label>
+                    <input asp-for="PurchaseOrderDetail.Subtotal" class="form-control" readonly>
                 </div>
             </div>
         </div>
         <div class="row mt-4">
             <div class="col-md-6">
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-            <div class="col-md-6">
-                <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PRDList" class="btn btn-outline-secondary">Back</a>
+                <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PODList" class="btn btn-outline-secondary">Back</a>
             </div>
         </div>
     </form>

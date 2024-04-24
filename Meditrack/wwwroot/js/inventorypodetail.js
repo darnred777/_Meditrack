@@ -46,7 +46,7 @@ function loadDataTable(status) {
                 "render": function (data) {
                     return `
                         <div class="w-75 btn-group" role="group">                          
-                            <button type="button" class="btn btn-success mx-2" onclick="approvePR(${data})"><i class="bi bi-check-square"></i>Send</button>
+                            <button type="button" class="btn btn-success mx-2" onclick="sendPO(${data})"><i class="bi bi-check-square"></i>Send</button>
                             <button type="button" class="btn btn-danger" onclick="cancelPO(${data})" ${status === 'Cancelled' ? 'disabled' : ''}>Cancel</button>
                         </div>
                     `
@@ -56,6 +56,35 @@ function loadDataTable(status) {
             }
         ]  
     });
+}
+
+function sendPO(poHdrID) {
+    if (confirm("Are you sure you want to send this Purchase Order?")) {
+        fetch('/InventoryOfficer/PRTransaction/SendPurchaseOrderEmail?poHdrID=' + poHdrID, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': $('input[name="__RequestVerificationToken"]').val()
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message || 'Something went wrong, please try again.');
+            });
+    }
 }
 
 function cancelPO(poId) {

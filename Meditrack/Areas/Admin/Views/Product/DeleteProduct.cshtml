@@ -3,10 +3,10 @@
 <div class="container mt-5">
     <h3 class="mb-3">Delete Product</h3>
 
-    @if (TempData["Error"] != null)
+    @if (TempData["ProductError"] != null)
     {
         <div class="alert alert-danger">
-            @TempData["Error"]
+            @TempData["ProductError"]
         </div>
     }  
 

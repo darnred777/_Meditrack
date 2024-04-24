@@ -38,5 +38,8 @@ namespace Meditrack.Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> ProductList { get; set; }
+
+        [ValidateNever]
+        public string CreatedByUserId { get; set; }
     }
 }

@@ -48,6 +48,7 @@ function loadDataTable(status) {
                     return `
                         <div class="w-75 btn-group" role="group">
                             <a href="/admin/prtransaction/editpr?prdId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>Edit</a>                                                                              
+                            <a href="/admin/prtransaction/viewpr?prdId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>View</a>                                                                              
                         </div>
                     `
                 },
