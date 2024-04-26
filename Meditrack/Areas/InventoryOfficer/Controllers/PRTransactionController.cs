@@ -358,6 +358,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 _unitOfWork.PurchaseRequisitionHeader.Update(viewModel.PurchaseRequisitionHeader);
                 _unitOfWork.Save();
 
+                TempData["CreatePRSuccess"] = "Purchase Requisition created successfully!";
                 return RedirectToAction("PRDList", "PRTransaction");
             }
 
