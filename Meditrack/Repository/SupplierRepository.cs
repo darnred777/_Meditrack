@@ -17,5 +17,10 @@ namespace Meditrack.Repository
         {
             _db.Supplier.Update(obj);
         }
+
+        public Supplier GetSupplierLocationById(int supplierId)
+        {
+            return _db.Supplier.FirstOrDefault(s => s.SupplierID == supplierId);
+        }
     }
 }

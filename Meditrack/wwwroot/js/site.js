@@ -8,6 +8,56 @@ toggler.addEventListener("click", function () {
     document.querySelector("#sidebar").classList.toggle("collapsed");
 });
 
+//Admin Side
+$(document).ready(function () {
+    $('#supplierDropdown').change(function () {
+        var supplierId = $(this).val();
+        fetchLocationAddress(supplierId);
+    });
+
+    function fetchLocationAddress(supplierId) {
+        if (!supplierId) {
+            $('#location').val(''); // Clear the location field if no supplier is selected
+            return;
+        }
+
+        $.ajax({
+            url: '/Admin/PRTransaction/GetSupplierLocation',
+            type: 'GET',
+            data: { supplierId: supplierId },
+            success: function (data) {
+                // Set the LocationID value to a hidden input for submission
+                $('#locationId').val(data);
+
+                // Fetch and display the LocationAddress for the selected supplier
+                fetchLocation(data); // Assuming this fetches LocationAddress based on LocationID
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching location:", error);
+            }
+        });
+    }
+
+    function fetchLocation(locationId) {
+        // Make an AJAX request to retrieve the LocationAddress based on LocationID
+        $.ajax({
+            url: '/Admin/PRTransaction/GetLocationAddress',
+            type: 'GET',
+            data: { locationId: locationId },
+            success: function (address) {
+                // Display the LocationAddress in the visible input field
+                $('#location').val(address);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching location address:", error);
+            }
+        });
+    }
+});
+
+
+
+
 //Admin side
 document.addEventListener("DOMContentLoaded", function () {
     const productDropdown = document.getElementById('productDropdown');
@@ -70,6 +120,53 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+//Inventory Officer Side
+$(document).ready(function () {
+    $('#supplierDropdown').change(function () {
+        var supplierId = $(this).val();
+        fetchLocationAddress(supplierId);
+    });
+
+    function fetchLocationAddress(supplierId) {
+        if (!supplierId) {
+            $('#location').val(''); // Clear the location field if no supplier is selected
+            return;
+        }
+
+        $.ajax({
+            url: '/InventoryOfficer/PRTransaction/GetSupplierLocation',
+            type: 'GET',
+            data: { supplierId: supplierId },
+            success: function (data) {
+                // Set the LocationID value to a hidden input for submission
+                $('#locationId').val(data);
+
+                // Fetch and display the LocationAddress for the selected supplier
+                fetchLocation(data); // Assuming this fetches LocationAddress based on LocationID
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching location:", error);
+            }
+        });
+    }
+
+    function fetchLocation(locationId) {
+        // Make an AJAX request to retrieve the LocationAddress based on LocationID
+        $.ajax({
+            url: '/InventoryOfficer/PRTransaction/GetLocationAddress',
+            type: 'GET',
+            data: { locationId: locationId },
+            success: function (address) {
+                // Display the LocationAddress in the visible input field
+                $('#location').val(address);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching location address:", error);
+            }
+        });
+    }
+});
 
 //Inventory Officer side
 document.addEventListener("DOMContentLoaded", function () {

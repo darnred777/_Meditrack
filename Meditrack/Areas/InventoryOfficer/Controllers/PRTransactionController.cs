@@ -22,16 +22,21 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPurchaseOrderService _purchaseOrderService;
         private readonly IProductRepository _productRepository;
+        private readonly ISupplierRepository _supplierRepository;
+        private readonly ILocationRepository _locationRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public PRTransactionController(IUnitOfWork unitOfWork, IPurchaseOrderService purchaseOrderService, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager)
+        public PRTransactionController(IUnitOfWork unitOfWork, IPurchaseOrderService purchaseOrderService, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager,
+            ISupplierRepository supplierRepository, ILocationRepository locationRepository)
         {
             _unitOfWork = unitOfWork;
             _purchaseOrderService = purchaseOrderService;
             _productRepository = productRepository;
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
+            _supplierRepository = supplierRepository;
+            _locationRepository = locationRepository;
         }
 
         //PODetails List
@@ -153,6 +158,47 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             {
                 return Json(new { success = false, message = ex.Message });
             }
+        }
+
+        [HttpGet]
+        public IActionResult GetSupplierLocation(int supplierId)
+        {
+            var supplier = _supplierRepository.GetSupplierLocationById(supplierId);
+            if (supplier == null || supplier.LocationID == null)
+            {
+                return NotFound("Supplier location not found.");
+            }
+
+            return Ok(supplier.LocationID);
+        }
+
+        [HttpGet]
+        public IActionResult GetLocationAddress(int locationId)
+        {
+            var location = _locationRepository.GetLocationById(locationId);
+            if (location == null)
+            {
+                return NotFound("Location not found.");
+            }
+
+            return Ok(location.LocationAddress);
+        }
+
+
+
+        [HttpGet]
+        public IActionResult GetSupplierDetails(int supplierId)
+        {
+            var supplier = _supplierRepository.GetSupplierLocationById(supplierId);
+            if (supplier == null)
+            {
+                return NotFound("Supplier not found.");
+            }
+
+            return Ok(new
+            {
+                LocationAddress = supplier.Location.LocationAddress,
+            });
         }
 
         [HttpGet]

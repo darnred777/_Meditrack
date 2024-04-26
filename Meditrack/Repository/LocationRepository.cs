@@ -27,5 +27,10 @@ namespace Meditrack.Repository
 
             return existsSupplier || existsPurchaseRequisition || existsApplicationUser;
         }
+
+        public Location GetLocationById(int locationId)
+        {
+            return _db.Location.FirstOrDefault(l => l.LocationID == locationId);
+        }
     }
 }
