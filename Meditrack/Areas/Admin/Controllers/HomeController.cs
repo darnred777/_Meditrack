@@ -34,6 +34,30 @@ namespace Meditrack.Areas.Admin.Controllers
             // Pass these products to the view, perhaps within a ViewModel or ViewBag/ViewData
             ViewBag.LowStockProducts = lowStockProducts;
 
+            var pendingPRs = _unitOfWork.PurchaseRequisitionHeader
+                        .GetAll(includeProperties: "Status")
+                        .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Pending);
+
+            int totalPendingPRs = pendingPRs?.Count() ?? 0;  // Set default value to 0 if pendingPRs is null
+
+            ViewBag.TotalPendingPRs = totalPendingPRs;
+
+            var approvedPRs = _unitOfWork.PurchaseRequisitionHeader
+                        .GetAll(includeProperties: "Status")
+                        .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Approved);
+
+            int totalApprovedPRs = approvedPRs?.Count() ?? 0;  // Set default value to 0 if pendingPRs is null
+
+            ViewBag.TotalApprovedPRs = totalApprovedPRs;
+
+            var cancelledPRs = _unitOfWork.PurchaseRequisitionHeader
+                        .GetAll(includeProperties: "Status")
+                        .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Cancelled);
+
+            int totalCancelledPRs = cancelledPRs?.Count() ?? 0;  // Set default value to 0 if pendingPRs is null
+
+            ViewBag.TotalCancelledPRs = totalCancelledPRs;
+
             return View();
         }
 

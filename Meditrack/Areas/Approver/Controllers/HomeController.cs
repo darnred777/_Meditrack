@@ -19,12 +19,30 @@ namespace Meditrack.Areas.Approver.Controllers
         }
 
         public IActionResult Dashboard()
-        {
-            const int reorderPoint = 10;
-            var lowStockProducts = _unitOfWork.Product.GetAll(p => p.QuantityInStock <= reorderPoint).ToList();
+        {          
+            var pendingPRs = _unitOfWork.PurchaseRequisitionHeader
+                        .GetAll(includeProperties: "Status")
+                        .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Pending);
 
-            // Pass these products to the view, perhaps within a ViewModel or ViewBag/ViewData
-            ViewBag.LowStockProducts = lowStockProducts;
+            int totalPendingPRs = pendingPRs?.Count() ?? 0;  // Set default value to 0 if pendingPRs is null
+
+            ViewBag.TotalPendingPRs = totalPendingPRs;
+
+            var approvedPRs = _unitOfWork.PurchaseRequisitionHeader
+                        .GetAll(includeProperties: "Status")
+                        .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Approved);
+
+            int totalApprovedPRs = approvedPRs?.Count() ?? 0;  // Set default value to 0 if pendingPRs is null
+
+            ViewBag.TotalApprovedPRs = totalApprovedPRs;
+
+            var cancelledPRs = _unitOfWork.PurchaseRequisitionHeader
+                        .GetAll(includeProperties: "Status")
+                        .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Cancelled);
+
+            int totalCancelledPRs = cancelledPRs?.Count() ?? 0;  // Set default value to 0 if pendingPRs is null
+
+            ViewBag.TotalCancelledPRs = totalCancelledPRs;
 
             return View();
         }

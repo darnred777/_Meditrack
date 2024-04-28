@@ -68,15 +68,37 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </nav>
-            <main class="content px-3 py-2">
-                <div class="container-fluid">
-                    <div class="mb-3">
-                        <h3>Dashboard</h3>
-
-                        @Html.Partial("_LowStockNotification", ViewBag.LowStockProducts as IEnumerable<Product>)
-
+        <main class="content px-3 py-2">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card bg-primary text-white mb-3">
+                            <div class="card-body">
+                                <h4 class="card-title">Total Pending Purchase Requisitions</h4>
+                                <p class="card-text">Number of pending PRs: @ViewBag.TotalPendingPRs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-success text-white mb-3">
+                            <div class="card-body">
+                                <h4 class="card-title">Total Approved Purchase Requisitions</h4>
+                                <p class="card-text">Number of approved PRs: @ViewBag.TotalApprovedPRs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-danger text-white mb-3">
+                            <div class="card-body">
+                                <h4 class="card-title">Total Cancelled Purchase Requisitions</h4>
+                                <p class="card-text">Number of cancelled PRs: @ViewBag.TotalCancelledPRs</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </main>
+            </div>
+        </main>
+
+
         </div>
     </div>
