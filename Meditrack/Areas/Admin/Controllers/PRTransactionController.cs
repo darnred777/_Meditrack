@@ -121,9 +121,8 @@ namespace Meditrack.Areas.Admin.Controllers
         <h2>Purchase Order Details</h2>
         <p><strong>Sender:</strong> {purchaseOrderHeader.ApplicationUser.Email}</p>
         <p><strong>Sender Location:</strong> {purchaseOrderHeader.ApplicationUser.Location.LocationAddress}</p>
-        <p><strong>Purchase Order ID:</strong> {purchaseOrderHeader.POHdrID}</p>
         <p><strong>Supplier:</strong> {purchaseOrderHeader.Supplier.SupplierName}</p>
-        <p><strong>Location:</strong> {purchaseOrderHeader.Location.LocationAddress}</p>
+        <p><strong>Supplier Location:</strong> {purchaseOrderHeader.Location.LocationAddress}</p>
         <p><strong>Status:</strong> {purchaseOrderHeader.Status.StatusDescription}</p>
         <p><strong>PO Date:</strong> {purchaseOrderHeader.PODate}</p>
         <p><strong>TotalAmount:</strong> {purchaseOrderHeader.TotalAmount}</p>
@@ -138,7 +137,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 <strong>Unit Price:</strong> {detail.UnitPrice}<br>
                 <strong>Quantity:</strong> {detail.QuantityInOrder}<br>
                 <strong>Unit Of Measurement:</strong> {detail.UnitOfMeasurement}<br>
-                <strong>Is VATE Exclusive:</strong> {detail.IsVATExclusive}<br>
+                <strong>Is VAT Exclusive:</strong> {(detail.IsVATExclusive ? "Yes" : "No" )}<br>
                 <strong>Subtotal:</strong> {detail.Subtotal}<br>
             </li>";
             }
