@@ -60,7 +60,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 // Fetch the specific Purchase Order Header based on poHdrID
                 var purchaseOrderHeader = _unitOfWork.PurchaseOrderHeader.Get(
                     p => p.POHdrID == poHdrID && p.Status.StatusDescription == StaticDetails.Status_Approved,
-                    includeProperties: "Supplier,Location,Status"
+                    includeProperties: "Supplier,Location,Status,ApplicationUser"
                 );
 
                 if (purchaseOrderHeader == null)
@@ -82,7 +82,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 }
 
                 // Email content
-                string fromMail = "darnred7@gmail.com";
+                string fromMail = purchaseOrderHeader.ApplicationUser.Email;
                 string fromPassword = "gdrugqgfnryhgnnu";
                 string toMail = purchaseOrderHeader.Supplier.Email;
                 string subject = "Purchase Order Details";
@@ -119,6 +119,8 @@ namespace Meditrack.Areas.Admin.Controllers
             
             string body = $@"
         <h2>Purchase Order Details</h2>
+        <p><strong>Sender:</strong> {purchaseOrderHeader.ApplicationUser.Email}</p>
+        <p><strong>Sender Location:</strong> {purchaseOrderHeader.ApplicationUser.Location.LocationAddress}</p>
         <p><strong>Purchase Order ID:</strong> {purchaseOrderHeader.POHdrID}</p>
         <p><strong>Supplier:</strong> {purchaseOrderHeader.Supplier.SupplierName}</p>
         <p><strong>Location:</strong> {purchaseOrderHeader.Location.LocationAddress}</p>
