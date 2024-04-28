@@ -8,8 +8,7 @@ function loadDataTable(status) {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/inventoryofficer/prtransaction/getallprdetails?status=' +status },
         "columns": [
-            { data: 'prDtlID', "width": "5%" },
-            { data: 'prHdrID', "width": "5%" },
+            { data: 'purchaseRequisitionHeader.applicationUserEmail', "width": "5%" },
             { data: 'purchaseRequisitionHeader.supplierName', "width": "10%" },
             { data: 'purchaseRequisitionHeader.locationAddress', "width": "10%" },
             { data: 'purchaseRequisitionHeader.statusDescription', "width": "10%" },

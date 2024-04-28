@@ -42,5 +42,12 @@ namespace Meditrack.Models
 
         [MaxLength(255)]
         public string? Remarks { get; set; }
+
+        [ValidateNever]
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationUserId { get; set; }
+
+        [ValidateNever]
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

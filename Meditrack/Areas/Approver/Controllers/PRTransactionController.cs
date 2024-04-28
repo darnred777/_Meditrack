@@ -117,7 +117,7 @@ namespace Meditrack.Approver.Controllers
         public IActionResult GetAllPRDetails()
         {
             // Fetch all PurchaseRequisitionHeaders including related entities
-            var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status");
+            var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status,ApplicationUser");
 
             // Fetch all PurchaseRequisitionDetails including related entities
             var details = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "Product,PurchaseRequisitionHeader");
@@ -133,7 +133,8 @@ namespace Meditrack.Approver.Controllers
                     detail.PurchaseRequisitionHeader.Location.LocationAddress,
                     detail.PurchaseRequisitionHeader.Status.StatusDescription,
                     detail.PurchaseRequisitionHeader.TotalAmount,
-                    detail.PurchaseRequisitionHeader.PRDate
+                    detail.PurchaseRequisitionHeader.PRDate,
+                    ApplicationUserEmail = detail.PurchaseRequisitionHeader.ApplicationUser.Email
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,
@@ -152,7 +153,7 @@ namespace Meditrack.Approver.Controllers
         public IActionResult GetAllPODetails()
         {
             // Fetch all PurchaseOrderHeaders including related entities
-            var headers = _unitOfWork.PurchaseOrderHeader.GetAll(includeProperties: "Supplier,Location,Status");
+            var headers = _unitOfWork.PurchaseOrderHeader.GetAll(includeProperties: "Supplier,Location,Status,ApplicationUser");
 
             // Fetch all PurchaseOrderDetails including related entities
             var details = _unitOfWork.PurchaseOrderDetail.GetAll(includeProperties: "Product,PurchaseOrderHeader");
@@ -168,7 +169,8 @@ namespace Meditrack.Approver.Controllers
                     detail.PurchaseOrderHeader.Location.LocationAddress,
                     detail.PurchaseOrderHeader.Status.StatusDescription,
                     detail.PurchaseOrderHeader.TotalAmount,
-                    detail.PurchaseOrderHeader.PODate
+                    detail.PurchaseOrderHeader.PODate,
+                    ApplicationUserEmail = detail.PurchaseOrderHeader.ApplicationUser.Email
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,

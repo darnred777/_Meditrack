@@ -38,6 +38,13 @@ namespace Meditrack.Models
         [DataType(DataType.DateTime)]
         public DateTime PRDate { get; set; } = DateTime.Now;
 
+        [ValidateNever]
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationUserId { get; set; }
+
+        [ValidateNever]
+        public virtual ApplicationUser ApplicationUser { get; set; }
+
         public virtual ICollection<PurchaseRequisitionDetail> PurchaseRequisitionDetail { get; set; }
     }
 }

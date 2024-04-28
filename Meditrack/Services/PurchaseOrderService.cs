@@ -52,7 +52,8 @@ public class PurchaseOrderService : IPurchaseOrderService
             Status = statusApproved, // Use the fetched status
             StatusID = statusApproved.StatusID,
             TotalAmount = (decimal)prHeader.TotalAmount,
-            PurchaseRequisitionHeader = prHeader
+            PurchaseRequisitionHeader = prHeader,
+            ApplicationUserId = prHeader.ApplicationUserId
 
             // Other necessary properties...
         };

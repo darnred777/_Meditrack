@@ -4,6 +4,7 @@ using Meditrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meditrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240428052118_AddingUserIdToPRHeaderAndPOHeader")]
+    partial class AddingUserIdToPRHeaderAndPOHeader
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,6 +186,9 @@ namespace Meditrack.Migrations
 
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("LocationID")
@@ -209,7 +215,7 @@ namespace Meditrack.Migrations
 
                     b.HasKey("POHdrID");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("Id");
 
                     b.HasIndex("LocationID");
 
@@ -269,6 +275,9 @@ namespace Meditrack.Migrations
 
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("LocationID")
@@ -288,7 +297,7 @@ namespace Meditrack.Migrations
 
                     b.HasKey("PRHdrID");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("Id");
 
                     b.HasIndex("LocationID");
 
@@ -689,9 +698,7 @@ namespace Meditrack.Migrations
                 {
                     b.HasOne("Meditrack.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Id");
 
                     b.HasOne("Meditrack.Models.Location", "Location")
                         .WithMany()
@@ -749,9 +756,7 @@ namespace Meditrack.Migrations
                 {
                     b.HasOne("Meditrack.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Id");
 
                     b.HasOne("Meditrack.Models.Location", "Location")
                         .WithMany()

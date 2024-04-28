@@ -8,8 +8,7 @@ function loadDataTable(status) {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/viewer/prtransaction/getallpodetails?status=' +status },
         "columns": [
-            { data: 'poDtlID', "width": "5%" },
-            { data: 'poHdrID', "width": "5%" },
+            { data: 'purchaseOrderHeader.applicationUserEmail', "width": "5%" },
             { data: 'purchaseOrderHeader.supplierName', "width": "10%" },
             { data: 'purchaseOrderHeader.locationAddress', "width": "10%" },
             { data: 'purchaseOrderHeader.statusDescription', "width": "10%" },

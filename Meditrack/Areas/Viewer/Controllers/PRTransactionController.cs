@@ -38,7 +38,7 @@ namespace Meditrack.Areas.Viewer.Controllers
         public IActionResult GetAllPODetails()
         {
             // Fetch all PurchaseOrderHeaders including related entities
-            var headers = _unitOfWork.PurchaseOrderHeader.GetAll(includeProperties: "Supplier,Location,Status");
+            var headers = _unitOfWork.PurchaseOrderHeader.GetAll(includeProperties: "Supplier,Location,Status,ApplicationUser");
 
             // Fetch all PurchaseOrderDetails including related entities
             var details = _unitOfWork.PurchaseOrderDetail.GetAll(includeProperties: "Product,PurchaseOrderHeader");
@@ -54,7 +54,8 @@ namespace Meditrack.Areas.Viewer.Controllers
                     detail.PurchaseOrderHeader.Location.LocationAddress,
                     detail.PurchaseOrderHeader.Status.StatusDescription,
                     detail.PurchaseOrderHeader.TotalAmount,
-                    detail.PurchaseOrderHeader.PODate
+                    detail.PurchaseOrderHeader.PODate,
+                    ApplicationUserEmail = detail.PurchaseOrderHeader.ApplicationUser.Email
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,

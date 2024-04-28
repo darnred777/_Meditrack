@@ -268,8 +268,8 @@ namespace Meditrack.Areas.Admin.Controllers
             // Fetch all products and convert them to SelectListItem objects
             var productList = _unitOfWork.Product.GetAll().Select(p => new SelectListItem
             {
-                Value = p.ProductID.ToString(), // Assuming Id is the property you want to use as the value
-                Text = p.ProductName // Assuming Name is the property you want to display as the text
+                Value = p.ProductID.ToString(),
+                Text = p.ProductName
             });
 
             // Fetch all suppliers and convert them to SelectListItem objects
@@ -293,28 +293,30 @@ namespace Meditrack.Areas.Admin.Controllers
                 Text = s.StatusDescription
             });
 
+            // Get the current user's ID
             string currentUserId = GetCurrentUserId();
 
-            // Create a new instance of the view model with empty lists
+            // Create a new instance of PRTransactionVM with dropdown lists and default values
             var viewModel = new PRTransactionVM
             {
-                ProductList = productList,
-                SupplierList = supplierList,
-                LocationList = locationList,
-                StatusList = statusList,
-                PurchaseRequisitionHeader = new PurchaseRequisitionHeader(),
-                PurchaseRequisitionDetail = new PurchaseRequisitionDetail(),
-                CreatedByUserId = currentUserId
+                ProductList = productList.ToList(),
+                SupplierList = supplierList.ToList(),
+                LocationList = locationList.ToList(),
+                StatusList = statusList.ToList(),
+                PurchaseRequisitionHeader = new PurchaseRequisitionHeader
+                {
+                    ApplicationUserId = currentUserId // Assign the current user's ID to ApplicationUserId
+                },
+                PurchaseRequisitionDetail = new PurchaseRequisitionDetail()
             };
 
             return View(viewModel);
         }
 
-        // POST: /Admin/AddPurchase/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreatePR(PRTransactionVM viewModel)
-        {            
+        {
             if (ModelState.IsValid)
             {
                 // Compute subtotal before saving
@@ -322,27 +324,21 @@ namespace Meditrack.Areas.Admin.Controllers
                     viewModel.PurchaseRequisitionDetail.UnitPrice *
                     viewModel.PurchaseRequisitionDetail.QuantityInOrder;
 
-                // Fetch the 'Pending' status from the database
+                // Set the status of the new Purchase Requisition to "Pending"
                 var pendingStatus = _unitOfWork.Status.GetFirstOrDefault(s => s.StatusDescription == StaticDetails.Status_Pending);
                 if (pendingStatus == null)
                 {
                     ModelState.AddModelError("", "Pending status not found in database.");
-                    return View(viewModel); // or handle this scenario as necessary
+                    PopulateDropdowns(viewModel);
+                    return View(viewModel); // Return to the view with validation error
                 }
 
-                // Set the status of the new Purchase Requisition to "Pending"
                 viewModel.PurchaseRequisitionHeader.Status = pendingStatus;
 
+                // Set the ApplicationUserId to the current user's ID
+                viewModel.PurchaseRequisitionHeader.ApplicationUserId = GetCurrentUserId();
+
                 // Add the new PurchaseRequisitionHeader to the database
-                // Initialize the TotalAmount with 0
-                viewModel.PurchaseRequisitionHeader.TotalAmount = 0;
-
-                // Set the status of the new Purchase Requisition to "Pending"
-                //viewModel.PurchaseRequisitionHeader.Status = new Status
-                //{
-                //    StatusDescription = StaticDetails.Status_Pending
-                //};
-
                 _unitOfWork.PurchaseRequisitionHeader.Add(viewModel.PurchaseRequisitionHeader);
                 _unitOfWork.Save();
 
@@ -353,7 +349,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 _unitOfWork.PurchaseRequisitionDetail.Add(viewModel.PurchaseRequisitionDetail);
 
                 // Update the header's TotalAmount with the subtotal of the detail
-                viewModel.PurchaseRequisitionHeader.TotalAmount += viewModel.PurchaseRequisitionDetail.Subtotal;
+                viewModel.PurchaseRequisitionHeader.TotalAmount = viewModel.PurchaseRequisitionDetail.Subtotal;
 
                 // Save the updated TotalAmount in PurchaseRequisitionHeader
                 _unitOfWork.PurchaseRequisitionHeader.Update(viewModel.PurchaseRequisitionHeader);
@@ -363,9 +359,11 @@ namespace Meditrack.Areas.Admin.Controllers
                 return RedirectToAction("PRDList", "PRTransaction");
             }
 
+            // If model state is invalid, repopulate dropdown lists and return to the view with validation errors
             PopulateDropdowns(viewModel);
             return View(viewModel);
         }
+
 
         private void PopulateDropdowns(PRTransactionVM viewModel)
         {
@@ -656,7 +654,7 @@ namespace Meditrack.Areas.Admin.Controllers
         public IActionResult GetAllPRDetails()
         {
             // Fetch all PurchaseRequisitionHeaders including related entities
-            var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status");
+            var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Supplier,Location,Status,ApplicationUser");
 
             // Fetch all PurchaseRequisitionDetails including related entities
             var details = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "Product,PurchaseRequisitionHeader");
@@ -672,14 +670,15 @@ namespace Meditrack.Areas.Admin.Controllers
                     detail.PurchaseRequisitionHeader.Location.LocationAddress,
                     detail.PurchaseRequisitionHeader.Status.StatusDescription,
                     detail.PurchaseRequisitionHeader.TotalAmount,
-                    detail.PurchaseRequisitionHeader.PRDate
+                    detail.PurchaseRequisitionHeader.PRDate,
+                    ApplicationUserEmail = detail.PurchaseRequisitionHeader.ApplicationUser.Email
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,
                 detail.UnitOfMeasurement,
                 detail.QuantityInOrder,
                 detail.Subtotal,
-            });
+            }); ;
 
             // Return the result as JSON
             return Json(new { data = detailsWithStatus });
@@ -691,7 +690,7 @@ namespace Meditrack.Areas.Admin.Controllers
         public IActionResult GetAllPODetails()
         {
             // Fetch all PurchaseOrderHeaders including related entities
-            var headers = _unitOfWork.PurchaseOrderHeader.GetAll(includeProperties: "Supplier,Location,Status");
+            var headers = _unitOfWork.PurchaseOrderHeader.GetAll(includeProperties: "Supplier,Location,Status,ApplicationUser");
 
             // Fetch all PurchaseOrderDetails including related entities
             var details = _unitOfWork.PurchaseOrderDetail.GetAll(includeProperties: "Product,PurchaseOrderHeader");
@@ -707,7 +706,8 @@ namespace Meditrack.Areas.Admin.Controllers
                     detail.PurchaseOrderHeader.Location.LocationAddress,
                     detail.PurchaseOrderHeader.Status.StatusDescription,
                     detail.PurchaseOrderHeader.TotalAmount,
-                    detail.PurchaseOrderHeader.PODate
+                    detail.PurchaseOrderHeader.PODate,
+                    ApplicationUserEmail = detail.PurchaseOrderHeader.ApplicationUser.Email
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,
