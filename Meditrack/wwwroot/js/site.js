@@ -229,3 +229,42 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+// Function to handle form submission and validate quantity change
+document.querySelector('form').addEventListener('submit', function (event) {
+    var quantityChangeInput = document.getElementById('quantityChange');
+    var quantityChange = parseInt(quantityChangeInput.value);
+
+    // Check if quantity change is negative
+    if (quantityChange < 0) {
+        event.preventDefault(); // Prevent form submission
+        var validationMessage = document.querySelector('#quantityChange + .text-danger');
+        validationMessage.textContent = 'Quantity change cannot be negative.';
+        return;
+    }
+
+    // Reset validation message if no error
+    var validationMessage = document.querySelector('#quantityChange + .text-danger');
+    validationMessage.textContent = '';
+});
+
+// Attach event listeners to the operation dropdown and quantityChange input
+document.getElementById("operation").addEventListener("change", validateQuantityChange);
+document.getElementById("quantityChange").addEventListener("input", validateQuantityChange);
+
+function validateQuantityChange() {
+    var operation = document.getElementById("operation").value;
+    var quantityChange = parseInt(document.getElementById("quantityChange").value);
+    var currentQuantityInStock = parseInt("@Model.Product.QuantityInStock"); // Retrieve current QuantityInStock from Razor model
+
+    if (operation === "Withdraw" && (quantityChange > currentQuantityInStock || quantityChange < 0)) {
+        // Display error message if withdrawing more than available QuantityInStock or entering a negative quantity
+        document.querySelector("span[data-valmsg-for='QuantityChange']").innerHTML = "Invalid quantity for withdrawal";
+        document.querySelector("span[data-valmsg-for='QuantityChange']").style.display = "block";
+        document.getElementById("quantityChange").value = ""; // Clear the input value
+    } else {
+        // Hide error message if valid or operation is "Deposit"
+        document.querySelector("span[data-valmsg-for='QuantityChange']").innerHTML = "";
+        document.querySelector("span[data-valmsg-for='QuantityChange']").style.display = "none";
+    }
+}

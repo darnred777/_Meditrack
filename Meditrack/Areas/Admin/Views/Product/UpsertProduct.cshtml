@@ -45,8 +45,21 @@
         </div>
         <div class="mb-3">
             <label asp-for="Product.QuantityInStock" class="form-label">Quantity in Stock:</label>
-            <input asp-for="Product.QuantityInStock" class="form-control" type="number" required>
-            <span asp-validation-for="Product.QuantityInStock" class="text-danger"></span>
+            <input asp-for="Product.QuantityInStock" class="form-control" type="number" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="operation" class="form-label">Operation:</label>
+            <select name="operation" id="operation" class="form-select">
+                <option value="Deposit">Deposit</option>
+                <option value="Withdraw">Withdraw</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="quantityChange" class="form-label">Quantity Change:</label>
+            <!-- Bind to the QuantityChange property of ProductVM -->
+            <input type="number" id="quantityChange" name="QuantityChange" class="form-control" required>
+            <span asp-validation-for="QuantityChange" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="Product.ExpirationDate" class="form-label">Expiration Date:</label>

@@ -9,5 +9,7 @@ namespace Meditrack.Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> ProductCategoryList { get; set; }
+
+        public int QuantityChange { get; set; }
     }
 }

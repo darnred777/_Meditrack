@@ -56,111 +56,252 @@ namespace Meditrack.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpsertProduct(ProductVM productVM)
+        public IActionResult UpsertProduct(ProductVM productVM, string operation)
         {
             if (ModelState.IsValid)
             {
                 bool isNewProduct = productVM.Product.ProductID == 0;
+
                 if (isNewProduct)
                 {
-                    _unitOfWork.Product.Add(productVM.Product);
+                    // Adding a new product
+                    int quantityChange = productVM.QuantityChange; // Retrieve quantity change from model
+
+                    // Create a new product instance
+                    var newProduct = new Product
+                    {
+                        CategoryID = productVM.Product.CategoryID,
+                        ProductName = productVM.Product.ProductName,
+                        SKU = productVM.Product.SKU,
+                        Brand = productVM.Product.Brand,
+                        ProductDescription = productVM.Product.ProductDescription,
+                        UnitPrice = productVM.Product.UnitPrice,
+                        UnitOfMeasurement = productVM.Product.UnitOfMeasurement,
+                        QuantityInStock = quantityChange, // Set initial stock quantity
+                        ExpirationDate = productVM.Product.ExpirationDate,
+                        LastUnitPriceUpdated = productVM.Product.LastUnitPriceUpdated,
+                        LastQuantityInStockUpdated = productVM.Product.LastQuantityInStockUpdated
+
+                        // Set other properties as needed
+                    };
+
+                    _unitOfWork.Product.Add(newProduct);
+                    _unitOfWork.Save();
+
+                    return RedirectToAction("ManageProduct");
                 }
                 else
                 {
+                    // Editing an existing product
                     var existingProduct = _unitOfWork.Product.Get(u => u.ProductID == productVM.Product.ProductID);
+
                     if (existingProduct != null)
                     {
-                        bool updateDetails = existingProduct.UnitPrice != productVM.Product.UnitPrice || existingProduct.UnitOfMeasurement != productVM.Product.UnitOfMeasurement;
+                        int quantityChange = productVM.QuantityChange; // Retrieve quantity change from model
 
-                        if (updateDetails)
+                        if (operation == "Deposit")
                         {
-                            UpdatePurchaseRequisitionDetails(productVM, existingProduct);
-                            UpdatePurchaseOrderDetails(productVM, existingProduct);
+                            // Deposit stock: increase the QuantityInStock
+                            existingProduct.QuantityInStock += quantityChange;
+                        }
+                        else if (operation == "Withdraw")
+                        {
+                            // Withdraw stock: decrease the QuantityInStock (if sufficient quantity available)
+                            if (existingProduct.QuantityInStock >= quantityChange)
+                            {
+                                existingProduct.QuantityInStock -= quantityChange;
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Insufficient quantity available for withdrawal.");
+                                // Return the view with validation errors
+                                productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
+                                {
+                                    Text = u.CategoryName,
+                                    Value = u.CategoryID.ToString()
+                                });
+                                return View(productVM);
+                            }
                         }
 
-                        UpdateProductDetails(productVM, existingProduct);
+                        // Update other product details
+                        existingProduct.ProductName = productVM.Product.ProductName;
+                        existingProduct.UnitPrice = productVM.Product.UnitPrice;
+                        existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
+                        existingProduct.ExpirationDate = productVM.Product.ExpirationDate;
+                        existingProduct.LastUnitPriceUpdated = productVM.Product.LastUnitPriceUpdated;
+                        existingProduct.LastQuantityInStockUpdated = productVM.Product.LastQuantityInStockUpdated;
+                        // Update other properties as needed
+
+                        _unitOfWork.Product.Update(existingProduct);
+                        _unitOfWork.Save();
+
+                        // Update associated PRDetails and PODetails with new UnitPrice
+                        UpdatePRDetailsAndPODetails(existingProduct);
+
+                        return RedirectToAction("ManageProduct");
                     }
                 }
+            }
 
-                _unitOfWork.Save();
-                return RedirectToAction("ManageProduct");
-            }
-            else
+            // If model state is invalid or product not found, return to the view with validation errors
+            productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
             {
-                productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
-                {
-                    Text = u.CategoryName,
-                    Value = u.CategoryID.ToString()
-                });
-                return View(productVM);
-            }
+                Text = u.CategoryName,
+                Value = u.CategoryID.ToString()
+            });
+            return View(productVM);
         }
 
-        private void UpdateProductDetails(ProductVM productVM, Product existingProduct)
+        private void UpdatePRDetailsAndPODetails(Product existingProduct)
         {
-            existingProduct.CategoryID = productVM.Product.CategoryID;
-            existingProduct.SKU = productVM.Product.SKU;
-            existingProduct.UnitPrice = productVM.Product.UnitPrice;
-            existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
-            existingProduct.ProductName = productVM.Product.ProductName;
-            existingProduct.Brand = productVM.Product.Brand;
-            existingProduct.ProductDescription = productVM.Product.ProductDescription;
-            existingProduct.QuantityInStock = productVM.Product.QuantityInStock;
-            existingProduct.ExpirationDate = productVM.Product.ExpirationDate;
-            existingProduct.isActive = productVM.Product.isActive;
-            existingProduct.LastUnitPriceUpdated = DateTime.Now;
-            existingProduct.LastQuantityInStockUpdated = DateTime.Now;
-
-            _unitOfWork.Product.Update(existingProduct);
-        }
-
-        private void UpdatePurchaseRequisitionDetails(ProductVM productVM, Product existingProduct)
-        {
-            var requisitionDetails = _unitOfWork.PurchaseRequisitionDetail.GetAll(r => r.ProductID == existingProduct.ProductID);
-            foreach (var detail in requisitionDetails)
+            // Update PRDetails associated with the existing product
+            var prDetails = _unitOfWork.PurchaseRequisitionDetail.GetAll(prd => prd.ProductID == existingProduct.ProductID);
+            foreach (var prDetail in prDetails)
             {
-                detail.UnitPrice = productVM.Product.UnitPrice;
-                detail.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
-                detail.Subtotal = detail.UnitPrice * detail.QuantityInOrder;
-                _unitOfWork.PurchaseRequisitionDetail.Update(detail);
-            }
+                prDetail.UnitPrice = existingProduct.UnitPrice;
+                prDetail.Subtotal = prDetail.QuantityInOrder * existingProduct.UnitPrice;
+                _unitOfWork.PurchaseRequisitionDetail.Update(prDetail);
 
-            //Update the total amounts in headers
-            var affectedHeaders = requisitionDetails.Select(r => r.PRHdrID).Distinct();
-            foreach (var headerId in affectedHeaders)
-            {
-                var header = _unitOfWork.PurchaseRequisitionHeader.GetFirstOrDefault(h => h.PRHdrID == headerId);
-                if (header != null)
+                // Update associated PRHeader with updated TotalAmount
+                var prHeader = _unitOfWork.PurchaseRequisitionHeader.GetFirstOrDefault(prh => prh.PRHdrID == prDetail.PRHdrID);
+                if (prHeader != null)
                 {
-                    header.TotalAmount = _unitOfWork.PurchaseRequisitionDetail.GetAll(d => d.PRHdrID == headerId).Sum(d => d.Subtotal);
-                    _unitOfWork.PurchaseRequisitionHeader.Update(header);
+                    prHeader.TotalAmount = _unitOfWork.PurchaseRequisitionDetail.GetAll(pd => pd.PRHdrID == prHeader.PRHdrID).Sum(pd => pd.Subtotal);
+                    _unitOfWork.PurchaseRequisitionHeader.Update(prHeader);
                 }
             }
-        }
 
-        private void UpdatePurchaseOrderDetails(ProductVM productVM, Product existingProduct)
-        {
-            var orderDetails = _unitOfWork.PurchaseOrderDetail.GetAll(o => o.ProductID == existingProduct.ProductID);
-            foreach (var detail in orderDetails)
+            // Update PODetails associated with the existing product
+            var poDetails = _unitOfWork.PurchaseOrderDetail.GetAll(pod => pod.ProductID == existingProduct.ProductID);
+            foreach (var poDetail in poDetails)
             {
-                detail.UnitPrice = productVM.Product.UnitPrice;
-                detail.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
-                detail.Subtotal = detail.UnitPrice * detail.QuantityInOrder;
-                _unitOfWork.PurchaseOrderDetail.Update(detail);
-            }
+                poDetail.UnitPrice = existingProduct.UnitPrice;
+                poDetail.Subtotal = poDetail.QuantityInOrder * existingProduct.UnitPrice;
+                _unitOfWork.PurchaseOrderDetail.Update(poDetail);
 
-            // Optionally update the order headers' total amount if necessary
-            var affectedOrderHeaders = orderDetails.Select(o => o.POHdrID).Distinct();
-            foreach (var headerId in affectedOrderHeaders)
-            {
-                var header = _unitOfWork.PurchaseOrderHeader.GetFirstOrDefault(h => h.POHdrID == headerId);
-                if (header != null)
+                // Update associated POHeader with updated TotalAmount
+                var poHeader = _unitOfWork.PurchaseOrderHeader.GetFirstOrDefault(poh => poh.POHdrID == poDetail.POHdrID);
+                if (poHeader != null)
                 {
-                    header.TotalAmount = _unitOfWork.PurchaseOrderDetail.GetAll(d => d.POHdrID == headerId).Sum(d => d.Subtotal);
-                    _unitOfWork.PurchaseOrderHeader.Update(header);
+                    poHeader.TotalAmount = _unitOfWork.PurchaseOrderDetail.GetAll(pd => pd.POHdrID == poHeader.POHdrID).Sum(pd => pd.Subtotal);
+                    _unitOfWork.PurchaseOrderHeader.Update(poHeader);
                 }
             }
+
+            // Save changes to the database
+            _unitOfWork.Save();
         }
+
+
+
+
+        //[HttpPost]
+        //public IActionResult UpsertProduct(ProductVM productVM)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        bool isNewProduct = productVM.Product.ProductID == 0;
+        //        if (isNewProduct)
+        //        {
+        //            _unitOfWork.Product.Add(productVM.Product);
+        //        }
+        //        else
+        //        {
+        //            var existingProduct = _unitOfWork.Product.Get(u => u.ProductID == productVM.Product.ProductID);
+        //            if (existingProduct != null)
+        //            {
+        //                bool updateDetails = existingProduct.UnitPrice != productVM.Product.UnitPrice || existingProduct.UnitOfMeasurement != productVM.Product.UnitOfMeasurement;
+
+        //                if (updateDetails)
+        //                {
+        //                    UpdatePurchaseRequisitionDetails(productVM, existingProduct);
+        //                    UpdatePurchaseOrderDetails(productVM, existingProduct);
+        //                }
+
+        //                UpdateProductDetails(productVM, existingProduct);
+        //            }
+        //        }
+
+        //        _unitOfWork.Save();
+        //        return RedirectToAction("ManageProduct");
+        //    }
+        //    else
+        //    {
+        //        productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
+        //        {
+        //            Text = u.CategoryName,
+        //            Value = u.CategoryID.ToString()
+        //        });
+        //        return View(productVM);
+        //    }
+        //}
+
+        //private void UpdateProductDetails(ProductVM productVM, Product existingProduct)
+        //{
+        //    existingProduct.CategoryID = productVM.Product.CategoryID;
+        //    existingProduct.SKU = productVM.Product.SKU;
+        //    existingProduct.UnitPrice = productVM.Product.UnitPrice;
+        //    existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
+        //    existingProduct.ProductName = productVM.Product.ProductName;
+        //    existingProduct.Brand = productVM.Product.Brand;
+        //    existingProduct.ProductDescription = productVM.Product.ProductDescription;
+        //    existingProduct.QuantityInStock = productVM.Product.QuantityInStock;
+        //    existingProduct.ExpirationDate = productVM.Product.ExpirationDate;
+        //    existingProduct.isActive = productVM.Product.isActive;
+        //    existingProduct.LastUnitPriceUpdated = DateTime.Now;
+        //    existingProduct.LastQuantityInStockUpdated = DateTime.Now;
+
+        //    _unitOfWork.Product.Update(existingProduct);
+        //}
+
+        //private void UpdatePurchaseRequisitionDetails(ProductVM productVM, Product existingProduct)
+        //{
+        //    var requisitionDetails = _unitOfWork.PurchaseRequisitionDetail.GetAll(r => r.ProductID == existingProduct.ProductID);
+        //    foreach (var detail in requisitionDetails)
+        //    {
+        //        detail.UnitPrice = productVM.Product.UnitPrice;
+        //        detail.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
+        //        detail.Subtotal = detail.UnitPrice * detail.QuantityInOrder;
+        //        _unitOfWork.PurchaseRequisitionDetail.Update(detail);
+        //    }
+
+        //    //Update the total amounts in headers
+        //    var affectedHeaders = requisitionDetails.Select(r => r.PRHdrID).Distinct();
+        //    foreach (var headerId in affectedHeaders)
+        //    {
+        //        var header = _unitOfWork.PurchaseRequisitionHeader.GetFirstOrDefault(h => h.PRHdrID == headerId);
+        //        if (header != null)
+        //        {
+        //            header.TotalAmount = _unitOfWork.PurchaseRequisitionDetail.GetAll(d => d.PRHdrID == headerId).Sum(d => d.Subtotal);
+        //            _unitOfWork.PurchaseRequisitionHeader.Update(header);
+        //        }
+        //    }
+        //}
+
+        //private void UpdatePurchaseOrderDetails(ProductVM productVM, Product existingProduct)
+        //{
+        //    var orderDetails = _unitOfWork.PurchaseOrderDetail.GetAll(o => o.ProductID == existingProduct.ProductID);
+        //    foreach (var detail in orderDetails)
+        //    {
+        //        detail.UnitPrice = productVM.Product.UnitPrice;
+        //        detail.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
+        //        detail.Subtotal = detail.UnitPrice * detail.QuantityInOrder;
+        //        _unitOfWork.PurchaseOrderDetail.Update(detail);
+        //    }
+
+        //    // Optionally update the order headers' total amount if necessary
+        //    var affectedOrderHeaders = orderDetails.Select(o => o.POHdrID).Distinct();
+        //    foreach (var headerId in affectedOrderHeaders)
+        //    {
+        //        var header = _unitOfWork.PurchaseOrderHeader.GetFirstOrDefault(h => h.POHdrID == headerId);
+        //        if (header != null)
+        //        {
+        //            header.TotalAmount = _unitOfWork.PurchaseOrderDetail.GetAll(d => d.POHdrID == headerId).Sum(d => d.Subtotal);
+        //            _unitOfWork.PurchaseOrderHeader.Update(header);
+        //        }
+        //    }
+        //}
 
 
         //[HttpPost]
