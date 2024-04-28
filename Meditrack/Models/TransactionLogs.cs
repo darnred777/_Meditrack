@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Meditrack.Models
 {
@@ -12,17 +13,18 @@ namespace Meditrack.Models
         [StringLength(5)]
         public required string TransType { get; set; }
 
-        [Required]
-        public string Id { get; set; }
+        [ValidateNever]
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationUserId { get; set; }
 
-        [ForeignKey("Id")]
-        public required ApplicationUser ApplicationUser { get; set; }
+        [ValidateNever]
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
-        [Required]
-        public int StatusID { get; set; }
+        public int? StatusID { get; set; }
 
         [ForeignKey("StatusID")]
-        public required Status Status { get; set; }
+        [ValidateNever]
+        public virtual Status? Status { get; set; }
 
         public int? POHdrID { get; set; }
 

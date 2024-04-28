@@ -720,6 +720,41 @@ namespace Meditrack.Areas.Admin.Controllers
             return Json(new { data = detailsWithStatus });
         }
 
+        //[HttpGet]
+        //public IActionResult GetAllTransactionLogs()
+        //{         
+        //    // Fetch all PurchaseRequisitionHeaders including related entities
+        //    var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Status,ApplicationUser");
+
+        //    // Fetch all PurchaseRequisitionDetails including related entities
+        //    var details = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "Product,PurchaseRequisitionHeader");
+
+        //    // Project the details and headers into an anonymous type
+        //    var detailsWithStatus = details.Select(detail => new
+        //    {
+        //        detail.PRDtlID,
+        //        detail.PRHdrID,
+        //        PurchaseRequisitionHeader = new
+        //        {
+        //            detail.PurchaseRequisitionHeader.Supplier.SupplierName,
+        //            detail.PurchaseRequisitionHeader.Location.LocationAddress,
+        //            detail.PurchaseRequisitionHeader.Status.StatusDescription,
+        //            detail.PurchaseRequisitionHeader.TotalAmount,
+        //            detail.PurchaseRequisitionHeader.PRDate,
+        //            ApplicationUserEmail = detail.PurchaseRequisitionHeader.ApplicationUser?.Email // Use ?. to handle null ApplicationUser
+        //        },
+        //        detail.Product.ProductName,
+        //        detail.UnitPrice,
+        //        detail.UnitOfMeasurement,
+        //        detail.QuantityInOrder,
+        //        detail.Subtotal,
+        //    });
+
+        //    // Return the result as JSON
+        //    return Json(new { data = detailsWithStatus });
+        //}
+
+
         #endregion
     }
 }

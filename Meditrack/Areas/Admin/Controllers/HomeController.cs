@@ -4,6 +4,7 @@ using Meditrack.Repository.IRepository;
 using Meditrack.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
@@ -14,6 +15,7 @@ namespace Meditrack.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+
         public HomeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -82,9 +84,18 @@ namespace Meditrack.Areas.Admin.Controllers
         [Authorize(Roles = StaticDetails.Role_Admin)]
         public IActionResult Report()
         {
-            var transactionLogs = _unitOfWork.TransactionLogs.GetAll().ToList();
-
-            return View(transactionLogs);
+            try
+            {
+                var transactionLogs = _unitOfWork.TransactionLogs.GetAll().ToList();
+                return View(transactionLogs);
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception appropriately
+                // For debugging purposes, you can inspect the exception message
+                ViewBag.ErrorMessage = $"Error retrieving transaction logs: {ex.Message}";
+                return View(); // Return an empty view or an error view
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

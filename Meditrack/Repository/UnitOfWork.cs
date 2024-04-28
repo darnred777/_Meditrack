@@ -1,6 +1,7 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
 using Meditrack.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Meditrack.Repository
 {
@@ -18,8 +19,7 @@ namespace Meditrack.Repository
         public IPurchaseOrderHeaderRepository PurchaseOrderHeader { get; private set; }
         public IPurchaseOrderDetailRepository PurchaseOrderDetail { get; private set; }
         public IStatusRepository Status { get; private set; }
-
-        public IRepository<TransactionLogs> TransactionLogs { get; private set; }
+        public ITransactionLogsRepository TransactionLogs { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -33,7 +33,7 @@ namespace Meditrack.Repository
             PurchaseOrderHeader = new PurchaseOrderHeaderRepository(_db);
             PurchaseOrderDetail = new PurchaseOrderDetailRepository(_db);
             Status = new StatusRepository(_db);
-            TransactionLogs = new Repository<TransactionLogs>(_db); // Initialize TransactionLogs property
+            TransactionLogs = new TransactionLogsRepository(_db);
         }
 
 

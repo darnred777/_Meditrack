@@ -15,7 +15,8 @@ namespace Meditrack.Repository.IRepository
         IPurchaseOrderHeaderRepository PurchaseOrderHeader { get; }
         IPurchaseOrderDetailRepository PurchaseOrderDetail { get; }
         IStatusRepository Status { get; }
-        IRepository<TransactionLogs> TransactionLogs { get; }
+        ITransactionLogsRepository TransactionLogs { get; }
+
         void Save();
     }
 }

@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Meditrack.Utility
-@model List<Meditrack.Models.TransactionLogs>
+@model List<TransactionLogs>
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -100,8 +100,8 @@
                                 <th>Transaction Type</th>
                                 <th>User ID</th>
                                 <th>Status ID</th>
-                                <th>Purchase Order ID</th>
-                                <th>Purchase Requisition ID</th>
+                                <th>PO Header ID</th>
+                                <th>PR Header ID</th>
                                 <th>Product ID</th>
                                 <th>Quantity</th>
                                 <th>Transaction Date</th>
@@ -113,13 +113,13 @@
                                 <tr>
                                     <td>@log.TransactionID</td>
                                     <td>@log.TransType</td>
-                                    <td>@log.Id</td>
+                                    <td>@log.ApplicationUserId</td>
                                     <td>@log.StatusID</td>
-                                    <td>@(log.POHdrID ?? 0)</td>
-                                    <td>@(log.PRHdrID ?? 0)</td>
-                                    <td>@(log.ProductID ?? 0)</td>
+                                    <td>@log.POHdrID</td>
+                                    <td>@log.PRHdrID</td>
+                                    <td>@log.ProductID</td>
                                     <td>@log.Quantity</td>
-                                    <td>@log.TransDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                    <td>@log.TransDate.ToString("yyyy-MM-dd")</td>
                                 </tr>
                             }
                         </tbody>
