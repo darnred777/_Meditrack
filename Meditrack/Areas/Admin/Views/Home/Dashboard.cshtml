@@ -67,7 +67,7 @@
                     </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" asp-area="Admin" asp-controller="Home" asp-action="Report">
-                        <i class="bi bi-bell"></i>
+                        <i class="bi bi-list-task"></i>
                         Reports
                     </a>
                 </li>
@@ -102,7 +102,7 @@
                         <div class="col-md-4">
                             <div class="card bg-primary text-white mb-3">
                                 <div class="card-body">
-                                    <h4 class="card-title">Total Pending Purchase Requisitions</h4>
+                                    <h4 class="card-title">Total Pending Purchase Requisitions Today</h4>
                                     <p class="card-text">Number of pending PRs: @ViewBag.TotalPendingPRs</p>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                         <div class="col-md-4">
                             <div class="card bg-success text-white mb-3">
                                 <div class="card-body">
-                                    <h4 class="card-title">Total Approved Purchase Requisitions</h4>
+                                    <h4 class="card-title">Total Approved Purchase Requisitions Today</h4>
                                     <p class="card-text">Number of approved PRs: @ViewBag.TotalApprovedPRs</p>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                         <div class="col-md-4">
                             <div class="card bg-danger text-white mb-3">
                                 <div class="card-body">
-                                    <h4 class="card-title">Total Cancelled Purchase Requisitions</h4>
+                                    <h4 class="card-title">Total Cancelled Purchase Requisitions Today</h4>
                                     <p class="card-text">Number of cancelled PRs: @ViewBag.TotalCancelledPRs</p>
                                 </div>
                             </div>

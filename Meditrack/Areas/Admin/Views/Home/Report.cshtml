@@ -81,52 +81,42 @@
         </div>
     </aside>
     <!-- Main Component -->
-    <div class="main">
-        <nav class="navbar navbar-expand px-3 border-bottom">
-            <!-- Button for sidebar toggle -->
-            <button class="btn" type="button" data-bs-theme="light">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-        <main class="content px-3 py-2">
-            <div class="container-fluid">
-                <div class="mb-3">
-                    <h3>Display Report</h3>
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Transaction ID</th>
-                                <th>Transaction Type</th>
-                                <th>User ID</th>
-                                <th>Status ID</th>
-                                <th>PO Header ID</th>
-                                <th>PR Header ID</th>
-                                <th>Product ID</th>
-                                <th>Quantity</th>
-                                <th>Transaction Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var log in Model)
-                            {
-                                <tr>
-                                    <td>@log.TransactionID</td>
-                                    <td>@log.TransType</td>
-                                    <td>@log.ApplicationUserId</td>
-                                    <td>@log.StatusID</td>
-                                    <td>@log.POHdrID</td>
-                                    <td>@log.PRHdrID</td>
-                                    <td>@log.ProductID</td>
-                                    <td>@log.Quantity</td>
-                                    <td>@log.TransDate.ToString("yyyy-MM-dd")</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-
+    <main class="content px-3 py-2">
+        <div class="container">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">Display Report</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <h2 class="text-primary">Transaction Reports</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-info text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Approved Purchase Requisitions Today</h4>
+                                    <p class="card-text">@ViewBag.TotalApprovedPRs</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-success text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Approved Purchase Requisitions This Month</h4>
+                                    <p class="card-text">@ViewBag.TotalApprovedPRsCurrentMonth</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </main>
+        </div>
+    </main>
+
+
+
     </div>
 </div>

@@ -1,6 +1,6 @@
 ﻿@model PRTransactionVM
 
-<p>Created by: @Model.CreatedByUserId</p>
+@* <p>Created by: @Model.CreatedByUserId</p> *@
 
 <div class="container">
     <h3 class="my-4">Purchase Requisition</h3>
@@ -67,7 +67,7 @@
         </div>
         <div class="row mt-4">           
             <div class="col-md-6">
-                <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PRDList" class="btn btn-outline-secondary">Back</a>
+                <a asp-area="Admin" asp-controller="PRTransaction" asp-action="PRDList" class="btn btn-outline-primary">Back</a>
             </div>
         </div>
     </form>

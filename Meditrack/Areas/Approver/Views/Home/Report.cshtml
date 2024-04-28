@@ -13,6 +13,12 @@
             </div>
             <!-- Sidebar Navigation -->
             <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="Approver" asp-controller="Home" asp-action="Dashboard">
+                        <i class="bi bi-grid"></i>
+                        Dashboard
+                    </a>
+                </li>
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="sidebar-item">
@@ -58,4 +64,38 @@
             </ul>
         </div>
     </aside>
+    <main class="content px-3 py-2">
+        <div class="container">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">Display Report</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <h2 class="text-primary">Transaction Reports</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-info text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Approved Purchase Requisitions Today</h4>
+                                    <p class="card-text">@ViewBag.TotalApprovedPRs</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-success text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Approved Purchase Requisitions This Month</h4>
+                                    <p class="card-text">@ViewBag.TotalApprovedPRsCurrentMonth</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>

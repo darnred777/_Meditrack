@@ -71,10 +71,33 @@ namespace Meditrack.Areas.Approver.Controllers
         public IActionResult PRTransaction()
         {
             return View();
-        }   
+        }
 
         public IActionResult Report()
         {
+            // Your code snippet here to calculate total approved PRs and monthly counts
+            var approvedPRs = _unitOfWork.PurchaseRequisitionHeader
+                .GetAll(includeProperties: "Status")
+                .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Approved);
+
+            DateTime currentDate = DateTime.Today;
+            DateTime firstDayOfNextMonth = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(1);
+
+            var approvedPRsCurrentMonth = approvedPRs
+                .Where(pr => pr.PRDate >= currentDate && pr.PRDate < firstDayOfNextMonth);
+
+            var approvedPRsNextMonth = approvedPRs
+                .Where(pr => pr.PRDate >= firstDayOfNextMonth);
+
+            int totalApprovedPRs = approvedPRs?.Count() ?? 0;
+            int totalApprovedPRsCurrentMonth = approvedPRsCurrentMonth?.Count() ?? 0;
+            int totalApprovedPRsNextMonth = approvedPRsNextMonth?.Count() ?? 0;
+
+            ViewBag.TotalApprovedPRs = totalApprovedPRs;
+            ViewBag.TotalApprovedPRsCurrentMonth = totalApprovedPRsCurrentMonth;
+            ViewBag.TotalApprovedPRsNextMonth = totalApprovedPRsNextMonth;
+
+            // Render the view and pass the data to the view
             return View();
         }
 

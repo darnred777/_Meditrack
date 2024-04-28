@@ -84,19 +84,49 @@ namespace Meditrack.Areas.Admin.Controllers
         [Authorize(Roles = StaticDetails.Role_Admin)]
         public IActionResult Report()
         {
-            try
-            {
-                var transactionLogs = _unitOfWork.TransactionLogs.GetAll().ToList();
-                return View(transactionLogs);
-            }
-            catch (Exception ex)
-            {
-                // Log or handle the exception appropriately
-                // For debugging purposes, you can inspect the exception message
-                ViewBag.ErrorMessage = $"Error retrieving transaction logs: {ex.Message}";
-                return View(); // Return an empty view or an error view
-            }
+            // Your code snippet here to calculate total approved PRs and monthly counts
+            var approvedPRs = _unitOfWork.PurchaseRequisitionHeader
+                .GetAll(includeProperties: "Status")
+                .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Approved);
+
+            DateTime currentDate = DateTime.Today;
+            DateTime firstDayOfNextMonth = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(1);
+
+            var approvedPRsCurrentMonth = approvedPRs
+                .Where(pr => pr.PRDate >= currentDate && pr.PRDate < firstDayOfNextMonth);
+
+            var approvedPRsNextMonth = approvedPRs
+                .Where(pr => pr.PRDate >= firstDayOfNextMonth);
+
+            int totalApprovedPRs = approvedPRs?.Count() ?? 0;
+            int totalApprovedPRsCurrentMonth = approvedPRsCurrentMonth?.Count() ?? 0;
+            int totalApprovedPRsNextMonth = approvedPRsNextMonth?.Count() ?? 0;
+
+            ViewBag.TotalApprovedPRs = totalApprovedPRs;
+            ViewBag.TotalApprovedPRsCurrentMonth = totalApprovedPRsCurrentMonth;
+            ViewBag.TotalApprovedPRsNextMonth = totalApprovedPRsNextMonth;
+
+            // Render the view and pass the data to the view
+            return View();
         }
+
+
+
+        //public IActionResult Report()
+        //{
+        //    try
+        //    {
+        //        var transactionLogs = _unitOfWork.TransactionLogs.GetAll().ToList();
+        //        return View(transactionLogs);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log or handle the exception appropriately
+        //        // For debugging purposes, you can inspect the exception message
+        //        ViewBag.ErrorMessage = $"Error retrieving transaction logs: {ex.Message}";
+        //        return View(); // Return an empty view or an error view
+        //    }
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

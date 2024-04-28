@@ -19,7 +19,6 @@
                     <th>Expiration Date</th>
                     <th>LastUnit Price Updated</th>
                     <th>Last Quantity In Stock Updated</th>
-                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,10 +34,9 @@
                         <td>@String.Format("{0:N2}", obj.UnitPrice)</td>
                         <td>@obj.UnitOfMeasurement</td>
                         <td>@obj.QuantityInStock</td>
-                        <td>@obj.ExpirationDate</td>
-                        <td>@obj.LastUnitPriceUpdated</td>
-                        <td>@obj.LastQuantityInStockUpdated</td>
-                        <td>@(obj.isActive ? "Active" : "Inactive")</td>
+                        <td>@obj.ExpirationDate.ToString("yyyy-MM-dd")</td>
+                        <td>@obj.LastUnitPriceUpdated.ToString("yyyy-MM-dd")</td>
+                        <td>@obj.LastQuantityInStockUpdated.ToString("yyyy-MM-dd")</td>
                     </tr>
                 }
             </tbody>
