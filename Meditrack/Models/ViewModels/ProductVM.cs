@@ -11,5 +11,7 @@ namespace Meditrack.Models.ViewModels
         public IEnumerable<SelectListItem> ProductCategoryList { get; set; }
 
         public int QuantityChange { get; set; }
+
+        public bool IsNewProduct { get; set; }
     }
 }

@@ -45,6 +45,8 @@ namespace Meditrack.Models
         public int QuantityInStock { get; set; }
 
         [Required]
+        [DataType(DataType.Date, ErrorMessage = "Date is required")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/dd/MM}", ApplyFormatInEditMode = true)]
         public DateOnly ExpirationDate { get; set; }
 
         [Required]

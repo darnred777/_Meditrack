@@ -65,9 +65,18 @@ namespace Meditrack.Areas.Admin.Controllers
                 if (isNewProduct)
                 {
                     // Adding a new product
-                    int quantityChange = productVM.QuantityChange; // Retrieve quantity change from model
+                    if (operation != "Deposit")
+                    {                      
+                        TempData["AddingProdErrorMessage"] = "Invalid operation for adding a new product.";
+                        // Return the view with validation errors
+                        productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
+                        {
+                            Text = u.CategoryName,
+                            Value = u.CategoryID.ToString()
+                        });
+                        return View(productVM);
+                    }
 
-                    // Create a new product instance
                     var newProduct = new Product
                     {
                         CategoryID = productVM.Product.CategoryID,
@@ -77,11 +86,10 @@ namespace Meditrack.Areas.Admin.Controllers
                         ProductDescription = productVM.Product.ProductDescription,
                         UnitPrice = productVM.Product.UnitPrice,
                         UnitOfMeasurement = productVM.Product.UnitOfMeasurement,
-                        QuantityInStock = quantityChange, // Set initial stock quantity
+                        QuantityInStock = productVM.QuantityChange, // Set initial stock quantity based on deposit
                         ExpirationDate = productVM.Product.ExpirationDate,
                         LastUnitPriceUpdated = productVM.Product.LastUnitPriceUpdated,
                         LastQuantityInStockUpdated = productVM.Product.LastQuantityInStockUpdated
-
                         // Set other properties as needed
                     };
 
@@ -97,24 +105,13 @@ namespace Meditrack.Areas.Admin.Controllers
 
                     if (existingProduct != null)
                     {
-                        int quantityChange = productVM.QuantityChange; // Retrieve quantity change from model
-
-                        if (operation == "Deposit")
+                        if (operation == "Withdraw")
                         {
-                            // Deposit stock: increase the QuantityInStock
-                            existingProduct.QuantityInStock += quantityChange;
-                        }
-                        else if (operation == "Withdraw")
-                        {
-                            // Withdraw stock: decrease the QuantityInStock (if sufficient quantity available)
-                            if (existingProduct.QuantityInStock >= quantityChange)
+                            if (existingProduct.QuantityInStock < productVM.QuantityChange)
                             {
-                                existingProduct.QuantityInStock -= quantityChange;
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Insufficient quantity available for withdrawal.");
-                                // Return the view with validation errors
+                                TempData["UpdateProdErrorMessage"] = "Insufficient quantity available for withdrawal.";
+                                // Return the current view with validation errors
+                                productVM.Product = existingProduct; // Preserve the original product data
                                 productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
                                 {
                                     Text = u.CategoryName,
@@ -122,16 +119,32 @@ namespace Meditrack.Areas.Admin.Controllers
                                 });
                                 return View(productVM);
                             }
+
+                            existingProduct.QuantityInStock -= productVM.QuantityChange;
+                        }
+                        else if (operation == "Deposit")
+                        {
+                            existingProduct.QuantityInStock += productVM.QuantityChange;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Invalid operation.");
+                            // Return the view with validation errors
+                            productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
+                            {
+                                Text = u.CategoryName,
+                                Value = u.CategoryID.ToString()
+                            });
+                            return View(productVM);
                         }
 
-                        // Update other product details
+                        // Update existing product details
                         existingProduct.ProductName = productVM.Product.ProductName;
                         existingProduct.UnitPrice = productVM.Product.UnitPrice;
                         existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
                         existingProduct.ExpirationDate = productVM.Product.ExpirationDate;
                         existingProduct.LastUnitPriceUpdated = productVM.Product.LastUnitPriceUpdated;
                         existingProduct.LastQuantityInStockUpdated = productVM.Product.LastQuantityInStockUpdated;
-                        // Update other properties as needed
 
                         _unitOfWork.Product.Update(existingProduct);
                         _unitOfWork.Save();
@@ -144,7 +157,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 }
             }
 
-            // If model state is invalid or product not found, return to the view with validation errors
+            // If model state is invalid or product not found, return to the current view with validation errors
             productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
             {
                 Text = u.CategoryName,
@@ -153,6 +166,7 @@ namespace Meditrack.Areas.Admin.Controllers
             return View(productVM);
         }
 
+        //TempData["ErrorMessage"] = "Insufficient quantity available for withdrawal.";
         private void UpdatePRDetailsAndPODetails(Product existingProduct)
         {
             // Update PRDetails associated with the existing product
