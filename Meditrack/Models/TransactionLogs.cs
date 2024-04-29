@@ -9,9 +9,8 @@ namespace Meditrack.Models
         [Key]
         public int TransactionID { get; set; }
 
-        [Required]
         [StringLength(5)]
-        public required string TransType { get; set; }
+        public string? TransType { get; set; }
 
         [ValidateNever]
         [ForeignKey("ApplicationUser")]
