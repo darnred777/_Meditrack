@@ -98,7 +98,7 @@
                 <div class="mb-3">
                     <h3>Dashboard</h3>
 
-                    @Html.Partial("_LowStockNotification", ViewBag.LowStockProducts as IEnumerable<Product>)
+                    <partial name="_LowStockNotification" model="ViewBag.LowStockProducts" />
 
                     <div class="row mt-4">
                         <div class="col-md-4">
