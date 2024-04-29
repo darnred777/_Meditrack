@@ -354,6 +354,24 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 _unitOfWork.PurchaseRequisitionHeader.Update(viewModel.PurchaseRequisitionHeader);
                 _unitOfWork.Save();
 
+                // Create transaction log entries for each product in the PR
+                foreach (var detail in viewModel.PurchaseRequisitionHeader.PurchaseRequisitionDetail)
+                {
+                    var transactionLog = new TransactionLogs
+                    {
+                        ApplicationUserId = viewModel.PurchaseRequisitionHeader.ApplicationUserId,
+                        StatusID = viewModel.PurchaseRequisitionHeader.StatusID,
+                        PRHdrID = viewModel.PurchaseRequisitionHeader.PRHdrID,
+                        ProductID = detail.ProductID,
+                        Quantity = detail.QuantityInOrder,
+                        TransDate = viewModel.PurchaseRequisitionHeader.PRDate
+                    };
+
+                    _unitOfWork.TransactionLogs.Add(transactionLog);
+                }
+
+                _unitOfWork.Save();
+
                 TempData["CreatePRSuccess"] = "Purchase Requisition created successfully!";
                 return RedirectToAction("PRDList", "PRTransaction");
             }

@@ -1,5 +1,6 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Models.ViewModels;
 using Meditrack.Repository.IRepository;
 using Meditrack.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -128,62 +129,26 @@ namespace Meditrack.Areas.Admin.Controllers
 
         public IActionResult TransactionLogs()
         {
+            // Retrieve transaction logs data from the database
+            var transactionLogs = _unitOfWork.TransactionLogs.GetAll(includeProperties: "ApplicationUser,Status,Product");
 
-            return View();
-            //try
-            //{
-            //    // Retrieve all purchase requisition headers with related details and status
-            //    var purchaseRequisitionHeaders = _unitOfWork.PurchaseRequisitionHeader
-            //        .GetAll(includeProperties: "PurchaseRequisitionDetail,Status");
+            // Map transaction logs data to view model
+            var viewModelList = transactionLogs.Select(t => new TransactionLogsVM
+            {
+                TransactionID = t.TransactionID,
+                TransType = "Purchase Requisition",
+                ApplicationUserId = t.ApplicationUserId,
+                ApplicationUserEmail = t.ApplicationUser.Email,
+                StatusDescription = t.Status.StatusDescription,
+                ProductName = t.Product.ProductName,
+                Quantity = (int)t.Quantity,
+                TransDate = t.TransDate
+            }).ToList();
 
-            //    foreach (var prHeader in purchaseRequisitionHeaders)
-            //    {
-            //        foreach (var prDetail in prHeader.PurchaseRequisitionDetail)
-            //        {
-            //            // Check if a transaction log already exists for the current prDetail
-            //            var existingTransactionLog = _unitOfWork.TransactionLogs.GetFirstOrDefault(
-            //                t => t.PRHdrID == prHeader.PRHdrID &&
-            //                     t.ProductID == prDetail.ProductID);
-
-            //            if (existingTransactionLog == null)
-            //            {
-            //                // Ensure that the Status property is accessible from prHeader
-            //                var productStatus = prHeader.Status;
-
-            //                // Create a new TransactionLogs entry based on the PR detail
-            //                var transactionLog = new TransactionLogs
-            //                {
-            //                    TransType = "test", // Set the transaction type accordingly
-            //                    ApplicationUserId = prHeader.ApplicationUserId,
-            //                    StatusID = productStatus?.StatusID, // Use the correct property from Status
-            //                    POHdrID = null, // Set to null if there's no related PO header
-            //                    PRHdrID = prHeader.PRHdrID,
-            //                    ProductID = prDetail.ProductID,
-            //                    Quantity = prDetail.QuantityInOrder,
-            //                    TransDate = DateTime.Now // Set the transaction date
-            //                };
-
-            //                // Add the new transaction log to the database
-            //                _unitOfWork.TransactionLogs.Add(transactionLog);
-            //            }
-            //        }
-            //    }
-
-            //    // Save changes to persist the transaction logs in the database
-            //    _unitOfWork.Save();
-
-            //    // Redirect to the TransactionLogs view upon successful creation of transaction logs
-            //    return RedirectToAction("TransactionLogs"); // Adjust the controller name as needed
-            //}
-            //catch (Exception ex)
-            //{
-            //    // Log the detailed exception message
-            //    Console.WriteLine($"Exception: {ex}");
-
-            //    return Json(new { success = false, message = $"Failed to create transaction logs: {ex.Message}" });
-            //}
+            return View(viewModelList);
         }
-  
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -1,5 +1,6 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
+using Meditrack.Models.ViewModels;
 using Meditrack.Repository.IRepository;
 using Meditrack.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -115,6 +116,27 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 ViewBag.ErrorMessage = "An error occurred while generating the report.";
                 return View();
             }
+        }
+
+        public IActionResult TransactionLogs()
+        {
+            // Retrieve transaction logs data from the database
+            var transactionLogs = _unitOfWork.TransactionLogs.GetAll(includeProperties: "ApplicationUser,Status,Product");
+
+            // Map transaction logs data to view model
+            var viewModelList = transactionLogs.Select(t => new TransactionLogsVM
+            {
+                TransactionID = t.TransactionID,
+                TransType = "Purchase Requisition",
+                ApplicationUserId = t.ApplicationUserId,
+                ApplicationUserEmail = t.ApplicationUser.Email,
+                StatusDescription = t.Status.StatusDescription,
+                ProductName = t.Product.ProductName,
+                Quantity = (int)t.Quantity,
+                TransDate = t.TransDate
+            }).ToList();
+
+            return View(viewModelList);
         }
 
 
