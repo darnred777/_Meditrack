@@ -126,24 +126,64 @@ namespace Meditrack.Areas.Admin.Controllers
             }
         }
 
+        public IActionResult TransactionLogs()
+        {
 
+            return View();
+            //try
+            //{
+            //    // Retrieve all purchase requisition headers with related details and status
+            //    var purchaseRequisitionHeaders = _unitOfWork.PurchaseRequisitionHeader
+            //        .GetAll(includeProperties: "PurchaseRequisitionDetail,Status");
 
+            //    foreach (var prHeader in purchaseRequisitionHeaders)
+            //    {
+            //        foreach (var prDetail in prHeader.PurchaseRequisitionDetail)
+            //        {
+            //            // Check if a transaction log already exists for the current prDetail
+            //            var existingTransactionLog = _unitOfWork.TransactionLogs.GetFirstOrDefault(
+            //                t => t.PRHdrID == prHeader.PRHdrID &&
+            //                     t.ProductID == prDetail.ProductID);
 
-        //public IActionResult Report()
-        //{
-        //    try
-        //    {
-        //        var transactionLogs = _unitOfWork.TransactionLogs.GetAll().ToList();
-        //        return View(transactionLogs);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log or handle the exception appropriately
-        //        // For debugging purposes, you can inspect the exception message
-        //        ViewBag.ErrorMessage = $"Error retrieving transaction logs: {ex.Message}";
-        //        return View(); // Return an empty view or an error view
-        //    }
-        //}
+            //            if (existingTransactionLog == null)
+            //            {
+            //                // Ensure that the Status property is accessible from prHeader
+            //                var productStatus = prHeader.Status;
+
+            //                // Create a new TransactionLogs entry based on the PR detail
+            //                var transactionLog = new TransactionLogs
+            //                {
+            //                    TransType = "test", // Set the transaction type accordingly
+            //                    ApplicationUserId = prHeader.ApplicationUserId,
+            //                    StatusID = productStatus?.StatusID, // Use the correct property from Status
+            //                    POHdrID = null, // Set to null if there's no related PO header
+            //                    PRHdrID = prHeader.PRHdrID,
+            //                    ProductID = prDetail.ProductID,
+            //                    Quantity = prDetail.QuantityInOrder,
+            //                    TransDate = DateTime.Now // Set the transaction date
+            //                };
+
+            //                // Add the new transaction log to the database
+            //                _unitOfWork.TransactionLogs.Add(transactionLog);
+            //            }
+            //        }
+            //    }
+
+            //    // Save changes to persist the transaction logs in the database
+            //    _unitOfWork.Save();
+
+            //    // Redirect to the TransactionLogs view upon successful creation of transaction logs
+            //    return RedirectToAction("TransactionLogs"); // Adjust the controller name as needed
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Log the detailed exception message
+            //    Console.WriteLine($"Exception: {ex}");
+
+            //    return Json(new { success = false, message = $"Failed to create transaction logs: {ex.Message}" });
+            //}
+        }
+  
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
