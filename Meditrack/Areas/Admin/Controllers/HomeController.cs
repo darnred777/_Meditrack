@@ -84,31 +84,48 @@ namespace Meditrack.Areas.Admin.Controllers
         [Authorize(Roles = StaticDetails.Role_Admin)]
         public IActionResult Report()
         {
-            // Your code snippet here to calculate total approved PRs and monthly counts
-            var approvedPRs = _unitOfWork.PurchaseRequisitionHeader
-                .GetAll(includeProperties: "Status")
-                .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Approved);
+            try
+            {
+                var approvedPRs = _unitOfWork.PurchaseRequisitionHeader
+                    .GetAll(includeProperties: "Status")
+                    .Where(pr => pr.Status != null && pr.Status.StatusDescription == StaticDetails.Status_Approved);
 
-            DateTime currentDate = DateTime.Today;
-            DateTime firstDayOfNextMonth = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(1);
+                DateTime currentDate = DateTime.Today;
+                DateTime firstDayOfCurrentMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
+                DateTime firstDayOfNextMonth = firstDayOfCurrentMonth.AddMonths(1);
 
-            var approvedPRsCurrentMonth = approvedPRs
-                .Where(pr => pr.PRDate >= currentDate && pr.PRDate < firstDayOfNextMonth);
+                var approvedPRsCurrentMonth = approvedPRs
+                    .Where(pr => pr.PRDate >= firstDayOfCurrentMonth && pr.PRDate < firstDayOfNextMonth)
+                    .ToList(); // Execute query and fetch results to debug
 
-            var approvedPRsNextMonth = approvedPRs
-                .Where(pr => pr.PRDate >= firstDayOfNextMonth);
+                var approvedPRsNextMonth = approvedPRs
+                    .Where(pr => pr.PRDate >= firstDayOfNextMonth)
+                    .ToList(); // Execute query and fetch results to debug
 
-            int totalApprovedPRs = approvedPRs?.Count() ?? 0;
-            int totalApprovedPRsCurrentMonth = approvedPRsCurrentMonth?.Count() ?? 0;
-            int totalApprovedPRsNextMonth = approvedPRsNextMonth?.Count() ?? 0;
+                int totalApprovedPRs = approvedPRs?.Count() ?? 0;
+                int totalApprovedPRsCurrentMonth = approvedPRsCurrentMonth?.Count() ?? 0;
+                int totalApprovedPRsNextMonth = approvedPRsNextMonth?.Count() ?? 0;
 
-            ViewBag.TotalApprovedPRs = totalApprovedPRs;
-            ViewBag.TotalApprovedPRsCurrentMonth = totalApprovedPRsCurrentMonth;
-            ViewBag.TotalApprovedPRsNextMonth = totalApprovedPRsNextMonth;
+                // Log the counts for debugging
+                Console.WriteLine($"Total Approved PRs: {totalApprovedPRs}");
+                Console.WriteLine($"Total Approved PRs Current Month: {totalApprovedPRsCurrentMonth}");
+                Console.WriteLine($"Total Approved PRs Next Month: {totalApprovedPRsNextMonth}");
 
-            // Render the view and pass the data to the view
-            return View();
+                ViewBag.TotalApprovedPRs = totalApprovedPRs;
+                ViewBag.TotalApprovedPRsCurrentMonth = totalApprovedPRsCurrentMonth;
+                ViewBag.TotalApprovedPRsNextMonth = totalApprovedPRsNextMonth;
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions gracefully
+                Console.WriteLine($"Error in Report action: {ex.Message}");
+                ViewBag.ErrorMessage = "An error occurred while generating the report.";
+                return View();
+            }
         }
+
 
 
 
