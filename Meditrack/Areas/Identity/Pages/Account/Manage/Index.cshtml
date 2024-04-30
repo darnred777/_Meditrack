@@ -21,7 +21,7 @@
             @if (User.IsInRole(StaticDetails.Role_Admin))
             {
             <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
+                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." disabled/>
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
@@ -36,7 +36,7 @@
             }
             @if (User.IsInRole(StaticDetails.Role_Admin))
             {
-                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary" hidden>Save</button>
             }
         </form>
     </div>

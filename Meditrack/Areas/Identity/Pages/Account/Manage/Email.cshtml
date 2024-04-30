@@ -6,7 +6,7 @@
 @{
     @if (User.IsInRole(StaticDetails.Role_Admin))
     {
-        ViewData["Title"] = "Manage Email";
+        ViewData["Title"] = "Email";
     }
     @if (User.IsInRole(StaticDetails.Role_Viewer) ||
          User.IsInRole(StaticDetails.Role_InventoryOfficer) ||
@@ -46,14 +46,14 @@
             @if (User.IsInRole(StaticDetails.Role_Admin))
             {
                 <div class="form-floating mb-3">
-                    <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
-                    <label asp-for="Input.NewEmail" class="form-label"></label>
+                    <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." hidden />
+                    <label asp-for="Input.NewEmail" class="form-label" hidden></label>
                     <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
                 </div>
             }
             @if (User.IsInRole(StaticDetails.Role_Admin))
             {
-                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">Change email</button>
+                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary" hidden>Change email</button>
             }          
         </form>
     </div>

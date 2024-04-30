@@ -11,7 +11,7 @@
     @if (User.IsInRole(StaticDetails.Role_Admin))
     {
         <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)
-            " id="change-password" asp-page="./ChangePassword">Password</a></li>
+            " id="change-password" asp-page="./ChangePassword" hidden>Password</a></li>
         @if (hasExternalLogins)
         {
             <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)
