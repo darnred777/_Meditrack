@@ -13,8 +13,8 @@
         <tr>
             <th>Transaction ID</th>
             <th>Transaction Type</th>
-            <th>User Email</th>
-            <th>Status</th>
+            <th>Created By</th>
+            @* <th>Status</th> *@
             <th>Product Name</th>
             <th>Quantity</th>
             <th>Transaction Date</th>
@@ -27,7 +27,7 @@
                 <td>@log.TransactionID</td>
                 <td>@log.TransType</td>
                 <td>@log.ApplicationUserEmail</td>
-                <td>@log.StatusDescription</td>
+                @* <td>@log.StatusDescription</td> *@
                 <td>@log.ProductName</td>
                 <td>@log.Quantity</td>
                 <td>@log.TransDate.ToString("yyyy-MM-dd")</td>
