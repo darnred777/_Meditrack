@@ -13,18 +13,19 @@
 }
 @if (User.IsInRole(StaticDetails.Role_Admin))
     {
-        <h1>Manage your account</h1>
+    <h1 hidden>Manage your account</h1>
     }
 @if (User.IsInRole(StaticDetails.Role_InventoryOfficer) ||
    User.IsInRole(StaticDetails.Role_Approver) ||
-   User.IsInRole(StaticDetails.Role_Viewer))
+   User.IsInRole(StaticDetails.Role_Viewer) ||
+   User.IsInRole(StaticDetails.Role_Admin))
     {
         <h1>Account Details</h1>
     }
 <div>
     @if (User.IsInRole(StaticDetails.Role_Admin))
     {
-        <h2>Change your account settings</h2>
+        <h2 hidden>Change your account settings</h2>
     }
     <hr />
     <div class="row">
