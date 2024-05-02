@@ -9,8 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
+using System.Text;
 
 namespace Meditrack.Areas.InventoryOfficer.Controllers
 {
@@ -27,8 +28,8 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public PRTransactionController(IUnitOfWork unitOfWork, IPurchaseOrderService purchaseOrderService, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager,
-            ISupplierRepository supplierRepository, ILocationRepository locationRepository)
+        public PRTransactionController(IUnitOfWork unitOfWork, IPurchaseOrderService purchaseOrderService, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager, ISupplierRepository supplierRepository,
+            ILocationRepository locationRepository)
         {
             _unitOfWork = unitOfWork;
             _purchaseOrderService = purchaseOrderService;
@@ -119,7 +120,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             string body = $@"
         <h2>Purchase Order Details</h2>
         <p><strong>Sender:</strong> {purchaseOrderHeader.ApplicationUser.Email}</p>
-        <p><strong>Sender Location:</strong> {purchaseOrderHeader.ApplicationUser.Location.LocationAddress}</p>       
+        <p><strong>Sender Location:</strong> {purchaseOrderHeader.ApplicationUser.Location.LocationAddress}</p>
         <p><strong>Supplier:</strong> {purchaseOrderHeader.Supplier.SupplierName}</p>
         <p><strong>Supplier Location:</strong> {purchaseOrderHeader.Location.LocationAddress}</p>
         <p><strong>Status:</strong> {purchaseOrderHeader.Status.StatusDescription}</p>
@@ -201,6 +202,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 LocationAddress = supplier.Location.LocationAddress,
             });
         }
+
 
         [HttpGet]
         public IActionResult GetUnitPrice(int productId)
@@ -393,7 +395,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             viewModel.SupplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
             {
                 Value = s.SupplierID.ToString(),
-                Text = $"{s.SupplierName} - {s.Location.LocationAddress}" // Concatenate SupplierName and LocationAddress
+                Text = $"{s.SupplierName} - {s.Location.LocationAddress}"
             }).ToList();
 
             viewModel.LocationList = _unitOfWork.Location.GetAll().Select(l => new SelectListItem
@@ -508,6 +510,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 return NotFound();
             }
 
+            // Check if the Purchase Requisition has been cancelled
             if (existingHeader.Status.StatusDescription == StaticDetails.Status_Cancelled)
             {
                 // If the Purchase Requisition is already cancelled, prevent the edit operation
@@ -562,8 +565,9 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 _unitOfWork.PurchaseRequisitionHeader.Update(existingHeader);
                 _unitOfWork.Save();
 
-                TempData["SuccessMessage"] = "Purchase Requisition updated successfully.";
+                TempData["PRSuccessMessage"] = "Purchase Requisition updated successfully.";
                 return RedirectToAction("PRDList", "PRTransaction");
+
             }
             else
             {
@@ -593,38 +597,6 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 Value = p.ProductID.ToString(),
                 Text = p.ProductName
             }).ToList();
-        }
-
-
-        //View the Purchase Requisition Details for Approval
-        public IActionResult ViewPRDetails(int prdId)
-        {
-            // Fetch the PRDetail based on PRDtlID
-            var purchaseRequisitionDetail = _unitOfWork.PurchaseRequisitionDetail.Get(u => u.PRDtlID == prdId, includeProperties: "Product");
-
-            if (purchaseRequisitionDetail == null)
-            {
-                // Handle the case where PRDetail is not found
-                return NotFound();
-            }
-
-            // Fetch the corresponding PRHeader based on PRHdrID in the PRDetail
-            var purchaseRequisitionHeader = _unitOfWork.PurchaseRequisitionHeader.Get(u => u.PRHdrID == purchaseRequisitionDetail.PRHdrID, includeProperties: "Supplier,Location,Status");
-
-            if (purchaseRequisitionHeader == null)
-            {
-                // Handle the case where PRHeader is not found
-                return NotFound();
-            }
-
-            // Create a view model to hold both PRHeader and PRDetail
-            var prTransactionVM = new PRTransactionVM
-            {
-                PurchaseRequisitionHeader = purchaseRequisitionHeader,
-                PurchaseRequisitionDetail = purchaseRequisitionDetail
-            };
-
-            return View(prTransactionVM);
         }
 
         //Adding PR Details
@@ -697,7 +669,6 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         #region API CALLS             
 
         //Retrieving the PR Headers and PR Details
-        //Retrieving the PR Headers and PR Details
         [HttpGet]
         public IActionResult GetAllPRDetails()
         {
@@ -722,6 +693,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                     ApplicationUserEmail = detail.PurchaseRequisitionHeader.ApplicationUser.Email,
                     ApplicationUserFname = detail.PurchaseRequisitionHeader.ApplicationUser.FirstName,
                     ApplicationUserLname = detail.PurchaseRequisitionHeader.ApplicationUser.LastName
+
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,
@@ -772,6 +744,75 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             return Json(new { data = detailsWithStatus });
         }
 
+        //[HttpGet]
+        //public IActionResult GetAllTransactionLogs()
+        //{         
+        //    // Fetch all PurchaseRequisitionHeaders including related entities
+        //    var headers = _unitOfWork.PurchaseRequisitionHeader.GetAll(includeProperties: "Status,ApplicationUser");
+
+        //    // Fetch all PurchaseRequisitionDetails including related entities
+        //    var details = _unitOfWork.PurchaseRequisitionDetail.GetAll(includeProperties: "Product,PurchaseRequisitionHeader");
+
+        //    // Project the details and headers into an anonymous type
+        //    var detailsWithStatus = details.Select(detail => new
+        //    {
+        //        detail.PRDtlID,
+        //        detail.PRHdrID,
+        //        PurchaseRequisitionHeader = new
+        //        {
+        //            detail.PurchaseRequisitionHeader.Supplier.SupplierName,
+        //            detail.PurchaseRequisitionHeader.Location.LocationAddress,
+        //            detail.PurchaseRequisitionHeader.Status.StatusDescription,
+        //            detail.PurchaseRequisitionHeader.TotalAmount,
+        //            detail.PurchaseRequisitionHeader.PRDate,
+        //            ApplicationUserEmail = detail.PurchaseRequisitionHeader.ApplicationUser?.Email // Use ?. to handle null ApplicationUser
+        //        },
+        //        detail.Product.ProductName,
+        //        detail.UnitPrice,
+        //        detail.UnitOfMeasurement,
+        //        detail.QuantityInOrder,
+        //        detail.Subtotal,
+        //    });
+
+        //    // Return the result as JSON
+        //    return Json(new { data = detailsWithStatus });
+        //}
+
+
         #endregion
     }
 }
+
+
+//[HttpPost]
+//public IActionResult SendPurchaseOrderEmail()
+//{
+//    try
+//    {
+//        // Your code to send the email
+//        string fromMail = "darnred7@gmail.com";
+//        string fromPassword = "gdrugqgfnryhgnnu";
+
+//        MailMessage message = new MailMessage();
+//        message.From = new MailAddress(fromMail);
+//        message.Subject = "Test";
+//        message.To.Add(new MailAddress("flores.klarke@gmail.com"));
+//        message.Body = "<html><body> Test </html></body>";
+//        message.IsBodyHtml = true;
+
+//        var smtpClient = new SmtpClient("smtp.gmail.com")
+//        {
+//            Port = 587,
+//            Credentials = new NetworkCredential(fromMail, fromPassword),
+//            EnableSsl = true,
+//        };
+
+//        smtpClient.Send(message);
+
+//        return Json(new { success = true, message = "Email sent successfully." });
+//    }
+//    catch (Exception ex)
+//    {
+//        return Json(new { success = false, message = $"Failed to send email: {ex.Message}" });
+//    }
+//}
