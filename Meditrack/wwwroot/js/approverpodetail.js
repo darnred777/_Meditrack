@@ -30,7 +30,7 @@ function loadDataTable(status) {
                     const day = String(date.getDate()).padStart(2, '0');
 
                     // Construct the formatted date string in yyyy/mm/dd format
-                    const formattedDate = `${year}/${month}/${day}`;
+                    const formattedDate = `${year}-${month}-${day}`;
 
                     return formattedDate;
                 },
