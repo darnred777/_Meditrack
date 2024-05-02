@@ -8,7 +8,13 @@ function loadDataTable(status) {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/viewer/prtransaction/getallpodetails?status=' +status },
         "columns": [
-            { data: 'purchaseOrderHeader.applicationUserEmail', "width": "5%" },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return row.purchaseOrderHeader.applicationUserFname + ' ' + row.purchaseOrderHeader.applicationUserLname;
+                },
+                width: "20%"
+            },
             { data: 'purchaseOrderHeader.supplierName', "width": "10%" },
             { data: 'purchaseOrderHeader.locationAddress', "width": "10%" },
             { data: 'purchaseOrderHeader.statusDescription', "width": "10%" },

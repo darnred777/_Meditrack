@@ -719,7 +719,9 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                     detail.PurchaseRequisitionHeader.Status.StatusDescription,
                     detail.PurchaseRequisitionHeader.TotalAmount,
                     detail.PurchaseRequisitionHeader.PRDate,
-                    ApplicationUserEmail = detail.PurchaseRequisitionHeader.ApplicationUser.Email
+                    ApplicationUserEmail = detail.PurchaseRequisitionHeader.ApplicationUser.Email,
+                    ApplicationUserFname = detail.PurchaseRequisitionHeader.ApplicationUser.FirstName,
+                    ApplicationUserLname = detail.PurchaseRequisitionHeader.ApplicationUser.LastName
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,
@@ -755,7 +757,9 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                     detail.PurchaseOrderHeader.Status.StatusDescription,
                     detail.PurchaseOrderHeader.TotalAmount,
                     detail.PurchaseOrderHeader.PODate,
-                    ApplicationUserEmail = detail.PurchaseOrderHeader.ApplicationUser.Email
+                    ApplicationUserEmail = detail.PurchaseOrderHeader.ApplicationUser.Email,
+                    ApplicationUserFname = detail.PurchaseOrderHeader.ApplicationUser.FirstName,
+                    ApplicationUserLname = detail.PurchaseOrderHeader.ApplicationUser.LastName
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,

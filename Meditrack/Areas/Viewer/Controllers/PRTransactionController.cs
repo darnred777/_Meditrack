@@ -55,7 +55,9 @@ namespace Meditrack.Areas.Viewer.Controllers
                     detail.PurchaseOrderHeader.Status.StatusDescription,
                     detail.PurchaseOrderHeader.TotalAmount,
                     detail.PurchaseOrderHeader.PODate,
-                    ApplicationUserEmail = detail.PurchaseOrderHeader.ApplicationUser.Email
+                    ApplicationUserEmail = detail.PurchaseOrderHeader.ApplicationUser.Email,
+                    ApplicationUserFname = detail.PurchaseOrderHeader.ApplicationUser.FirstName,
+                    ApplicationUserLname = detail.PurchaseOrderHeader.ApplicationUser.LastName
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,

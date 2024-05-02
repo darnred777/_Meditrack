@@ -395,7 +395,7 @@ namespace Meditrack.Areas.Admin.Controllers
             viewModel.SupplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
             {
                 Value = s.SupplierID.ToString(),
-                Text = $"{s.SupplierName} - {s.Location.LocationAddress}" // Concatenate SupplierName and LocationAddress
+                Text = $"{s.SupplierName} - {s.Location.LocationAddress}"
             }).ToList();
 
             viewModel.LocationList = _unitOfWork.Location.GetAll().Select(l => new SelectListItem
@@ -690,7 +690,10 @@ namespace Meditrack.Areas.Admin.Controllers
                     detail.PurchaseRequisitionHeader.Status.StatusDescription,
                     detail.PurchaseRequisitionHeader.TotalAmount,
                     detail.PurchaseRequisitionHeader.PRDate,
-                    ApplicationUserEmail = detail.PurchaseRequisitionHeader.ApplicationUser.Email
+                    ApplicationUserEmail = detail.PurchaseRequisitionHeader.ApplicationUser.Email,
+                    ApplicationUserFname = detail.PurchaseRequisitionHeader.ApplicationUser.FirstName,
+                    ApplicationUserLname = detail.PurchaseRequisitionHeader.ApplicationUser.LastName
+
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,
@@ -726,7 +729,9 @@ namespace Meditrack.Areas.Admin.Controllers
                     detail.PurchaseOrderHeader.Status.StatusDescription,
                     detail.PurchaseOrderHeader.TotalAmount,
                     detail.PurchaseOrderHeader.PODate,
-                    ApplicationUserEmail = detail.PurchaseOrderHeader.ApplicationUser.Email
+                    ApplicationUserEmail = detail.PurchaseOrderHeader.ApplicationUser.Email,
+                    ApplicationUserFname = detail.PurchaseOrderHeader.ApplicationUser.FirstName,
+                    ApplicationUserLname = detail.PurchaseOrderHeader.ApplicationUser.LastName
                 },
                 detail.Product.ProductName,
                 detail.UnitPrice,
