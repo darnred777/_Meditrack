@@ -277,7 +277,7 @@ namespace Meditrack.Areas.Admin.Controllers
             var supplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
             {
                 Value = s.SupplierID.ToString(),
-                Text = s.SupplierName
+                Text = $"{s.SupplierName} - {s.Location.LocationAddress}"
             });
 
             // Fetch all locations and convert them to SelectListItem objects
@@ -395,7 +395,7 @@ namespace Meditrack.Areas.Admin.Controllers
             viewModel.SupplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
             {
                 Value = s.SupplierID.ToString(),
-                Text = s.SupplierName
+                Text = $"{s.SupplierName} - {s.Location.LocationAddress}" // Concatenate SupplierName and LocationAddress
             }).ToList();
 
             viewModel.LocationList = _unitOfWork.Location.GetAll().Select(l => new SelectListItem
