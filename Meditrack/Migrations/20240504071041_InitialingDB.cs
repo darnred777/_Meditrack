@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Meditrack.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateProjectTable : Migration
+    public partial class InitialingDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,7 +61,7 @@ namespace Meditrack.Migrations
                 {
                     StatusID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StatusDescription = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -98,7 +98,7 @@ namespace Meditrack.Migrations
                     LocationID = table.Column<int>(type: "int", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
                     ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastLoginTime_Date = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -125,8 +125,7 @@ namespace Meditrack.Migrations
                         name: "FK_AspNetUsers_Location_LocationID",
                         column: x => x.LocationID,
                         principalTable: "Location",
-                        principalColumn: "LocationID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "LocationID");
                 });
 
             migrationBuilder.CreateTable(
@@ -135,7 +134,7 @@ namespace Meditrack.Migrations
                 {
                     SupplierID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationID = table.Column<int>(type: "int", nullable: true),
+                    LocationID = table.Column<int>(type: "int", nullable: false),
                     SupplierName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     ContactPerson = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     ContactNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
@@ -151,7 +150,8 @@ namespace Meditrack.Migrations
                         name: "FK_Supplier_Location_LocationID",
                         column: x => x.LocationID,
                         principalTable: "Location",
-                        principalColumn: "LocationID");
+                        principalColumn: "LocationID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,7 +168,7 @@ namespace Meditrack.Migrations
                     UnitPrice = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
                     UnitOfMeasurement = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     QuantityInStock = table.Column<int>(type: "int", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ExpirationDate = table.Column<DateOnly>(type: "date", nullable: false),
                     LastUnitPriceUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastQuantityInStockUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isActive = table.Column<bool>(type: "bit", nullable: false)
@@ -209,8 +209,8 @@ namespace Meditrack.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -254,8 +254,8 @@ namespace Meditrack.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -277,13 +277,20 @@ namespace Meditrack.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SupplierID = table.Column<int>(type: "int", nullable: false),
                     LocationID = table.Column<int>(type: "int", nullable: false),
-                    StatusID = table.Column<int>(type: "int", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
-                    PRDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    StatusID = table.Column<int>(type: "int", nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: true),
+                    PRDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PurchaseRequisitionHeader", x => x.PRHdrID);
+                    table.ForeignKey(
+                        name: "FK_PurchaseRequisitionHeader_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PurchaseRequisitionHeader_Location_LocationID",
                         column: x => x.LocationID,
@@ -294,14 +301,12 @@ namespace Meditrack.Migrations
                         name: "FK_PurchaseRequisitionHeader_Status_StatusID",
                         column: x => x.StatusID,
                         principalTable: "Status",
-                        principalColumn: "StatusID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "StatusID");
                     table.ForeignKey(
                         name: "FK_PurchaseRequisitionHeader_Supplier_SupplierID",
                         column: x => x.SupplierID,
                         principalTable: "Supplier",
-                        principalColumn: "SupplierID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "SupplierID");
                 });
 
             migrationBuilder.CreateTable(
@@ -310,17 +315,24 @@ namespace Meditrack.Migrations
                 {
                     POHdrID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusID = table.Column<int>(type: "int", nullable: false),
+                    StatusID = table.Column<int>(type: "int", nullable: true),
                     SupplierID = table.Column<int>(type: "int", nullable: false),
                     LocationID = table.Column<int>(type: "int", nullable: false),
                     PRHdrID = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
                     PODate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Remarks = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    Remarks = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PurchaseOrderHeader", x => x.POHdrID);
+                    table.ForeignKey(
+                        name: "FK_PurchaseOrderHeader_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PurchaseOrderHeader_Location_LocationID",
                         column: x => x.LocationID,
@@ -331,20 +343,17 @@ namespace Meditrack.Migrations
                         name: "FK_PurchaseOrderHeader_PurchaseRequisitionHeader_PRHdrID",
                         column: x => x.PRHdrID,
                         principalTable: "PurchaseRequisitionHeader",
-                        principalColumn: "PRHdrID",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "PRHdrID");
                     table.ForeignKey(
                         name: "FK_PurchaseOrderHeader_Status_StatusID",
                         column: x => x.StatusID,
                         principalTable: "Status",
-                        principalColumn: "StatusID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "StatusID");
                     table.ForeignKey(
                         name: "FK_PurchaseOrderHeader_Supplier_SupplierID",
                         column: x => x.SupplierID,
                         principalTable: "Supplier",
-                        principalColumn: "SupplierID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "SupplierID");
                 });
 
             migrationBuilder.CreateTable(
@@ -354,7 +363,7 @@ namespace Meditrack.Migrations
                     PRDtlID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PRHdrID = table.Column<int>(type: "int", nullable: false),
-                    ProductID = table.Column<int>(type: "int", nullable: true),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "DECIMAL(10,2)", nullable: false),
                     UnitOfMeasurement = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     QuantityInOrder = table.Column<int>(type: "int", nullable: false),
@@ -367,7 +376,8 @@ namespace Meditrack.Migrations
                         name: "FK_PurchaseRequisitionDetail_Product_ProductID",
                         column: x => x.ProductID,
                         principalTable: "Product",
-                        principalColumn: "ProductID");
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PurchaseRequisitionDetail_PurchaseRequisitionHeader_PRHdrID",
                         column: x => x.PRHdrID,
@@ -413,9 +423,9 @@ namespace Meditrack.Migrations
                 {
                     TransactionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TransType = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    StatusID = table.Column<int>(type: "int", nullable: false),
+                    TransType = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StatusID = table.Column<int>(type: "int", nullable: true),
                     POHdrID = table.Column<int>(type: "int", nullable: true),
                     PRHdrID = table.Column<int>(type: "int", nullable: true),
                     ProductID = table.Column<int>(type: "int", nullable: true),
@@ -426,10 +436,11 @@ namespace Meditrack.Migrations
                 {
                     table.PrimaryKey("PK_TransactionLogs", x => x.TransactionID);
                     table.ForeignKey(
-                        name: "FK_TransactionLogs_AspNetUsers_Id",
-                        column: x => x.Id,
+                        name: "FK_TransactionLogs_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TransactionLogs_Product_ProductID",
                         column: x => x.ProductID,
@@ -449,8 +460,7 @@ namespace Meditrack.Migrations
                         name: "FK_TransactionLogs_Status_StatusID",
                         column: x => x.StatusID,
                         principalTable: "Status",
-                        principalColumn: "StatusID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "StatusID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -513,6 +523,11 @@ namespace Meditrack.Migrations
                 column: "ProductID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PurchaseOrderHeader_ApplicationUserId",
+                table: "PurchaseOrderHeader",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PurchaseOrderHeader_LocationID",
                 table: "PurchaseOrderHeader",
                 column: "LocationID");
@@ -543,6 +558,11 @@ namespace Meditrack.Migrations
                 column: "ProductID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PurchaseRequisitionHeader_ApplicationUserId",
+                table: "PurchaseRequisitionHeader",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PurchaseRequisitionHeader_LocationID",
                 table: "PurchaseRequisitionHeader",
                 column: "LocationID");
@@ -563,9 +583,9 @@ namespace Meditrack.Migrations
                 column: "LocationID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransactionLogs_Id",
+                name: "IX_TransactionLogs_ApplicationUserId",
                 table: "TransactionLogs",
-                column: "Id");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TransactionLogs_POHdrID",
@@ -619,9 +639,6 @@ namespace Meditrack.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
@@ -632,6 +649,9 @@ namespace Meditrack.Migrations
 
             migrationBuilder.DropTable(
                 name: "PurchaseRequisitionHeader");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Status");

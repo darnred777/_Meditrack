@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meditrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240429032836_ChanheTransTypeClassToNullableInTransactionLogsModel")]
-    partial class ChanheTransTypeClassToNullableInTransactionLogsModel
+    [Migration("20240504071041_InitialingDB")]
+    partial class InitialingDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
