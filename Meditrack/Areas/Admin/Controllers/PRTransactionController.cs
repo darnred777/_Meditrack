@@ -119,7 +119,8 @@ namespace Meditrack.Areas.Admin.Controllers
             
             string body = $@"
         <h2>Purchase Order Details</h2>
-        <p><strong>Sender:</strong> {purchaseOrderHeader.ApplicationUser.Email}</p>
+        <p><strong>Sender Email:</strong> {purchaseOrderHeader.ApplicationUser.Email}</p>
+        <p><strong>Sender Fullname:</strong> {purchaseOrderHeader.ApplicationUser.FirstName} {purchaseOrderHeader.ApplicationUser.LastName}</p>
         <p><strong>Sender Location:</strong> {purchaseOrderHeader.ApplicationUser.Location.LocationAddress}</p>
         <p><strong>Supplier:</strong> {purchaseOrderHeader.Supplier.SupplierName}</p>
         <p><strong>Supplier Location:</strong> {purchaseOrderHeader.Location.LocationAddress}</p>
