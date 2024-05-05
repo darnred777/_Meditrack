@@ -41,5 +41,8 @@ namespace Meditrack.Models.ViewModels
 
         [ValidateNever]
         public string CreatedByUserId { get; set; }
+
+        //[ValidateNever]
+        //public List<PurchaseRequisitionDetail> PurchaseRequisitionDetails { get; set; }
     }
 }

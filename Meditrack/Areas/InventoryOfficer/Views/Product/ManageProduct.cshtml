@@ -138,7 +138,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>ProductID</th>
+                                        @* <th>ProductID</th> *@
                                         <th>Category</th>
                                         <th>Product Name</th>
                                         <th>SKU</th>
@@ -156,7 +156,7 @@
                                     @foreach (var obj in Model.OrderBy(u => u.ProductID))
                                     {
                                         <tr>
-                                            <td>@obj.ProductID</td>
+                                            @* <td>@obj.ProductID</td> *@
                                             <td>@obj.ProductCategory.CategoryName</td>
                                             <td>@obj.ProductName</td>
                                             <td>@obj.SKU</td>
