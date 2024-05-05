@@ -138,6 +138,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                         }
 
                         // Update existing product details
+                        existingProduct.CategoryID = productVM.Product.CategoryID;
                         existingProduct.ProductName = productVM.Product.ProductName;
                         existingProduct.UnitPrice = productVM.Product.UnitPrice;
                         existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
