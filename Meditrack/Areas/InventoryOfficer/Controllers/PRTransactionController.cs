@@ -63,10 +63,17 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                     includeProperties: "Supplier,Location,Status,ApplicationUser"
                 );
 
-                if (purchaseOrderHeader == null)
+                if (purchaseOrderHeader == null || purchaseOrderHeader.Status.StatusDescription != StaticDetails.Status_Approved)
                 {
                     // Handle the case where Purchase Order Header is not found or not approved
                     return NotFound();
+                }
+
+                if (purchaseOrderHeader.Status.StatusDescription == StaticDetails.Status_Cancelled)
+                {
+                    // If the status is "Cancelled", prevent sending and display error message
+                    TempData["EmailErrorMessage"] = "Cannot send email for a Cancelled Purchase Order.";
+                    return BadRequest("Cannot send email for a Cancelled Purchase Order.");
                 }
 
                 // Fetch the corresponding Purchase Order Details based on poHdrID
@@ -119,7 +126,8 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
 
             string body = $@"
         <h2>Purchase Order Details</h2>
-        <p><strong>Sender:</strong> {purchaseOrderHeader.ApplicationUser.Email}</p>
+        <p><strong>Sender Email:</strong> {purchaseOrderHeader.ApplicationUser.Email}</p>
+        <p><strong>Sender Fullname:</strong> {purchaseOrderHeader.ApplicationUser.FirstName} {purchaseOrderHeader.ApplicationUser.LastName}</p>
         <p><strong>Sender Location:</strong> {purchaseOrderHeader.ApplicationUser.Location.LocationAddress}</p>
         <p><strong>Supplier:</strong> {purchaseOrderHeader.Supplier.SupplierName}</p>
         <p><strong>Supplier Location:</strong> {purchaseOrderHeader.Location.LocationAddress}</p>
