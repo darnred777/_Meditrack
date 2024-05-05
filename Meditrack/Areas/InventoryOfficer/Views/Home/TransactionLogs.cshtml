@@ -11,7 +11,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Transaction ID</th>
+            @* <th>Transaction ID</th> *@
             <th>Transaction Type</th>
             <th>Created By</th>
             @* <th>Status</th> *@
@@ -24,7 +24,7 @@
         @foreach (var log in Model)
         {
             <tr>
-                <td>@log.TransactionID</td>
+                @* <td>@log.TransactionID</td> *@
                 <td>@log.TransType</td>
                 <td>@log.ApplicationUserEmail</td>
                 @* <td>@log.StatusDescription</td> *@
