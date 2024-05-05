@@ -141,7 +141,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>CategoryID</th>
+                                        @* <th>CategoryID</th> *@
                                         <th>Category Name</th>
                                         <th>Category Description</th>
                                         <th>Date Last Modified</th>
@@ -151,7 +151,7 @@
                                     @foreach (var obj in Model.OrderBy(u => u.CategoryID))
                                     {
                                         <tr>
-                                            <td>@obj.CategoryID</td>
+                                            @* <td>@obj.CategoryID</td> *@
                                             <td>@obj.CategoryName</td>
                                             <td>@obj.CategoryDescription</td>
                                             <td>@obj.DateLastModified.ToString("yyyy-MM-dd")</td>
