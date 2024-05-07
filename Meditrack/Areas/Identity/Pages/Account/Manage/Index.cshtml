@@ -29,9 +29,9 @@
             @if (User.IsInRole(StaticDetails.Role_Viewer))
             {
             <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" disabled/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <input asp-for="Input.PhoneNumber" class="form-control" hidden/>
+                    <label asp-for="Input.PhoneNumber" class="form-label" hidden></label>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger" hidden></span>
             </div>           
             }
             @if (User.IsInRole(StaticDetails.Role_Admin))

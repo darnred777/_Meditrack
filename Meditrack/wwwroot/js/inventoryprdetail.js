@@ -62,8 +62,8 @@ function loadDataTable(status) {
                 "render": function (data) {
                     return `
                         <div class="w-75 btn-group" role="group">
-                            <a href="/inventoryofficer/prtransaction/editpr?prdId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>Edit</a>                                       
-                            <a href="/inventoryofficer/prtransaction/viewpr?prdId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>View</a>
+                            <a href="/inventoryofficer/prtransaction/editpr?prdId=${data}" class="btn btn-info mx-2"><i class="bi bi-pencil-square"></i>Edit</a>                                       
+                            <a href="/inventoryofficer/prtransaction/viewpr?prdId=${data}" class="btn btn-success mx-2"><i class="bi bi-pencil-square"></i>View</a>
                         </div>
                     `
                 },

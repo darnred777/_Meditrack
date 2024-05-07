@@ -130,6 +130,8 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 TransType = "Purchase Requisition",
                 ApplicationUserId = t.ApplicationUserId,
                 ApplicationUserEmail = t.ApplicationUser.Email,
+                ApplicationUserFname = t.ApplicationUser.FirstName,
+                ApplicationUserLname = t.ApplicationUser.LastName,
                 StatusDescription = t.Status.StatusDescription,
                 ProductName = t.Product.ProductName,
                 Quantity = (int)t.Quantity,
