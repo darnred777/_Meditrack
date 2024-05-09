@@ -141,6 +141,8 @@ namespace Meditrack.Areas.Admin.Controllers
                         // Update existing product details
                         existingProduct.CategoryID = productVM.Product.CategoryID;
                         existingProduct.ProductName = productVM.Product.ProductName;
+                        existingProduct.SKU = productVM.Product.SKU;
+                        existingProduct.Brand = productVM.Product.Brand;
                         existingProduct.UnitPrice = productVM.Product.UnitPrice;
                         existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
                         existingProduct.ExpirationDate = productVM.Product.ExpirationDate;
