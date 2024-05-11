@@ -24,7 +24,7 @@ function loadDataTable(status) {
 
                     // Check if the expiration date is in the past
                     if (date < new Date()) {
-                        return "Expired";
+                        return '<span style="color: red;">Expired</span>';
                     }
 
                     // Extract year, month, and day components
