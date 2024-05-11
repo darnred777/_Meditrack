@@ -81,47 +81,72 @@
             </ul>
         </div>
     </aside>
+
     <!-- Main Component -->
-    <div class="main">
-        <nav class="navbar navbar-expand px-3 border-bottom">
-            <!-- Button for sidebar toggle -->
-            <button class="btn" type="button" data-bs-theme="light">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-        <main class="content px-3 py-2">
-            <div class="container">
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="card-title">Display Report</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col">
-                                <h2 class="text-primary">Transaction Reports</h2>
-                            </div>
+    <!-- Main Component -->
+    @{
+        ViewData["Title"] = "Report";
+    }
+
+    <main class="content px-3 py-2">
+        <div class="container">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">Display Report</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <h2 class="text-primary">Transaction Reports</h2>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card bg-info text-white mb-3">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Total Approved Purchase Requisitions Today</h4>
-                                        <p class="card-text">@ViewBag.TotalApprovedPRs</p>
-                                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-info text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Approved Purchase Requisitions Today</h4>
+                                    <p class="card-text">@ViewBag.TotalApprovedPRs</p>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card bg-success text-white mb-3">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Total Approved Purchase Requisitions This Month</h4>
-                                        <p class="card-text">@ViewBag.TotalApprovedPRsCurrentMonth</p>
-                                    </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-success text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Approved Purchase Requisitions This Month</h4>
+                                    <p class="card-text">@ViewBag.TotalApprovedPRsCurrentMonth</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-warning text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Approved Purchase Requisitions This Year</h4>
+                                    <p class="card-text">@ViewBag.TotalApprovedPRsCurrentYear</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-primary text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Cost of Approved PRs This Month</h4>
+                                    <p class="card-text">@ViewBag.TotalAmountApprovedThisMonth.ToString("C")</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-danger text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Cost of Approved PRs This Year</h4>
+                                    <p class="card-text">@ViewBag.TotalAmountApprovedThisYear.ToString("C")</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
+
+
+    <!-- End of Component -->
 </div>

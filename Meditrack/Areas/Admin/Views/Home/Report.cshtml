@@ -86,7 +86,12 @@
             </ul>
         </div>
     </aside>
+
     <!-- Main Component -->
+    @{
+        ViewData["Title"] = "Report";
+    }
+
     <main class="content px-3 py-2">
         <div class="container">
             <div class="card shadow mb-4">
@@ -116,6 +121,30 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="card bg-warning text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Approved Purchase Requisitions This Year</h4>
+                                    <p class="card-text">@ViewBag.TotalApprovedPRsCurrentYear</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-primary text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Cost of Approved PRs This Month</h4>
+                                    <p class="card-text">@ViewBag.TotalAmountApprovedThisMonth.ToString("C")</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-danger text-white mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Total Cost of Approved PRs This Year</h4>
+                                    <p class="card-text">@ViewBag.TotalAmountApprovedThisYear.ToString("C")</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,6 +152,6 @@
     </main>
 
 
+    <!-- End of Component -->
 
-    </div>
 </div>

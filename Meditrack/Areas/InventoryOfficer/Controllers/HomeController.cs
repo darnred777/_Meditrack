@@ -85,6 +85,8 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 DateTime currentDate = DateTime.Today;
                 DateTime firstDayOfCurrentMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
                 DateTime firstDayOfNextMonth = firstDayOfCurrentMonth.AddMonths(1);
+                DateTime firstDayOfCurrentYear = new DateTime(currentDate.Year, 1, 1);
+                DateTime firstDayOfNextYear = firstDayOfCurrentYear.AddYears(1);
 
                 var approvedPRsCurrentMonth = approvedPRs
                     .Where(pr => pr.PRDate >= firstDayOfCurrentMonth && pr.PRDate < firstDayOfNextMonth)
@@ -94,18 +96,32 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                     .Where(pr => pr.PRDate >= firstDayOfNextMonth)
                     .ToList(); // Execute query and fetch results to debug
 
+                var approvedPRsCurrentYear = approvedPRs
+                    .Where(pr => pr.PRDate >= firstDayOfCurrentYear && pr.PRDate < firstDayOfNextYear)
+                    .ToList(); // Execute query and fetch results to debug
+
                 int totalApprovedPRs = approvedPRs?.Count() ?? 0;
                 int totalApprovedPRsCurrentMonth = approvedPRsCurrentMonth?.Count() ?? 0;
                 int totalApprovedPRsNextMonth = approvedPRsNextMonth?.Count() ?? 0;
+                int totalApprovedPRsCurrentYear = approvedPRsCurrentYear?.Count() ?? 0;
 
-                // Log the counts for debugging
+                decimal totalAmountApprovedThisMonth = approvedPRsCurrentMonth?.Sum(pr => pr.TotalAmount) ?? 0;
+                decimal totalAmountApprovedThisYear = approvedPRsCurrentYear?.Sum(pr => pr.TotalAmount) ?? 0;
+
+                // Log the counts and totals for debugging
                 Console.WriteLine($"Total Approved PRs: {totalApprovedPRs}");
                 Console.WriteLine($"Total Approved PRs Current Month: {totalApprovedPRsCurrentMonth}");
                 Console.WriteLine($"Total Approved PRs Next Month: {totalApprovedPRsNextMonth}");
+                Console.WriteLine($"Total Approved PRs Current Year: {totalApprovedPRsCurrentYear}");
+                Console.WriteLine($"Total Amount of Approved PRs This Month: {totalAmountApprovedThisMonth}");
+                Console.WriteLine($"Total Amount of Approved PRs This Year: {totalAmountApprovedThisYear}");
 
                 ViewBag.TotalApprovedPRs = totalApprovedPRs;
                 ViewBag.TotalApprovedPRsCurrentMonth = totalApprovedPRsCurrentMonth;
                 ViewBag.TotalApprovedPRsNextMonth = totalApprovedPRsNextMonth;
+                ViewBag.TotalApprovedPRsCurrentYear = totalApprovedPRsCurrentYear;
+                ViewBag.TotalAmountApprovedThisMonth = totalAmountApprovedThisMonth;
+                ViewBag.TotalAmountApprovedThisYear = totalAmountApprovedThisYear;
 
                 return View();
             }
