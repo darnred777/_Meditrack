@@ -1,0 +1,64 @@
+﻿@model MonitoringVM
+
+<div class="wrapper">
+    <!-- Main Component -->
+
+    <div class="main">
+        <nav class="navbar navbar-expand px-3 border-bottom">
+            <!-- Button for sidebar toggle -->
+            <button class="btn" type="button" data-bs-theme="light">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+        <main class="content px-3 py-2">
+            <div class="container-fluid">
+                <div class="mb-3">
+
+                    <!--Main Content-->
+
+
+                    <div class="container mt-5">
+                        <h3 class="mb-3">@(Model.Monitoring.MonitoringID != 0 ? "Update" : "Create") Supply Monitoring</h3>
+                        <form method="post">
+                            <div class="form-group">
+                                <input asp-for="Monitoring.MonitoringID" hidden />
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Monitoring.ProductID">Product</label>
+                                <select asp-for="@Model.Monitoring.ProductID" asp-items="@Model.ProductList" class="form-select" required>
+                                    <option disabled selected>--Select Location--</option>
+                                </select>
+                                <span asp-validation-for="Monitoring.ProductID" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Monitoring.QuantityReceived" class="form-label">Quantity Received:</label>
+                                <input asp-for="Monitoring.QuantityReceived" class="form-control" placeholder="Enter Quantity Received" required>
+                                <span asp-validation-for="Monitoring.QuantityReceived" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Monitoring.QuantityExpected" class="form-label">Quantity Expected:</label>
+                                <input asp-for="Monitoring.QuantityExpected" class="form-control" placeholder="Enter Quantity Expected" required>
+                                <span asp-validation-for="Monitoring.QuantityExpected" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Monitoring.ReceivedDate" class="form-label">Received Date:</label>
+                                <input asp-for="Monitoring.ReceivedDate" type="date" class="form-control">
+                            </div>                          
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
+                                </div>
+                                <div class="col-6">
+                                    <a asp-area="Admin" asp-controller="Monitoring" asp-action="ManageMonitoring" class="btn btn-outline-primary border mt-4 form-control">Back</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--End of Content-->
+
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

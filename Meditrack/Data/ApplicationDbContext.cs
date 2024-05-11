@@ -33,6 +33,7 @@ namespace Meditrack.Data
         public DbSet<PurchaseOrderHeader> PurchaseOrderHeader { get; set; }
 
         public DbSet<PurchaseOrderDetail> PurchaseOrderDetail { get; set; }
+        public DbSet<Monitoring> Monitoring { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -20,6 +20,7 @@ namespace Meditrack.Repository
         public IPurchaseOrderDetailRepository PurchaseOrderDetail { get; private set; }
         public IStatusRepository Status { get; private set; }
         public ITransactionLogsRepository TransactionLogs { get; private set; }
+        public IMonitoringRepository Monitoring { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -34,6 +35,7 @@ namespace Meditrack.Repository
             PurchaseOrderDetail = new PurchaseOrderDetailRepository(_db);
             Status = new StatusRepository(_db);
             TransactionLogs = new TransactionLogsRepository(_db);
+            Monitoring = new MonitoringRepository(_db);
         }
 
 

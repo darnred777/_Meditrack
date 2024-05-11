@@ -21,9 +21,9 @@ namespace Meditrack.Areas.Admin.Controllers
         }
         public IActionResult ManageLocation()
         {
-            //List<User> objUserList = _unitOfWork.User.GetAll().ToList();
+            
             List<Location> objLocationList = _unitOfWork.Location.GetAll().ToList();
-            //IEnumerable<SelectListItem> LocationList = _unitOfWork.Location.GetAll().Select();
+    
             return View(objLocationList);
         }
 

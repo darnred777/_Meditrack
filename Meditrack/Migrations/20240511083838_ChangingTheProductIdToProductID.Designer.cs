@@ -4,6 +4,7 @@ using Meditrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meditrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240511083838_ChangingTheProductIdToProductID")]
+    partial class ChangingTheProductIdToProductID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,8 +71,8 @@ namespace Meditrack.Migrations
                     b.Property<int>("QuantityReceived")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("ReceivedDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("ReceivedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("MonitoringID");
 

@@ -75,6 +75,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" asp-area="InventoryOfficer" asp-controller="Monitoring" asp-action="ManageMonitoring">
+                        <i class="bi bi-card-checklist"></i>
+                        Monitor Supplies
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <form id="logoutForm" class="sidebar-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                         <button id="logout" type="submit" class="btn btn-link border-0 sidebar-logout">
                             <i class="bi bi-box-arrow-right ms-1"></i>

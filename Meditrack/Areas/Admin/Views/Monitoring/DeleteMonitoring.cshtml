@@ -1,0 +1,45 @@
+﻿@model Monitoring
+
+<div class="container mt-5">
+    <h3 class="mb-3">Delete Supplier</h3>
+
+    <!-- Display Success/Error Messages -->
+    
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
+
+    <form method="post">
+        <div class="mb-3">
+            <label asp-for="MonitoringID" class="form-label" hidden>Monitoring ID</label>
+            <input asp-for="MonitoringID" disabled class="form-control" hidden>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ProductID" class="form-label">Product Name</label>
+            <input asp-for="ProductID" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="QuantityReceived" class="form-label">Quantity Received</label>
+            <input asp-for="QuantityReceived" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="QuantityExpected" class="form-label">Quantity Expected</label>
+            <input asp-for="QuantityExpected" disabled class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="ReceivedDate" class="form-label" hidden>Received Date</label>
+            <input asp-for="ReceivedDate" disabled class="form-control" hidden>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-danger mt-4 form-control">Delete</button>
+            </div>
+            <div class="col-6">
+                <a asp-area="Admin" asp-controller="Monitoring" asp-action="ManageMonitoring" class="btn btn-outline-primary border mt-4 form-control">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--End of Content-->
