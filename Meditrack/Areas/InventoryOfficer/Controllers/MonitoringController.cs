@@ -133,5 +133,17 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetMonitoring()
+        {
+            List<Monitoring> objMonitoringList = _unitOfWork.Monitoring.GetAll(includeProperties: "Product").ToList();
+
+            return Json(new { data = objMonitoringList });
+        }
+
+        #endregion
     }
 }

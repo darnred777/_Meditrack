@@ -24,7 +24,7 @@
     </a>
 
     <div class="table-responsive table-bordered table-striped">
-        <table class="table">
+        <table id="tblData" class="table">
             <thead>
                 <tr>
                     <th>Product Name</th>
@@ -33,29 +33,11 @@
                     <th>Quantity Lacking</th>
                     <th>Received Date</th>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var obj in Model.OrderBy(u => u.MonitoringID))
-                {
-                    <tr>
-                        <td>@obj.Product.ProductName</td>
-                        <td>@obj.QuantityReceived</td>
-                        <td>@obj.QuantityExpected</td>
-                        <td>@obj.QuantityLacking</td>
-                        <td>@obj.ReceivedDate</td>
-                        <td>
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-area="Admin" asp-controller="Monitoring" asp-action="UpsertMonitoring" asp-route-MonitoringID="@obj.MonitoringID" class="btn btn-primary mx-2">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <a asp-area="Admin" asp-controller="Monitoring" asp-action="DeleteMonitoring" asp-route-MonitoringID="@obj.MonitoringID" class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
+            </thead>  
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/monitoring.js"></script>
+}
