@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meditrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240504071041_InitialingDB")]
-    partial class InitialingDB
+    [Migration("20240511064029_InitializingDB")]
+    partial class InitializingDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

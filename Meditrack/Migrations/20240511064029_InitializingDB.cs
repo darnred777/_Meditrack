@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Meditrack.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialingDB : Migration
+    public partial class InitializingDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -306,7 +306,8 @@ namespace Meditrack.Migrations
                         name: "FK_PurchaseRequisitionHeader_Supplier_SupplierID",
                         column: x => x.SupplierID,
                         principalTable: "Supplier",
-                        principalColumn: "SupplierID");
+                        principalColumn: "SupplierID",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -343,7 +344,8 @@ namespace Meditrack.Migrations
                         name: "FK_PurchaseOrderHeader_PurchaseRequisitionHeader_PRHdrID",
                         column: x => x.PRHdrID,
                         principalTable: "PurchaseRequisitionHeader",
-                        principalColumn: "PRHdrID");
+                        principalColumn: "PRHdrID",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_PurchaseOrderHeader_Status_StatusID",
                         column: x => x.StatusID,
@@ -353,7 +355,8 @@ namespace Meditrack.Migrations
                         name: "FK_PurchaseOrderHeader_Supplier_SupplierID",
                         column: x => x.SupplierID,
                         principalTable: "Supplier",
-                        principalColumn: "SupplierID");
+                        principalColumn: "SupplierID",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
