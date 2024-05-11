@@ -26,10 +26,19 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
 
         public IActionResult Dashboard()
         {
-            const int reorderPoint = 10;
-            var lowStockProducts = _unitOfWork.Product.GetAll(p => p.QuantityInStock <= reorderPoint).ToList();
+            //const int reorderPoint = 10;
+            //var lowStockProducts = _unitOfWork.Product.GetAll(p => p.QuantityInStock <= reorderPoint).ToList();
 
-            // Pass these products to the view, perhaps within a ViewModel or ViewBag/ViewData
+            //// Pass these products to the view, perhaps within a ViewModel or ViewBag/ViewData
+            //ViewBag.LowStockProducts = lowStockProducts;
+
+            var products = _unitOfWork.Product.GetAll().ToList();
+
+            const int defaultReorderPoint = 10;
+            const int specialReorderPoint = 500;
+
+            var lowStockProducts = products.Where(p => p.QuantityInStock <= (IsSpecialProduct(p.ProductName) ? specialReorderPoint : defaultReorderPoint)).ToList();
+
             ViewBag.LowStockProducts = lowStockProducts;
 
             var pendingPRs = _unitOfWork.PurchaseRequisitionHeader
@@ -56,7 +65,15 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
 
             ViewBag.TotalCancelledPRs = totalCancelledPRs;
 
-            return View();
+            return View(lowStockProducts);
+        }
+
+        private bool IsSpecialProduct(string productName)
+        {
+            // List of special products with a different reorder point
+            var specialProducts = new List<string> { "BIOGESIC", "BIOFLU", "NEOZEP" };
+
+            return specialProducts.Contains(productName.ToUpper());
         }
 
         public IActionResult Profile()
