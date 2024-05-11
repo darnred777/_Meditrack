@@ -172,6 +172,7 @@ namespace Meditrack.Areas.Admin.Controllers
                         existingProduct.ProductName = productVM.Product.ProductName;
                         existingProduct.SKU = productVM.Product.SKU;
                         existingProduct.Brand = productVM.Product.Brand;
+                        existingProduct.ProductDescription = productVM.Product.ProductDescription;
                         existingProduct.UnitPrice = productVM.Product.UnitPrice;
                         // Map selected value from dropdown to UnitOfMeasurement field
                         existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement.ToString();
@@ -523,6 +524,19 @@ namespace Meditrack.Areas.Admin.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetProduct() 
+        {
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "ProductCategory").ToList();
+
+            return Json(new { data = objProductList });
+        }
+
+        #endregion
     }
 
 }
