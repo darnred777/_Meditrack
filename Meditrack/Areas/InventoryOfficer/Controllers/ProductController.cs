@@ -61,6 +61,32 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
             {
                 bool isNewProduct = productVM.Product.ProductID == 0;
 
+                // Set UnitPrice based on UnitOfMeasurement selection
+                switch (productVM.Product.UnitOfMeasurement)
+                {
+                    case "PC":
+                        productVM.Product.UnitPrice = 700;
+                        break;
+                    case "BOX":
+                        productVM.Product.UnitPrice = 600;
+                        break;
+                    case "PACKAGE":
+                        productVM.Product.UnitPrice = 500;
+                        break;
+                    case "VIAL":
+                        productVM.Product.UnitPrice = 400;
+                        break;
+                    case "TUBE":
+                        productVM.Product.UnitPrice = 300;
+                        break;
+                    case "MILILITER":
+                        productVM.Product.UnitPrice = 200;
+                        break;
+                    default:
+                        // Handle default case (if needed)
+                        break;
+                }
+
                 if (isNewProduct)
                 {
                     // Adding a new product
@@ -75,6 +101,9 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                         });
                         return View(productVM);
                     }
+
+                    // Map selected value from dropdown to UnitOfMeasurement field
+                    productVM.Product.UnitOfMeasurement = productVM.Product.UnitOfMeasurement.ToString();
 
                     var newProduct = new Product
                     {
@@ -143,7 +172,9 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                         existingProduct.SKU = productVM.Product.SKU;
                         existingProduct.Brand = productVM.Product.Brand;
                         existingProduct.UnitPrice = productVM.Product.UnitPrice;
-                        existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
+                        // Map selected value from dropdown to UnitOfMeasurement field
+                        existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement.ToString();
+                        //existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
                         existingProduct.ExpirationDate = productVM.Product.ExpirationDate;
                         existingProduct.LastUnitPriceUpdated = productVM.Product.LastUnitPriceUpdated;
                         existingProduct.LastQuantityInStockUpdated = productVM.Product.LastQuantityInStockUpdated;
@@ -166,105 +197,7 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
                 Value = u.CategoryID.ToString()
             });
             return View(productVM);
-        }
-
-        //[HttpPost]
-        //public IActionResult UpsertProduct(ProductVM productVM, string operation)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        bool isNewProduct = productVM.Product.ProductID == 0;
-
-        //        if (isNewProduct)
-        //        {
-        //            // Adding a new product
-        //            int quantityChange = productVM.QuantityChange; // Retrieve quantity change from model
-
-        //            // Create a new product instance
-        //            var newProduct = new Product
-        //            {
-        //                CategoryID = productVM.Product.CategoryID,
-        //                ProductName = productVM.Product.ProductName,
-        //                SKU = productVM.Product.SKU,
-        //                Brand = productVM.Product.Brand,
-        //                ProductDescription = productVM.Product.ProductDescription,
-        //                UnitPrice = productVM.Product.UnitPrice,
-        //                UnitOfMeasurement = productVM.Product.UnitOfMeasurement,
-        //                QuantityInStock = quantityChange, // Set initial stock quantity
-        //                ExpirationDate = productVM.Product.ExpirationDate,
-        //                LastUnitPriceUpdated = productVM.Product.LastUnitPriceUpdated,
-        //                LastQuantityInStockUpdated = productVM.Product.LastQuantityInStockUpdated
-
-        //                // Set other properties as needed
-        //            };
-
-        //            _unitOfWork.Product.Add(newProduct);
-        //            _unitOfWork.Save();
-
-        //            return RedirectToAction("ManageProduct");
-        //        }
-        //        else
-        //        {
-        //            // Editing an existing product
-        //            var existingProduct = _unitOfWork.Product.Get(u => u.ProductID == productVM.Product.ProductID);
-
-        //            if (existingProduct != null)
-        //            {
-        //                int quantityChange = productVM.QuantityChange; // Retrieve quantity change from model
-
-        //                if (operation == "Deposit")
-        //                {
-        //                    // Deposit stock: increase the QuantityInStock
-        //                    existingProduct.QuantityInStock += quantityChange;
-        //                }
-        //                else if (operation == "Withdraw")
-        //                {
-        //                    // Withdraw stock: decrease the QuantityInStock (if sufficient quantity available)
-        //                    if (existingProduct.QuantityInStock >= quantityChange)
-        //                    {
-        //                        existingProduct.QuantityInStock -= quantityChange;
-        //                    }
-        //                    else
-        //                    {
-        //                        ModelState.AddModelError("", "Insufficient quantity available for withdrawal.");
-        //                        // Return the view with validation errors
-        //                        productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
-        //                        {
-        //                            Text = u.CategoryName,
-        //                            Value = u.CategoryID.ToString()
-        //                        });
-        //                        return View(productVM);
-        //                    }
-        //                }
-
-        //                // Update other product details
-        //                existingProduct.ProductName = productVM.Product.ProductName;
-        //                existingProduct.UnitPrice = productVM.Product.UnitPrice;
-        //                existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
-        //                existingProduct.ExpirationDate = productVM.Product.ExpirationDate;
-        //                existingProduct.LastUnitPriceUpdated = productVM.Product.LastUnitPriceUpdated;
-        //                existingProduct.LastQuantityInStockUpdated = productVM.Product.LastQuantityInStockUpdated;
-        //                // Update other properties as needed
-
-        //                _unitOfWork.Product.Update(existingProduct);
-        //                _unitOfWork.Save();
-
-        //                // Update associated PRDetails and PODetails with new UnitPrice
-        //                UpdatePRDetailsAndPODetails(existingProduct);
-
-        //                return RedirectToAction("ManageProduct");
-        //            }
-        //        }
-        //    }
-
-        //    // If model state is invalid or product not found, return to the view with validation errors
-        //    productVM.ProductCategoryList = _unitOfWork.ProductCategory.GetAll().Select(u => new SelectListItem
-        //    {
-        //        Text = u.CategoryName,
-        //        Value = u.CategoryID.ToString()
-        //    });
-        //    return View(productVM);
-        //}
+        }   
 
         private void UpdatePRDetailsAndPODetails(Product existingProduct)
         {

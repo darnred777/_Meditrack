@@ -62,6 +62,32 @@ namespace Meditrack.Areas.Admin.Controllers
             {
                 bool isNewProduct = productVM.Product.ProductID == 0;
 
+                // Set UnitPrice based on UnitOfMeasurement selection
+                switch (productVM.Product.UnitOfMeasurement)
+                {
+                    case "PC":
+                        productVM.Product.UnitPrice = 700;
+                        break;
+                    case "BOX":
+                        productVM.Product.UnitPrice = 600;
+                        break;
+                    case "PACKAGE":
+                        productVM.Product.UnitPrice = 500;
+                        break;
+                    case "VIAL":
+                        productVM.Product.UnitPrice = 400;
+                        break;
+                    case "TUBE":
+                        productVM.Product.UnitPrice = 300;
+                        break;
+                    case "MILILITER":
+                        productVM.Product.UnitPrice = 200;
+                        break;
+                    default:
+                        // Handle default case (if needed)
+                        break;
+                }
+
                 if (isNewProduct)
                 {
                     // Adding a new product
@@ -76,6 +102,9 @@ namespace Meditrack.Areas.Admin.Controllers
                         });
                         return View(productVM);
                     }
+
+                        // Map selected value from dropdown to UnitOfMeasurement field
+                        productVM.Product.UnitOfMeasurement = productVM.Product.UnitOfMeasurement.ToString();
 
                     var newProduct = new Product
                     {
@@ -144,7 +173,9 @@ namespace Meditrack.Areas.Admin.Controllers
                         existingProduct.SKU = productVM.Product.SKU;
                         existingProduct.Brand = productVM.Product.Brand;
                         existingProduct.UnitPrice = productVM.Product.UnitPrice;
-                        existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
+                        // Map selected value from dropdown to UnitOfMeasurement field
+                        existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement.ToString();
+                        //existingProduct.UnitOfMeasurement = productVM.Product.UnitOfMeasurement;
                         existingProduct.ExpirationDate = productVM.Product.ExpirationDate;
                         existingProduct.LastUnitPriceUpdated = productVM.Product.LastUnitPriceUpdated;
                         existingProduct.LastQuantityInStockUpdated = productVM.Product.LastQuantityInStockUpdated;

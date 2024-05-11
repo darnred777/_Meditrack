@@ -268,3 +268,28 @@ function validateQuantityChange() {
         document.querySelector("span[data-valmsg-for='QuantityChange']").style.display = "none";
     }
 }
+
+
+// JavaScript to update UnitPrice based on UnitOfMeasurement selection
+$(document).ready(function () {
+    $('#Product_UnitOfMeasurement').change(function () {
+        var selectedUnit = $(this).val();
+        var unitPrices = {
+            PC: 700,
+            BOX: 600,
+            PACKAGE: 500,
+            VIAL: 400,
+            TUBE: 300,
+            MILILITER: 200
+        };
+        $('#unitPrice').val(unitPrices[selectedUnit]);
+    });
+});
+
+// JavaScript to update UnitPrice based on UnitOfMeasurement selection
+$(document).ready(function () {
+    $('#unitOfMeasurement').change(function () {
+        var selectedPrice = $(this).find(':selected').data('price');
+        $('#unitPrice').val(selectedPrice);
+    });
+});

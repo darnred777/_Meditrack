@@ -47,14 +47,22 @@
             <span asp-validation-for="Product.ProductDescription" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Product.UnitPrice" class="form-label">Unit Price:</label>
-            <input asp-for="Product.UnitPrice" class="form-control" required>
-            <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>
+            <label asp-for="Product.UnitOfMeasurement" class="form-label">Unit of Measurement:</label>
+            <select asp-for="Product.UnitOfMeasurement" id="unitOfMeasurement" class="form-select" required>
+                <option disabled selected>--Select Unit of Measurement--</option>
+                <option value="PC" data-price="700">PC(Pieces)</option>
+                <option value="BOX" data-price="600">BOX</option>
+                <option value="PACKAGE" data-price="500">PACKAGE</option>
+                <option value="VIAL" data-price="400">VIAL</option>
+                <option value="TUBE" data-price="300">TUBE</option>
+                <option value="MILILITER" data-price="200">MILILITER</option>
+            </select>
+            <span asp-validation-for="Product.UnitOfMeasurement" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Product.UnitOfMeasurement" class="form-label">Unit of Measurement:</label>
-            <input asp-for="Product.UnitOfMeasurement" class="form-control" required>
-            <span asp-validation-for="Product.UnitOfMeasurement" class="text-danger"></span>
+            <label asp-for="Product.UnitPrice" class="form-label">Unit Price:</label>
+            <input asp-for="Product.UnitPrice" id="unitPrice" class="form-control" required readonly>
+            <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="Product.QuantityInStock" class="form-label">Quantity in Stock:</label>
