@@ -16,7 +16,29 @@ function loadDataTable(status) {
             { data: 'unitPrice', "width": "10%" },          
             { data: 'unitOfMeasurement', "width": "5%" },          
             { data: 'quantityInStock', "width": "10%" },          
-            { data: 'expirationDate', "width": "10%" },          
+            {
+                data: 'expirationDate',
+                render: function (data) {
+                    // Convert the data (assumed to be in ISO format) to a Date object
+                    const date = new Date(data);
+
+                    // Check if the expiration date is in the past
+                    if (date < new Date()) {
+                        return "Expired";
+                    }
+
+                    // Extract year, month, and day components
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed
+                    const day = String(date.getDate()).padStart(2, '0');
+
+                    // Construct the formatted date string in yyyy-mm-dd format
+                    const formattedDate = `${year}-${month}-${day}`;
+
+                    return formattedDate;
+                },
+                "width": "10%"
+            },          
             {
                 data: 'lastUnitPriceUpdated',
                 render: function (data) {
