@@ -275,7 +275,9 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
         public IActionResult CreatePR()
         {
             // Fetch all products and convert them to SelectListItem objects
-            var productList = _unitOfWork.Product.GetAll().Select(p => new SelectListItem
+            var productList = _unitOfWork.Product.GetAll()
+            .OrderBy(p => p.ProductName) // Sort products by ProductName
+            .Select(p => new SelectListItem
             {
                 Value = p.ProductID.ToString(),
                 Text = p.ProductName
@@ -394,7 +396,9 @@ namespace Meditrack.Areas.InventoryOfficer.Controllers
 
         private void PopulateDropdowns(PRTransactionVM viewModel)
         {
-            viewModel.ProductList = _unitOfWork.Product.GetAll().Select(p => new SelectListItem
+            viewModel.ProductList = _unitOfWork.Product.GetAll()
+            .OrderBy(p => p.ProductName) // Sort products by ProductName
+            .Select(p => new SelectListItem
             {
                 Value = p.ProductID.ToString(),
                 Text = p.ProductName
