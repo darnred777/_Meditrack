@@ -26,9 +26,16 @@
                             <div class="mb-3">
                                 <label asp-for="Monitoring.ProductID">Product</label>
                                 <select asp-for="@Model.Monitoring.ProductID" asp-items="@Model.ProductList" class="form-select" required>
-                                    <option disabled selected>--Select Location--</option>
+                                    <option disabled selected>--Select Product--</option>
                                 </select>
                                 <span asp-validation-for="Monitoring.ProductID" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Monitoring.SupplierID">Supplier</label>
+                                <select asp-for="@Model.Monitoring.SupplierID" asp-items="@Model.SupplierList" class="form-select" required>
+                                    <option disabled selected>--Select Supplier--</option>
+                                </select>
+                                <span asp-validation-for="Monitoring.SupplierID" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Monitoring.QuantityReceived" class="form-label">Quantity Received:</label>

@@ -26,7 +26,15 @@ namespace Meditrack.Models
         public int QuantityExpected { get; set; }
 
         public int? QuantityLacking { get; set; }
-    
+
+        [ValidateNever]
+        [Required(ErrorMessage = "Selecting a Supplier is required.")]
+        public int SupplierID { get; set; }
+
+        [ValidateNever]
+        [ForeignKey("SupplierID")]
+        public virtual Supplier Supplier { get; set; }
+
         public DateOnly? ReceivedDate { get; set; }
     }
 }

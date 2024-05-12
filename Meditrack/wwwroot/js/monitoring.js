@@ -9,6 +9,7 @@ function loadDataTable(status) {
         "ajax": { url: '/admin/monitoring/getmonitoring' },
         "columns": [
             { data: 'product.productName', "width": "10%" },
+            { data: 'supplier.supplierName', "width": "10%" },
             { data: 'quantityReceived', "width": "10%" },
             { data: 'quantityExpected', "width": "10%" },
             { data: 'quantityLacking', "width": "10%" },

@@ -24,7 +24,7 @@ namespace Meditrack.Areas.Admin.Controllers
 
         public IActionResult ManageMonitoring()
         {
-            List<Monitoring> objMonitoringList = _unitOfWork.Monitoring.GetAll(includeProperties: "Product").ToList();
+            List<Monitoring> objMonitoringList = _unitOfWork.Monitoring.GetAll(includeProperties: "Product,Supplier").ToList();
 
             return View(objMonitoringList);
         }
@@ -37,6 +37,13 @@ namespace Meditrack.Areas.Admin.Controllers
                 {
                     Text = u.ProductName,
                     Value = u.ProductID.ToString()
+                }),
+
+                SupplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
+                {
+                    Value = s.SupplierID.ToString(),
+                    Text = s.SupplierName
+                    //Text = $"{s.SupplierName} - {s.Location.LocationAddress}"
                 }),
 
                 Monitoring = new Monitoring()
@@ -87,6 +94,13 @@ namespace Meditrack.Areas.Admin.Controllers
                 {
                     Text = u.ProductName,
                     Value = u.ProductID.ToString()
+                });
+
+                monitoringVM.SupplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
+                {                 
+                    Value = s.SupplierID.ToString(),
+                    Text = s.SupplierName
+                    //Text = $"{s.SupplierName} - {s.Location.LocationAddress}"
                 });
                 return View(monitoringVM);
             }
@@ -139,7 +153,7 @@ namespace Meditrack.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetMonitoring()
         {
-            List<Monitoring> objMonitoringList = _unitOfWork.Monitoring.GetAll(includeProperties: "Product").ToList();
+            List<Monitoring> objMonitoringList = _unitOfWork.Monitoring.GetAll(includeProperties: "Product,Supplier").ToList();
 
             return Json(new { data = objMonitoringList });
         }
