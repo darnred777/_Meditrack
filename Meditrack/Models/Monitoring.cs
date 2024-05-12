@@ -35,6 +35,15 @@ namespace Meditrack.Models
         [ForeignKey("SupplierID")]
         public virtual Supplier Supplier { get; set; }
 
+        [Required(ErrorMessage = "Selecting a Location is required.")]
+        [ValidateNever]
+        public int LocationID { get; set; }
+
+        [Required(ErrorMessage = "Selecting a Location is required.")]
+        [ForeignKey("LocationID")]
+        [ValidateNever]
+        public virtual Location Location { get; set; }
+
         public DateOnly? ReceivedDate { get; set; }
     }
 }

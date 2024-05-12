@@ -32,10 +32,16 @@
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Monitoring.SupplierID">Supplier</label>
-                                <select asp-for="@Model.Monitoring.SupplierID" asp-items="@Model.SupplierList" class="form-select" required>
+                                <select asp-for="Monitoring.SupplierID" asp-items="@Model.SupplierList" id="supplierDropdown" class="form-select" required>
                                     <option disabled selected>--Select Supplier--</option>
                                 </select>
                                 <span asp-validation-for="Monitoring.SupplierID" class="text-danger"></span>
+                            </div>
+                            <input asp-for="Monitoring.LocationID" id="locationId" class="form-control" hidden>
+
+                            <div class="mb-3">
+                                <label asp-for="Monitoring.Location.LocationAddress" hidden>Location</label>
+                                <input asp-for="Monitoring.Location.LocationAddress" id="location" class="form-control" disabled hidden>
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Monitoring.QuantityReceived" class="form-label">Quantity Received:</label>

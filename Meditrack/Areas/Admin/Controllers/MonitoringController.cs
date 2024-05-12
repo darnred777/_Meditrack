@@ -1,6 +1,7 @@
 ﻿using Meditrack.Data;
 using Meditrack.Models;
 using Meditrack.Models.ViewModels;
+using Meditrack.Repository;
 using Meditrack.Repository.IRepository;
 using Meditrack.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -17,9 +18,13 @@ namespace Meditrack.Areas.Admin.Controllers
     public class MonitoringController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public MonitoringController(IUnitOfWork unitOfWork)
+        private readonly ISupplierRepository _supplierRepository;
+        private readonly ILocationRepository _locationRepository;
+        public MonitoringController(IUnitOfWork unitOfWork, ISupplierRepository supplierRepository, ILocationRepository locationRepository)
         {
             _unitOfWork = unitOfWork;
+            _supplierRepository = supplierRepository;
+            _locationRepository = locationRepository;
         }
 
         public IActionResult ManageMonitoring()
@@ -29,39 +34,82 @@ namespace Meditrack.Areas.Admin.Controllers
             return View(objMonitoringList);
         }
 
+        [HttpGet]
+        public IActionResult GetSupplierLocation(int supplierId)
+        {
+            var supplier = _supplierRepository.GetSupplierLocationById(supplierId);
+            if (supplier == null || supplier.LocationID == null)
+            {
+                return NotFound("Supplier location not found.");
+            }
+
+            return Ok(supplier.LocationID);
+        }
+
+        [HttpGet]
+        public IActionResult GetLocationAddress(int locationId)
+        {
+            var location = _locationRepository.GetLocationById(locationId);
+            if (location == null)
+            {
+                return NotFound("Location not found.");
+            }
+
+            return Ok(location.LocationAddress);
+        }
+
+
+
+        [HttpGet]
+        public IActionResult GetSupplierDetails(int supplierId)
+        {
+            var supplier = _supplierRepository.GetSupplierLocationById(supplierId);
+            if (supplier == null)
+            {
+                return NotFound("Supplier not found.");
+            }
+
+            return Ok(new
+            {
+                LocationAddress = supplier.Location.LocationAddress,
+            });
+        }
+
         public IActionResult UpsertMonitoring(int? monitoringID)
         {
-            MonitoringVM monitoringVM = new()
-            {
-                ProductList = _unitOfWork.Product.GetAll().Select(u => new SelectListItem
+            MonitoringVM monitoringVM = new MonitoringVM();
+
+            // Populate ProductList
+            monitoringVM.ProductList = _unitOfWork.Product.GetAll()
+                .Select(u => new SelectListItem
                 {
                     Text = u.ProductName,
                     Value = u.ProductID.ToString()
-                }),
+                });
 
-                SupplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
+            // Populate SupplierList with eager-loaded Location
+            monitoringVM.SupplierList = _unitOfWork.Supplier.GetAll()
+                .Include(s => s.Location)  // Eager load Location
+                .Select(s => new SelectListItem
                 {
                     Value = s.SupplierID.ToString(),
-                    Text = s.SupplierName
-                    //Text = $"{s.SupplierName} - {s.Location.LocationAddress}"
-                }),
+                    Text = $"{s.SupplierName} - {(s.Location != null ? s.Location.LocationAddress : "Location Unknown")}"
+                });
 
-                Monitoring = new Monitoring()
-            };
-
-            if (monitoringID == null || monitoringID == 0)
+            if (monitoringID.HasValue && monitoringID > 0)
             {
-                //create
-                return View(monitoringVM);
+                // Retrieve existing Monitoring record for update
+                monitoringVM.Monitoring = _unitOfWork.Monitoring.Get(u => u.MonitoringID == monitoringID);
             }
             else
             {
-                monitoringVM.Monitoring = _unitOfWork.Monitoring.Get(u => u.MonitoringID == monitoringID);
-
-                //update
-                return View(monitoringVM);
+                // Create a new Monitoring instance for new entry
+                monitoringVM.Monitoring = new Monitoring();
             }
+
+            return View(monitoringVM);
         }
+
 
         [HttpPost]
         public IActionResult UpsertMonitoring(MonitoringVM monitoringVM)
@@ -99,8 +147,7 @@ namespace Meditrack.Areas.Admin.Controllers
                 monitoringVM.SupplierList = _unitOfWork.Supplier.GetAll().Select(s => new SelectListItem
                 {                 
                     Value = s.SupplierID.ToString(),
-                    Text = s.SupplierName
-                    //Text = $"{s.SupplierName} - {s.Location.LocationAddress}"
+                    Text = $"{s.SupplierName} - {s.Location.LocationAddress}"
                 });
                 return View(monitoringVM);
             }

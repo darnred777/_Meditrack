@@ -26,9 +26,22 @@
                             <div class="mb-3">
                                 <label asp-for="Monitoring.ProductID">Product</label>
                                 <select asp-for="@Model.Monitoring.ProductID" asp-items="@Model.ProductList" class="form-select" required>
-                                    <option disabled selected>--Select Location--</option>
+                                    <option disabled selected>--Select Product--</option>
                                 </select>
                                 <span asp-validation-for="Monitoring.ProductID" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Monitoring.SupplierID">Supplier</label>
+                                <select asp-for="Monitoring.SupplierID" asp-items="@Model.SupplierList" id="supplierDropdown" class="form-select" required>
+                                    <option disabled selected>--Select Supplier--</option>
+                                </select>
+                                <span asp-validation-for="Monitoring.SupplierID" class="text-danger"></span>
+                            </div>
+                            <input asp-for="Monitoring.LocationID" id="locationId" class="form-control" hidden>
+
+                            <div class="mb-3">
+                                <label asp-for="Monitoring.Location.LocationAddress" hidden>Location</label>
+                                <input asp-for="Monitoring.Location.LocationAddress" id="location" class="form-control" disabled hidden>
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Monitoring.QuantityReceived" class="form-label">Quantity Received:</label>
@@ -43,7 +56,7 @@
                             <div class="mb-3">
                                 <label asp-for="Monitoring.ReceivedDate" class="form-label">Received Date:</label>
                                 <input asp-for="Monitoring.ReceivedDate" type="date" class="form-control">
-                            </div>                          
+                            </div>
                             <div class="row">
                                 <div class="col-6">
                                     <button type="submit" class="btn btn-primary mt-4 form-control">Save</button>
