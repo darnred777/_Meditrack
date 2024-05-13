@@ -40,7 +40,7 @@ namespace Meditrack.Areas.Admin.Controllers
             var products = _unitOfWork.Product.GetAll().ToList();
 
             const int defaultReorderPoint = 10;
-            const int specialReorderPoint = 500;
+            const int specialReorderPoint = 30;
 
             var lowStockProducts = products.Where(p => p.QuantityInStock <= (IsSpecialProduct(p.ProductName) ? specialReorderPoint : defaultReorderPoint)).ToList();
 
@@ -76,7 +76,7 @@ namespace Meditrack.Areas.Admin.Controllers
         private bool IsSpecialProduct(string productName)
         {
             // List of special products with a different reorder point
-            var specialProducts = new List<string> { "BIOGESIC", "BIOFLU", "NEOZEP" };
+            var specialProducts = new List<string> { "BIOGESIC", "BIOFLU", "NEOZEP", "BACITRACIN", "GAUZE DRESSING" };
 
             return specialProducts.Contains(productName.ToUpper());
         }
