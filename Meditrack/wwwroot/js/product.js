@@ -12,7 +12,7 @@ function loadDataTable(status) {
             { data: 'productName', "width": "10%" },
             { data: 'sku', "width": "10%" },
             { data: 'brand', "width": "10%" },
-            { data: 'productDescription', "width": "10%" },
+            { data: 'productDescription', "width": "30%" },
             { data: 'unitPrice', "width": "10%" },
             { data: 'unitOfMeasurement', "width": "5%" },
             { data: 'quantityInStock', "width": "10%" },
